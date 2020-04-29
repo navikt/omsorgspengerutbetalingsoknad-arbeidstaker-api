@@ -43,11 +43,6 @@ class OmsorgpengesøknadMottakGateway(
         pathParts = listOf("v1", "soknad")
     ).toString()
 
-    private val komplettArbeidstakerutbetalingUrl = Url.buildURL(
-        baseUrl = baseUrl,
-        pathParts = listOf("v1", "arbeidstaker", "soknad")
-    ).toString()
-
     private val cachedAccessTokenClient = CachedAccessTokenClient(accessTokenClient)
 
     override suspend fun check(): Result {
@@ -70,7 +65,7 @@ class OmsorgpengesøknadMottakGateway(
         val body = objectMapper.writeValueAsBytes(soknad)
         val contentStream = { ByteArrayInputStream(body) }
 
-        val httpRequet = komplettArbeidstakerutbetalingUrl
+        val httpRequet = komplettUrl
             .httpPost()
             .timeout(20_000)
             .timeoutRead(20_000)

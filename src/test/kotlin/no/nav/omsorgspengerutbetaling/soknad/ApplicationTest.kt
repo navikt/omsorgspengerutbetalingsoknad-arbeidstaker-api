@@ -56,7 +56,7 @@ class SøknadApplicationTest {
             .stubK9DokumentHealth()
             .stubOmsorgspengerutbetalingsoknadMottakHealth()
             .stubOppslagHealth()
-            .stubLeggSoknadTilProsessering("/v1/arbeidstaker/soknad")
+            .stubLeggSoknadTilProsessering("/v1/soknad")
             .stubK9OppslagSoker()
             .stubK9Dokument()
 
@@ -108,7 +108,7 @@ class SøknadApplicationTest {
 
         requestAndAssert(
             httpMethod = HttpMethod.Post,
-            path = "/arbeidstaker/soknad",
+            path = "/soknad",
             expectedResponse = null,
             expectedCode = HttpStatusCode.Accepted,
             cookie = cookie,
@@ -128,7 +128,7 @@ class SøknadApplicationTest {
 
         requestAndAssert(
             httpMethod = HttpMethod.Post,
-            path = "/arbeidstaker/soknad",
+            path = "/soknad",
             expectedResponse = null,
             expectedCode = HttpStatusCode.Accepted,
             cookie = cookie,
@@ -257,7 +257,7 @@ class SøknadApplicationTest {
     fun `Sende søknad ikke innlogget`() {
         requestAndAssert(
             httpMethod = HttpMethod.Post,
-            path = "/arbeidstaker/soknad",
+            path = "/soknad",
             expectedCode = HttpStatusCode.Unauthorized,
             expectedResponse = null,
             requestEntity = defaultSøknad.somJson(),
@@ -273,7 +273,7 @@ class SøknadApplicationTest {
 
         requestAndAssert(
             httpMethod = HttpMethod.Post,
-            path = "/arbeidstaker/soknad",
+            path = "/soknad",
             expectedResponse = """
                 {
                     "type": "/problem-details/unauthorized",
@@ -303,7 +303,7 @@ class SøknadApplicationTest {
 
         requestAndAssert(
             httpMethod = HttpMethod.Post,
-            path = "/arbeidstaker/soknad",
+            path = "/soknad",
             expectedCode = HttpStatusCode.BadRequest,
             requestEntity = defaultSøknad.copy(
                 arbeidsgivere = defaultSøknad.arbeidsgivere.copy(
@@ -358,7 +358,7 @@ class SøknadApplicationTest {
 
         requestAndAssert(
             httpMethod = HttpMethod.Post,
-            path = "/arbeidstaker/soknad",
+            path = "/soknad",
             expectedResponse = """
                 {
                   "type": "/problem-details/invalid-request-parameters",
@@ -402,7 +402,7 @@ class SøknadApplicationTest {
 
         requestAndAssert(
             httpMethod = HttpMethod.Post,
-            path = "/arbeidstaker/soknad",
+            path = "/soknad",
             expectedResponse = """
                 {
                   "type": "/problem-details/invalid-request-parameters",
@@ -520,7 +520,7 @@ class SøknadApplicationTest {
 
         requestAndAssert(
             httpMethod = HttpMethod.Post,
-            path = "/arbeidstaker/soknad",
+            path = "/soknad",
             expectedResponse = """
                 {
                   "type": "/problem-details/invalid-request-parameters",
@@ -637,7 +637,7 @@ class SøknadApplicationTest {
 
         requestAndAssert(
             httpMethod = HttpMethod.Post,
-            path = "/arbeidstaker/soknad",
+            path = "/soknad",
             expectedResponse = """
                 {
                   "type": "/problem-details/invalid-request-parameters",
