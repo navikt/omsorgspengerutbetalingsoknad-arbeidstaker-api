@@ -65,4 +65,4 @@ spec:
     - name: AZURE_V2_DISCOVERY_ENDPOINT
       value: https://login.microsoftonline.com/62366534-1ec3-4962-8869-9b5535279d0b/v2.0/.well-known/openid-configuration
     - name: SENDE_SOKNAD_TIL_PROSESSERING_SCOPES
-      value: 05c01005-6ee2-4d9d-9cd6-735c014071b6/.default
+      value: 8de5e926-fefe-47ed-bfb2-83645314c1d3/.default
