@@ -21,7 +21,7 @@ internal fun Route.arbeidstakerutbetalingsøknadApis(
     idTokenProvider: IdTokenProvider
 ) {
 
-    @Location("/arbeidstaker/soknad")
+    @Location("/soknad")
     class sendSoknadUtbetalingArbeidstaker
 
     post { _ : sendSoknadUtbetalingArbeidstaker ->
@@ -43,7 +43,7 @@ internal fun Route.arbeidstakerutbetalingsøknadApis(
         call.respond(HttpStatusCode.Accepted)
     }
 
-    @Location("/valider/soknad/arbeidstaker")
+    @Location("/valider/soknad")
     class validerSoknad
 
     post { _ : validerSoknad ->
