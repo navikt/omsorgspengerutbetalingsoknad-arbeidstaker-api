@@ -1,5 +1,6 @@
 package no.nav.omsorgspengerutbetaling.soknad
 
+import no.nav.helse.arbeidsgiver.valider
 import no.nav.helse.dusseldorf.ktor.core.*
 import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.valider
@@ -14,13 +15,12 @@ private val fnrDateFormat = DateTimeFormatter.ofPattern("ddMMyy")
 
 internal fun Søknad.valider() {
     val violations = mutableSetOf<Violation>().apply {
-        addAll(arbeidsgivere.valider())
+        addAll(arbeidsgivere.valider(vedlegg))
         addAll(opphold.valider("opphold"))
         addAll(bosteder.valider("bosteder"))
         addAll(spørsmål.valider())
         addAll(bekreftelser.valider())
         addAll(andreUtbetalinger.valider())
-        addAll(jobbHosNåværendeArbeidsgiver.valider(vedlegg))
         fosterbarn?.let { addAll(validerFosterbarn(it)) }
     }
 

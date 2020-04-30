@@ -153,17 +153,15 @@ class SøknadApplicationTest {
                       "erEØSLand": true
                     }
                   ],
-                  "jobbHosNåværendeArbeidsgiver": {
-                    "merEnn4Uker": true,
-                    "begrunnelse": "ANNET_ARBEIDSFORHOLD"
-                  },
-                  "arbeidsgivere": {
-                    "organisasjoner": [
+                  "arbeidsgivere": [
                       {
                         "navn": "Arbeidsgiver 1",
                         "organisasjonsnummer": "917755736",
                         "harHattFraværHosArbeidsgiver": true,
                         "arbeidsgiverHarUtbetaltLønn": false,
+                        "ansettelseslengde": {
+                          "merEnn4Uker": true
+                        },
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-01",
@@ -177,6 +175,10 @@ class SøknadApplicationTest {
                         "organisasjonsnummer": "917755736",
                         "harHattFraværHosArbeidsgiver": true,
                         "arbeidsgiverHarUtbetaltLønn": false,
+                        "ansettelseslengde": {
+                          "merEnn4Uker": false,
+                          "begrunnelse": "ANNET_ARBEIDSFORHOLD"
+                        },
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-21",
@@ -190,6 +192,10 @@ class SøknadApplicationTest {
                         "organisasjonsnummer": "917755736",
                         "harHattFraværHosArbeidsgiver": true,
                         "arbeidsgiverHarUtbetaltLønn": false,
+                        "ansettelseslengde": {
+                          "merEnn4Uker": false,
+                          "begrunnelse": "MILITÆRTJENESTE"
+                        },
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-31",
@@ -203,6 +209,26 @@ class SøknadApplicationTest {
                         "organisasjonsnummer": "917755736",
                         "harHattFraværHosArbeidsgiver": true,
                         "arbeidsgiverHarUtbetaltLønn": false,
+                        "ansettelseslengde": {
+                          "merEnn4Uker": false,
+                          "begrunnelse": "ANDRE_YTELSER"
+                        },
+                        "perioder": [
+                          {
+                            "fraOgMed": "2020-02-01",
+                            "tilOgMed": "2020-02-06",
+                            "lengde": null
+                          }
+                        ]
+                      },
+                      {
+                        "navn": "Ikke registrert arbeidsgiver",
+                        "harHattFraværHosArbeidsgiver": true,
+                        "arbeidsgiverHarUtbetaltLønn": false,
+                        "ansettelseslengde": {
+                          "merEnn4Uker": false,
+                          "begrunnelse": "ANDRE_YTELSER"
+                        },
                         "perioder": [
                           {
                             "fraOgMed": "2020-02-01",
@@ -211,8 +237,7 @@ class SøknadApplicationTest {
                           }
                         ]
                       }
-                    ]
-                  },
+                    ],
                   "spørsmål": [
                     {
                       "spørsmål": "Et spørsmål",
@@ -306,11 +331,9 @@ class SøknadApplicationTest {
             path = "/soknad",
             expectedCode = HttpStatusCode.BadRequest,
             requestEntity = defaultSøknad.copy(
-                arbeidsgivere = defaultSøknad.arbeidsgivere.copy(
-                    organisasjoner = listOf(
-                        defaultSøknad.arbeidsgivere.organisasjoner[0].copy(
-                            perioder = listOf()
-                        )
+                arbeidsgivere = listOf(
+                    defaultSøknad.arbeidsgivere[0].copy(
+                        perioder = listOf()
                     )
                 ),
                 bekreftelser = Bekreftelser(
@@ -423,99 +446,70 @@ class SøknadApplicationTest {
             expectedCode = HttpStatusCode.BadRequest,
             cookie = cookie,
             requestEntity = """
-                 {
-                    "språk": "nb",
-                    "bosteder": [{
-                        "fraOgMed": "2019-12-12",
-                        "tilOgMed": "2019-12-22",
-                        "landkode": "GB",
-                        "landnavn": "Great Britain",
-                        "erEØSLand": true
-                    }],
-                    "opphold": [{
-                        "fraOgMed": "2019-12-12",
-                        "tilOgMed": "2019-12-22",
-                        "landkode": "GB",
-                        "landnavn": "Great Britain",
-                        "erEØSLand": true
-                    }],
-                    "jobbHosNåværendeArbeidsgiver": {
+                {
+                  "språk": "nb",
+                  "bosteder": [
+                    {
+                      "fraOgMed": "2019-12-12",
+                      "tilOgMed": "2019-12-22",
+                      "landkode": "GB",
+                      "landnavn": "Great Britain",
+                      "erEØSLand": true
+                    }
+                  ],
+                  "opphold": [
+                    {
+                      "fraOgMed": "2019-12-12",
+                      "tilOgMed": "2019-12-22",
+                      "landkode": "GB",
+                      "landnavn": "Great Britain",
+                      "erEØSLand": true
+                    }
+                  ],
+                  "arbeidsgivere": [
+                    {
+                      "navn": "Arbeidsgiver 1",
+                      "organisasjonsnummer": "917755736",
+                      "harHattFraværHosArbeidsgiver": true,
+                      "arbeidsgiverHarUtbetaltLønn": false,
+                      "ansettelseslengde": {
                         "merEnn4Uker": true,
-                        "begrunnelse": "ANNET_ARBEIDSFORHOLD"
-                    },
-                    "arbeidsgivere": {
-                      "organisasjoner": [
+                        "begrunnelse": null
+                      },
+                      "perioder": [
                         {
-                            "navn": "Arbeidsgiver 1",
-                            "organisasjonsnummer": "917755736",
-                            "harHattFraværHosArbeidsgiver": true,
-                            "arbeidsgiverHarUtbetaltLønn": false,
-                            "perioder": [
-                              {
-                                "fraOgMed": "2020-01-01",
-                                "tilOgMed": "2020-01-11",
-                                "lengde": null
-                              }
-                            ]
-                        },
-                        {
-                          "navn": "Arbeidsgiver 2",
-                          "organisasjonsnummer": "917755736",
-                            "harHattFraværHosArbeidsgiver": true,
-                            "arbeidsgiverHarUtbetaltLønn": false,
-                            "perioder": [
-                              {
-                                "fraOgMed": "2020-01-21",
-                                "tilOgMed": "2020-01-21",
-                                "lengde": "PT5H30M"
-                              }
-                            ]
-                        },
-                        {
-                          "navn": "Arbeidsgiver 3",
-                          "organisasjonsnummer": "917755736",
-                            "harHattFraværHosArbeidsgiver": true,
-                            "arbeidsgiverHarUtbetaltLønn": false,
-                            "perioder": [
-                              {
-                                "fraOgMed": "2020-01-31",
-                                "tilOgMed": "2020-02-05",
-                                "lengde": null
-                              }
-                            ]
-                        },
-                        {
-                          "navn": null,
-                          "organisasjonsnummer": "917755736",
-                            "harHattFraværHosArbeidsgiver": true,
-                            "arbeidsgiverHarUtbetaltLønn": false,
-                            "perioder": [
-                              {
-                                "fraOgMed": "2020-02-01",
-                                "tilOgMed": "2020-02-06",
-                                "lengde": null
-                              }
-                            ]
+                          "fraOgMed": "2020-01-01",
+                          "tilOgMed": "2020-01-11",
+                          "lengde": null
                         }
                       ]
-                    },
-                    "spørsmål": [{
-                        "spørsmål": "Et spørsmål",
-                        "svar": false
-                    }],
-                    "bekreftelser": {
-                        "harBekreftetOpplysninger": true,
-                        "harForståttRettigheterOgPlikter": true
-                    },
-                    "andreUtbetalinger": ["dagpenger", "koronapenger"],
-                    "vedlegg": ["$jpegUrl", "$pdfUrl"]
+                    }
+                  ],
+                  "spørsmål": [
+                    {
+                      "spørsmål": "Et spørsmål",
+                      "svar": false
+                    }
+                  ],
+                  "bekreftelser": {
+                    "harBekreftetOpplysninger": true,
+                    "harForståttRettigheterOgPlikter": true
+                  },
+                  "andreUtbetalinger": [
+                    "dagpenger",
+                    "koronapenger"
+                  ],
+                  "vedlegg": [
+                    "$jpegUrl",
+                    "$pdfUrl"
+                  ]
                 }
                 """.trimIndent()
         )
     }
 
     @Test
-    fun `Sende ugyldig søknad, der begrunnelse på jobbHosNåværendeArbeidsgiver ikke er satt når arbeidsforholder har vart mer enn 4 uker`() {
+    fun `Sende ugyldig søknad, der begrunnelse på ansettelseslengde ikke er satt når det har vart mer enn 4 uker`() {
         val cookie = getAuthCookie(gyldigFodselsnummerA)
 
         requestAndAssert(
@@ -531,7 +525,7 @@ class SøknadApplicationTest {
                   "invalid_parameters": [
                     {
                       "type": "entity",
-                      "name": "jobbHosNåværendeArbeidsgiver.begrunnelse",
+                      "name": "arbeidsgivere[0].ansettelseslengde.begrunnelse",
                       "reason": "Begrunnelse kan ikke være null, dersom merEnn4Uker er satt til false.",
                       "invalid_value": null
                     }
@@ -557,65 +551,24 @@ class SøknadApplicationTest {
                         "landnavn": "Great Britain",
                         "erEØSLand": true
                     }],
-                    "jobbHosNåværendeArbeidsgiver": {
-                        "merEnn4Uker": false
-                    },
-                    "arbeidsgivere": {
-                      "organisasjoner": [
-                        {
-                            "navn": "Arbeidsgiver 1",
-                            "organisasjonsnummer": "917755736",
-                            "harHattFraværHosArbeidsgiver": true,
-                            "arbeidsgiverHarUtbetaltLønn": false,
-                            "perioder": [
-                              {
-                                "fraOgMed": "2020-01-01",
-                                "tilOgMed": "2020-01-11",
-                                "lengde": null
-                              }
-                            ]
+                    "arbeidsgivere": [
+                      {
+                        "navn": "Arbeidsgiver 1",
+                        "organisasjonsnummer": "917755736",
+                        "harHattFraværHosArbeidsgiver": true,
+                        "arbeidsgiverHarUtbetaltLønn": false,
+                        "ansettelseslengde": {
+                          "merEnn4Uker": false
                         },
-                        {
-                          "navn": "Arbeidsgiver 2",
-                          "organisasjonsnummer": "917755736",
-                            "harHattFraværHosArbeidsgiver": true,
-                            "arbeidsgiverHarUtbetaltLønn": false,
-                            "perioder": [
-                              {
-                                "fraOgMed": "2020-01-21",
-                                "tilOgMed": "2020-01-21",
-                                "lengde": "PT5H30M"
-                              }
-                            ]
-                        },
-                        {
-                          "navn": "Arbeidsgiver 3",
-                          "organisasjonsnummer": "917755736",
-                            "harHattFraværHosArbeidsgiver": true,
-                            "arbeidsgiverHarUtbetaltLønn": false,
-                            "perioder": [
-                              {
-                                "fraOgMed": "2020-01-31",
-                                "tilOgMed": "2020-02-05",
-                                "lengde": null
-                              }
-                            ]
-                        },
-                        {
-                          "navn": null,
-                          "organisasjonsnummer": "917755736",
-                            "harHattFraværHosArbeidsgiver": true,
-                            "arbeidsgiverHarUtbetaltLønn": false,
-                            "perioder": [
-                              {
-                                "fraOgMed": "2020-02-01",
-                                "tilOgMed": "2020-02-06",
-                                "lengde": null
-                              }
-                            ]
-                        }
-                      ]
-                    },
+                        "perioder": [
+                          {
+                            "fraOgMed": "2020-01-01",
+                            "tilOgMed": "2020-01-11",
+                            "lengde": null
+                          }
+                        ]
+                      }
+                    ],
                     "spørsmål": [{
                         "spørsmål": "Et spørsmål",
                         "svar": false
@@ -632,7 +585,7 @@ class SøknadApplicationTest {
     }
 
     @Test
-    fun `Sende ugyldig søknad, der jobbHosNåværendeArbeidsgiver er mer enn 4 uker, men mangler vedlegg`() {
+    fun `Sende ugyldig søknad, der ansettelseslengde er mer enn 4 uker, men mangler vedlegg`() {
         val cookie = getAuthCookie(gyldigFodselsnummerA)
 
         requestAndAssert(
@@ -648,7 +601,7 @@ class SøknadApplicationTest {
                   "invalid_parameters": [
                     {
                       "type": "entity",
-                      "name": "jobbHosNåværendeArbeidsgiver.merEnn4Uker && vedlegg",
+                      "name": "arbeidsgivere[0].ansettelseslengde.merEnn4Uker && vedlegg",
                       "reason": "Vedlegg kan ikke være tom, dersom merEnn4Uker er satt til true.",
                       "invalid_value": []
                     }
@@ -658,9 +611,13 @@ class SøknadApplicationTest {
             expectedCode = HttpStatusCode.BadRequest,
             cookie = cookie,
             requestEntity = defaultSøknad.copy(
-                jobbHosNåværendeArbeidsgiver = JobbHosNåværendeArbeidsgiver(
-                    merEnn4Uker = true,
-                    begrunnelse = JobbHosNåværendeArbeidsgiver.Begrunnelse.ANNET_ARBEIDSFORHOLD
+                arbeidsgivere = listOf(
+                    defaultSøknad.arbeidsgivere[0].copy(
+                        ansettelseslengde = Ansettelseslengde(
+                            merEnn4Uker = true,
+                            begrunnelse = Ansettelseslengde.Begrunnelse.ANNET_ARBEIDSFORHOLD
+                        )
+                    )
                 ),
                 vedlegg = listOf()
             ).somJson()

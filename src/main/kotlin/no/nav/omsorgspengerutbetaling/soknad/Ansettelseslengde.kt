@@ -4,7 +4,7 @@ import no.nav.helse.dusseldorf.ktor.core.ParameterType
 import no.nav.helse.dusseldorf.ktor.core.Violation
 import java.net.URL
 
-data class JobbHosNåværendeArbeidsgiver(
+data class Ansettelseslengde(
     val merEnn4Uker: Boolean,
     val begrunnelse: Begrunnelse? = null
 ) {
@@ -16,12 +16,12 @@ data class JobbHosNåværendeArbeidsgiver(
     }
 }
 
-fun JobbHosNåværendeArbeidsgiver.valider(vedlegg: List<URL>) = mutableSetOf<Violation>().apply {
+fun Ansettelseslengde.valider(vedlegg: List<URL>, felt: String) = mutableSetOf<Violation>().apply {
     if (merEnn4Uker == false && begrunnelse == null) {
         add(
             Violation(
                 parameterType = ParameterType.ENTITY,
-                parameterName = "jobbHosNåværendeArbeidsgiver.begrunnelse",
+                parameterName = "${felt}.begrunnelse",
                 reason = "Begrunnelse kan ikke være null, dersom merEnn4Uker er satt til false.",
                 invalidValue = begrunnelse
             )
@@ -31,7 +31,7 @@ fun JobbHosNåværendeArbeidsgiver.valider(vedlegg: List<URL>) = mutableSetOf<Vi
         add(
             Violation(
                 parameterType = ParameterType.ENTITY,
-                parameterName = "jobbHosNåværendeArbeidsgiver.merEnn4Uker && vedlegg",
+                parameterName = "${felt}.merEnn4Uker && vedlegg",
                 reason = "Vedlegg kan ikke være tom, dersom merEnn4Uker er satt til true.",
                 invalidValue = vedlegg
             )

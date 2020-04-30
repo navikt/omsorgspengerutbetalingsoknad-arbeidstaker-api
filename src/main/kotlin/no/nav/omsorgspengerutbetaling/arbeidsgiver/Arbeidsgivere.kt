@@ -1,20 +1,38 @@
 package no.nav.helse.arbeidsgiver
 
-import no.nav.omsorgspengerutbetaling.felles.OrganisasjonDetaljer
+import no.nav.helse.dusseldorf.ktor.core.Violation
+import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
+import no.nav.omsorgspengerutbetaling.felles.validerUenVedlegg
+import no.nav.omsorgspengerutbetaling.soknad.Ansettelseslengde
+import no.nav.omsorgspengerutbetaling.soknad.valider
+import java.net.URL
 
-data class ArbeidsgivereOppslagRespons (
+data class ArbeidsgivereOppslagRespons(
     val arbeidsgivere: Arbeidsgivere
 )
 
-data class Arbeidsgivere (
+data class Arbeidsgivere(
     val organisasjoner: List<Organisasjon>
 )
 
-class Organisasjon (
+class Organisasjon(
     val organisasjonsnummer: String,
     val navn: String?
 )
 
 data class ArbeidsgiverDetaljer(
-    val organisasjoner: List<OrganisasjonDetaljer>
+    val navn: String? = null,
+    val organisasjonsnummer: String? = null,
+    val harHattFraværHosArbeidsgiver: Boolean,
+    val arbeidsgiverHarUtbetaltLønn: Boolean,
+    val ansettelseslengde: Ansettelseslengde,
+    val perioder: List<Utbetalingsperiode>
 )
+
+fun List<ArbeidsgiverDetaljer>.valider(vedlegg: List<URL>): List<Violation> =
+    mapIndexed { index, arbeidsgiverDetaljer ->
+        val violations = mutableSetOf<Violation>()
+        violations.addAll(arbeidsgiverDetaljer.ansettelseslengde.valider(vedlegg, "arbeidsgivere[$index].ansettelseslengde"))
+        violations.addAll(arbeidsgiverDetaljer.perioder.validerUenVedlegg())
+        violations
+    }.flatMap { it }

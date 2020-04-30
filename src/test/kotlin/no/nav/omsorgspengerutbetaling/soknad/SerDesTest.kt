@@ -49,17 +49,16 @@ internal class SerDesTest {
                 "landnavn": "Great Britain",
                 "erEØSLand": true
             }],
-            "jobbHosNåværendeArbeidsgiver": {
-                "merEnn4Uker": true,
-                "begrunnelse": "ANNET_ARBEIDSFORHOLD"
-            },
-            "arbeidsgivere": {
-              "organisasjoner": [
+            "arbeidsgivere": [
                 {
                     "navn": "Arbeidsgiver 1",
                     "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": true,
+                        "begrunnelse": null
+                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-01",
@@ -73,6 +72,10 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": false,
+                        "begrunnelse": "ANNET_ARBEIDSFORHOLD"
+                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-21",
@@ -86,6 +89,10 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": false,
+                        "begrunnelse": "MILITÆRTJENESTE"
+                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-31",
@@ -99,6 +106,27 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": false,
+                        "begrunnelse": "ANDRE_YTELSER"
+                      },
+                    "perioder": [
+                      {
+                        "fraOgMed": "2020-02-01",
+                        "tilOgMed": "2020-02-06",
+                        "lengde": null
+                      }
+                    ]
+                },
+                {
+                  "navn": "Ikke registrert arbeidsgiver",
+                  "organisasjonsnummer": null,
+                    "harHattFraværHosArbeidsgiver": true,
+                    "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": false,
+                        "begrunnelse": "ANDRE_YTELSER"
+                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-02-01",
@@ -107,8 +135,7 @@ internal class SerDesTest {
                       }
                     ]
                 }
-              ]
-            },
+              ],
             "opphold": [{
                 "fraOgMed": "2019-12-12",
                 "tilOgMed": "2019-12-22",
@@ -145,17 +172,16 @@ internal class SerDesTest {
                 "etternavn": "Nordmann",
                 "myndig": true
             },
-            "jobbHosNåværendeArbeidsgiver": {
-                "merEnn4Uker": true,
-                "begrunnelse": "ANNET_ARBEIDSFORHOLD"
-            },
-            "arbeidsgivere": {
-              "organisasjoner": [
+            "arbeidsgivere": [
                 {
                     "navn": "Arbeidsgiver 1",
                     "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": true,
+                        "begrunnelse": null
+                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-01",
@@ -169,6 +195,10 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": false,
+                        "begrunnelse": "ANNET_ARBEIDSFORHOLD"
+                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-21",
@@ -182,6 +212,10 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": false,
+                        "begrunnelse": "MILITÆRTJENESTE"
+                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-31",
@@ -195,6 +229,27 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": false,
+                        "begrunnelse": "ANDRE_YTELSER"
+                      },
+                    "perioder": [
+                      {
+                        "fraOgMed": "2020-02-01",
+                        "tilOgMed": "2020-02-06",
+                        "lengde": null
+                      }
+                    ]
+                },
+                {
+                  "navn": "Ikke registrert arbeidsgiver",
+                  "organisasjonsnummer": null,
+                    "harHattFraværHosArbeidsgiver": true,
+                    "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": false,
+                        "begrunnelse": "ANDRE_YTELSER"
+                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-02-01",
@@ -203,8 +258,7 @@ internal class SerDesTest {
                       }
                     ]
                 }
-              ]
-            },
+              ],
             "bosteder": [{
                 "fraOgMed": "2019-12-12",
                 "tilOgMed": "2019-12-22",
