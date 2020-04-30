@@ -65,21 +65,4 @@ internal fun Bekreftelser.valider() : Set<Violation> {
     return violations
 }
 
-internal fun List<SpørsmålOgSvar>.valider() : Set<Violation> {
-    val violations = mutableSetOf<Violation>()
-
-    filter { it.spørsmål.erBlankEllerForLangFritekst() }.forEachIndexed { index, spm ->
-        violations.add(
-            Violation(
-                parameterName = "spørsmål[$index].spørsmål",
-                parameterType = ParameterType.ENTITY,
-                reason = "Spørsmål må være satt og være maks 1000 tegn.",
-                invalidValue = spm.spørsmål
-            )
-        )
-    }
-
-    return violations
-}
-
 internal fun String.erBlankEllerForLangFritekst(): Boolean = isBlank() || length > MAX_FRITEKST_TEGN

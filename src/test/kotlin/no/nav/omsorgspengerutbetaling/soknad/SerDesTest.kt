@@ -143,10 +143,6 @@ internal class SerDesTest {
                 "landnavn": "Great Britain",
                 "erEØSLand": true
             }],
-            "spørsmål": [{
-                "spørsmål": "Et spørsmål",
-                "svar": false
-            }],
             "bekreftelser": {
                 "harBekreftetOpplysninger": true,
                 "harForståttRettigheterOgPlikter": true
@@ -272,10 +268,6 @@ internal class SerDesTest {
                 "landkode": "GB",
                 "landnavn": "Great Britain",
                 "erEØSLand": true
-            }],
-            "spørsmål": [{
-                "spørsmål": "Et spørsmål",
-                "svar": false
             }],
             "bekreftelser": {
                 "harBekreftetOpplysninger": true,

@@ -238,12 +238,6 @@ class SøknadApplicationTest {
                         ]
                       }
                     ],
-                  "spørsmål": [
-                    {
-                      "spørsmål": "Et spørsmål",
-                      "svar": false
-                    }
-                  ],
                   "bekreftelser": {
                     "harBekreftetOpplysninger": true,
                     "harForståttRettigheterOgPlikter": true
@@ -340,7 +334,6 @@ class SøknadApplicationTest {
                     harForståttRettigheterOgPlikter = JaNei.Nei,
                     harBekreftetOpplysninger = JaNei.Nei
                 ),
-                spørsmål = listOf(),
                 vedlegg = listOf(
                     URL(jpegUrl), URL(pdfUrl)
                 )
@@ -485,12 +478,6 @@ class SøknadApplicationTest {
                       ]
                     }
                   ],
-                  "spørsmål": [
-                    {
-                      "spørsmål": "Et spørsmål",
-                      "svar": false
-                    }
-                  ],
                   "bekreftelser": {
                     "harBekreftetOpplysninger": true,
                     "harForståttRettigheterOgPlikter": true
@@ -569,10 +556,6 @@ class SøknadApplicationTest {
                         ]
                       }
                     ],
-                    "spørsmål": [{
-                        "spørsmål": "Et spørsmål",
-                        "svar": false
-                    }],
                     "bekreftelser": {
                         "harBekreftetOpplysninger": true,
                         "harForståttRettigheterOgPlikter": true

@@ -56,7 +56,6 @@ internal class SøknadService(
             søker = søker,
             bosteder = søknad.bosteder,
             opphold = søknad.opphold,
-            spørsmål = søknad.spørsmål,
             arbeidsgivere = søknad.arbeidsgivere,
             andreUtbetalinger = søknad.andreUtbetalinger,
             fosterbarn = søknad.fosterbarn,

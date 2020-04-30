@@ -8,7 +8,6 @@ data class Søknad(
     val språk: Språk,
     val bosteder: List<Bosted>,
     val opphold: List<Opphold>,
-    val spørsmål: List<SpørsmålOgSvar>,
     val arbeidsgivere: List<ArbeidsgiverDetaljer>,
     val bekreftelser: Bekreftelser,
     val andreUtbetalinger: List<String>,

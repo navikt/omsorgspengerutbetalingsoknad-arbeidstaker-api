@@ -115,12 +115,6 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 erEØSLand = JaNei.Ja
             )
         ),
-        spørsmål = listOf(
-            SpørsmålOgSvar(
-                spørsmål = "Et spørsmål",
-                svar = JaNei.Nei
-            )
-        ),
         bekreftelser = Bekreftelser(
             harForståttRettigheterOgPlikter = JaNei.Ja,
             harBekreftetOpplysninger = JaNei.Ja
@@ -242,12 +236,6 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 landkode = "GB",
                 landnavn = "Great Britain",
                 erEØSLand = JaNei.Ja
-            )
-        ),
-        spørsmål = listOf(
-            SpørsmålOgSvar(
-                spørsmål = "Et spørsmål",
-                svar = JaNei.Nei
             )
         ),
         andreUtbetalinger = listOf(DAGPENGER, SYKEPENGER),
