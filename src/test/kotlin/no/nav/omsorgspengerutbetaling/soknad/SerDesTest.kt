@@ -57,7 +57,8 @@ internal class SerDesTest {
                     "arbeidsgiverHarUtbetaltLønn": false,
                      "ansettelseslengde": {
                         "merEnn4Uker": true,
-                        "begrunnelse": null
+                        "begrunnelse": null,
+                        "ingenAvSituasjoneneForklaring": null
                       },
                     "perioder": [
                       {
@@ -74,7 +75,8 @@ internal class SerDesTest {
                     "arbeidsgiverHarUtbetaltLønn": false,
                      "ansettelseslengde": {
                         "merEnn4Uker": false,
-                        "begrunnelse": "ANNET_ARBEIDSFORHOLD"
+                        "begrunnelse": "ANNET_ARBEIDSFORHOLD",
+                        "ingenAvSituasjoneneForklaring": null
                       },
                     "perioder": [
                       {
@@ -91,7 +93,26 @@ internal class SerDesTest {
                     "arbeidsgiverHarUtbetaltLønn": false,
                      "ansettelseslengde": {
                         "merEnn4Uker": false,
-                        "begrunnelse": "MILITÆRTJENESTE"
+                        "begrunnelse": "MILITÆRTJENESTE",
+                        "ingenAvSituasjoneneForklaring": null
+                      },
+                    "perioder": [
+                      {
+                        "fraOgMed": "2020-01-31",
+                        "tilOgMed": "2020-02-05",
+                        "lengde": null
+                      }
+                    ]
+                },
+                {
+                  "navn": "Arbeidsgiver 4",
+                  "organisasjonsnummer": "917755736",
+                    "harHattFraværHosArbeidsgiver": true,
+                    "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": false,
+                        "begrunnelse": "INGEN_AV_SITUASJONENE",
+                        "ingenAvSituasjoneneForklaring": "Forklarer hvorfor ingen av situasjonene passer."
                       },
                     "perioder": [
                       {
@@ -108,7 +129,8 @@ internal class SerDesTest {
                     "arbeidsgiverHarUtbetaltLønn": false,
                      "ansettelseslengde": {
                         "merEnn4Uker": false,
-                        "begrunnelse": "ANDRE_YTELSER"
+                        "begrunnelse": "ANDRE_YTELSER",
+                        "ingenAvSituasjoneneForklaring": null
                       },
                     "perioder": [
                       {
@@ -125,7 +147,8 @@ internal class SerDesTest {
                     "arbeidsgiverHarUtbetaltLønn": false,
                      "ansettelseslengde": {
                         "merEnn4Uker": false,
-                        "begrunnelse": "ANDRE_YTELSER"
+                        "begrunnelse": "ANDRE_YTELSER",
+                        "ingenAvSituasjoneneForklaring": null
                       },
                     "perioder": [
                       {
@@ -176,7 +199,8 @@ internal class SerDesTest {
                     "arbeidsgiverHarUtbetaltLønn": false,
                      "ansettelseslengde": {
                         "merEnn4Uker": true,
-                        "begrunnelse": null
+                        "begrunnelse": null,
+                        "ingenAvSituasjoneneForklaring": null
                       },
                     "perioder": [
                       {
@@ -193,7 +217,8 @@ internal class SerDesTest {
                     "arbeidsgiverHarUtbetaltLønn": false,
                      "ansettelseslengde": {
                         "merEnn4Uker": false,
-                        "begrunnelse": "ANNET_ARBEIDSFORHOLD"
+                        "begrunnelse": "ANNET_ARBEIDSFORHOLD",
+                        "ingenAvSituasjoneneForklaring": null
                       },
                     "perioder": [
                       {
@@ -210,7 +235,26 @@ internal class SerDesTest {
                     "arbeidsgiverHarUtbetaltLønn": false,
                      "ansettelseslengde": {
                         "merEnn4Uker": false,
-                        "begrunnelse": "MILITÆRTJENESTE"
+                        "begrunnelse": "MILITÆRTJENESTE",
+                        "ingenAvSituasjoneneForklaring": null
+                      },
+                    "perioder": [
+                      {
+                        "fraOgMed": "2020-01-31",
+                        "tilOgMed": "2020-02-05",
+                        "lengde": null
+                      }
+                    ]
+                },
+                {
+                  "navn": "Arbeidsgiver 4",
+                  "organisasjonsnummer": "917755736",
+                    "harHattFraværHosArbeidsgiver": true,
+                    "arbeidsgiverHarUtbetaltLønn": false,
+                     "ansettelseslengde": {
+                        "merEnn4Uker": false,
+                        "begrunnelse": "INGEN_AV_SITUASJONENE",
+                        "ingenAvSituasjoneneForklaring": "Forklarer hvorfor ingen av situasjonene passer."
                       },
                     "perioder": [
                       {
@@ -227,7 +271,8 @@ internal class SerDesTest {
                     "arbeidsgiverHarUtbetaltLønn": false,
                      "ansettelseslengde": {
                         "merEnn4Uker": false,
-                        "begrunnelse": "ANDRE_YTELSER"
+                        "begrunnelse": "ANDRE_YTELSER",
+                        "ingenAvSituasjoneneForklaring": null
                       },
                     "perioder": [
                       {
@@ -244,7 +289,8 @@ internal class SerDesTest {
                     "arbeidsgiverHarUtbetaltLønn": false,
                      "ansettelseslengde": {
                         "merEnn4Uker": false,
-                        "begrunnelse": "ANDRE_YTELSER"
+                        "begrunnelse": "ANDRE_YTELSER",
+                        "ingenAvSituasjoneneForklaring": null
                       },
                     "perioder": [
                       {

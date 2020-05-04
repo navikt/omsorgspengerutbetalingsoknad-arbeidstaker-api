@@ -607,6 +607,47 @@ class SøknadApplicationTest {
         )
     }
 
+    @Test
+    fun `Sende ugyldig søknad, der ansettelseslengde er begrunnelse er INGEN_AV_SITUASJONENE, men mangler forklaring`() {
+        val cookie = getAuthCookie(gyldigFodselsnummerA)
+
+        requestAndAssert(
+            httpMethod = HttpMethod.Post,
+            path = "/soknad",
+            expectedResponse = """
+                {
+                  "type": "/problem-details/invalid-request-parameters",
+                  "title": "invalid-request-parameters",
+                  "status": 400,
+                  "detail": "Requesten inneholder ugyldige paramtere.",
+                  "instance": "about:blank",
+                  "invalid_parameters": [
+                    {
+                      "type": "entity",
+                      "name": "arbeidsgivere[0].ansettelseslengde.ingenAvSituasjoneneForklaring",
+                      "reason": "Forklaring for ingen av situasjonene kan ikke være null/tom, dersom begrunnelsen er INGEN_AV_SITUASJONENE",
+                      "invalid_value": null
+                    }
+                  ]
+                }
+            """.trimIndent(),
+            expectedCode = HttpStatusCode.BadRequest,
+            cookie = cookie,
+            requestEntity = defaultSøknad.copy(
+                arbeidsgivere = listOf(
+                    defaultSøknad.arbeidsgivere[0].copy(
+                        ansettelseslengde = Ansettelseslengde(
+                            merEnn4Uker = false,
+                            begrunnelse = Ansettelseslengde.Begrunnelse.INGEN_AV_SITUASJONENE,
+                            ingenAvSituasjoneneForklaring = null
+                        )
+                    )
+                ),
+                vedlegg = listOf()
+            ).somJson()
+        )
+    }
+
     private fun requestAndAssert(
         httpMethod: HttpMethod,
         path: String,

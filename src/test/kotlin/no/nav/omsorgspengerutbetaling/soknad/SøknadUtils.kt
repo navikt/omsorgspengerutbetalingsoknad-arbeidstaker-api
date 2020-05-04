@@ -67,6 +67,23 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 )
             ),
             ArbeidsgiverDetaljer(
+                navn = "Arbeidsgiver 4",
+                organisasjonsnummer = GYLDIG_ORGNR,
+                harHattFraværHosArbeidsgiver = true,
+                arbeidsgiverHarUtbetaltLønn = false,
+                ansettelseslengde = Ansettelseslengde(
+                    merEnn4Uker = false,
+                    begrunnelse = INGEN_AV_SITUASJONENE,
+                    ingenAvSituasjoneneForklaring = "Forklarer hvorfor ingen av situasjonene passer."
+                ),
+                perioder = listOf(
+                    Utbetalingsperiode(
+                        fraOgMed = start.plusDays(30),
+                        tilOgMed = start.plusDays(35)
+                    )
+                )
+            ),
+            ArbeidsgiverDetaljer(
                 organisasjonsnummer = GYLDIG_ORGNR,
                 harHattFraværHosArbeidsgiver = true,
                 arbeidsgiverHarUtbetaltLønn = false,
@@ -181,6 +198,23 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 ansettelseslengde = Ansettelseslengde(
                     merEnn4Uker = false,
                     begrunnelse = MILITÆRTJENESTE
+                ),
+                perioder = listOf(
+                    Utbetalingsperiode(
+                        fraOgMed = start.plusDays(30),
+                        tilOgMed = start.plusDays(35)
+                    )
+                )
+            ),
+            ArbeidsgiverDetaljer(
+                navn = "Arbeidsgiver 4",
+                organisasjonsnummer = GYLDIG_ORGNR,
+                harHattFraværHosArbeidsgiver = true,
+                arbeidsgiverHarUtbetaltLønn = false,
+                ansettelseslengde = Ansettelseslengde(
+                    merEnn4Uker = false,
+                    begrunnelse = INGEN_AV_SITUASJONENE,
+                    ingenAvSituasjoneneForklaring = "Forklarer hvorfor ingen av situasjonene passer."
                 ),
                 perioder = listOf(
                     Utbetalingsperiode(
