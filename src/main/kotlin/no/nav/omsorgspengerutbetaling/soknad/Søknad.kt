@@ -1,6 +1,6 @@
 package no.nav.omsorgspengerutbetaling.soknad
 
-import no.nav.helse.arbeidsgiver.ArbeidsgiverDetaljer
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
 import no.nav.omsorgspengerutbetaling.felles.*
 import java.net.URL
 

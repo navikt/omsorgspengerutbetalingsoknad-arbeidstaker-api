@@ -1,4 +1,4 @@
-package no.nav.helse.arbeidsgiver
+package no.nav.omsorgspengerutbetaling.arbeidsgiver
 
 import no.nav.omsorgspengerutbetaling.general.CallId
 import no.nav.omsorgspengerutbetaling.general.auth.IdToken

@@ -20,9 +20,9 @@ import io.ktor.metrics.micrometer.MicrometerMetrics
 import io.ktor.routing.Routing
 import io.ktor.util.KtorExperimentalAPI
 import io.prometheus.client.hotspot.DefaultExports
-import no.nav.helse.arbeidsgiver.ArbeidsgivereGateway
-import no.nav.helse.arbeidsgiver.ArbeidsgivereService
-import no.nav.helse.arbeidsgiver.arbeidsgiverApis
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgivereGateway
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgivereService
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.arbeidsgiverApis
 import no.nav.helse.dusseldorf.ktor.auth.clients
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthCheck
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthConfig

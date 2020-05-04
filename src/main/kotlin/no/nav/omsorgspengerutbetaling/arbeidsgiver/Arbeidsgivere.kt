@@ -1,4 +1,4 @@
-package no.nav.helse.arbeidsgiver
+package no.nav.omsorgspengerutbetaling.arbeidsgiver
 
 import no.nav.helse.dusseldorf.ktor.core.Violation
 import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode

@@ -1,4 +1,4 @@
-package no.nav.helse.arbeidsgiver
+package no.nav.omsorgspengerutbetaling.arbeidsgiver
 
 import io.ktor.application.call
 import io.ktor.response.respond

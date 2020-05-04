@@ -1,4 +1,4 @@
-package no.nav.helse.arbeidsgiver
+package no.nav.omsorgspengerutbetaling.arbeidsgiver
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
