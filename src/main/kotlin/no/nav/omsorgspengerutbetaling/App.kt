@@ -56,7 +56,7 @@ import org.slf4j.LoggerFactory
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 
-fun main(args: Array<String>): Unit  = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 private val logger: Logger = LoggerFactory.getLogger("nav.omsorgpengerutbetalingsoknadArbeidstakerApi")
 
@@ -84,6 +84,11 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
         method(HttpMethod.Delete)
         allowNonSimpleContentTypes = true
         allowCredentials = true
+        exposedHeaders.addAll(
+            listOf(
+                "X-Request-Id"
+            )
+        )
         log.info("Configuring CORS")
         configuration.getWhitelistedCorsAddreses().forEach {
             log.info("Adding host {} with scheme {}", it.host, it.scheme)
@@ -199,11 +204,25 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
         val healthService = HealthService(
             healthChecks = setOf(
                 omsorgpengesoknadMottakGateway,
-                HttpRequestHealthCheck(mapOf(
-                    configuration.getJwksUrl() to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK, includeExpectedStatusEntity = false),
-                    Url.buildURL(baseUrl = configuration.getK9DokumentUrl(), pathParts = listOf("health")) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK),
-                    Url.buildURL(baseUrl = configuration.getOmsorgpengesoknadMottakBaseUrl(), pathParts = listOf("health")) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK, httpHeaders = mapOf(apiGatewayApiKey.headerKey to apiGatewayApiKey.value))
-                ))
+                HttpRequestHealthCheck(
+                    mapOf(
+                        configuration.getJwksUrl() to HttpRequestHealthConfig(
+                            expectedStatus = HttpStatusCode.OK,
+                            includeExpectedStatusEntity = false
+                        ),
+                        Url.buildURL(
+                            baseUrl = configuration.getK9DokumentUrl(),
+                            pathParts = listOf("health")
+                        ) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK),
+                        Url.buildURL(
+                            baseUrl = configuration.getOmsorgpengesoknadMottakBaseUrl(),
+                            pathParts = listOf("health")
+                        ) to HttpRequestHealthConfig(
+                            expectedStatus = HttpStatusCode.OK,
+                            httpHeaders = mapOf(apiGatewayApiKey.headerKey to apiGatewayApiKey.value)
+                        )
+                    )
+                )
             )
         )
 
@@ -236,8 +255,11 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
         correlationIdAndRequestIdInMdc()
         logRequests()
         mdc("id_token_jti") { call ->
-            try { idTokenProvider.getIdToken(call).getId() }
-            catch (cause: Throwable) { null }
+            try {
+                idTokenProvider.getIdToken(call).getId()
+            } catch (cause: Throwable) {
+                null
+            }
         }
     }
 }
