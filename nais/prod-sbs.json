@@ -1,0 +1,30 @@
+{
+  "app": "omsorgspengerutbetalingsoknad-arbeidstaker-api",
+  "cluster": "prod-sbs",
+  "namespace": "default",
+  "team": "dusseldorf",
+  "minReplicas": "1",
+  "maxReplicas": "1",
+  "ingresses": [
+    "https://omsorgspengerutbetalingsoknad-arbeidstaker-api.nav.no",
+    "https://omsorgspengerutbetalingsoknad-arbeidstaker-api.nais.oera.no"
+  ],
+  "vaultKvPath": "/kv/prod/sbs/omsorgspengerutbetalingsoknad-arbeidstaker-api/default",
+  "azureadKvPath": "/azuread/data/prod/creds/omsorgspengerutbetalingsoknad-arbeidstaker-api",
+  "apigwKvPath": "/apikey/apigw/prod/helse-reverse-proxy/omsorgspengerutbetalingsoknad-arbeidstaker-api",
+  "env": {
+    "REDIS_HOST": "omsorgspengerutbetalingsoknad-arbeidstaker-api-redis.default.svc.nais.local",
+    "CORS_ADDRESSES": "https://www.nav.no",
+    "ISSUER": "https://login.microsoftonline.com/8b7dfc8b-b52e-4741-bde4-d83ea366f94f/v2.0/",
+    "COOKIE_NAME": "selvbetjening-idtoken",
+    "JWKS_URI": "https://login.microsoftonline.com/navnob2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten",
+    "K9_OPPSLAG_REGISTER_URL": "https://api-gw.oera.no/helse-reverse-proxy/k9-selvbetjening-oppslag",
+    "OMSORGSPENGERUTBETALINGSOKNAD_MOTTAK_BASE_URL": "https://api-gw.oera.no/helse-reverse-proxy/omsorgspengerutbetalingsoknad-arbeidstaker-mottak",
+    "K9_DOKUMENT_BASE_URL": "https://k9-dokument.nais.oera.no",
+    "AZURE_V2_DISCOVERY_ENDPOINT": "https://login.microsoftonline.com/62366534-1ec3-4962-8869-9b5535279d0b/v2.0/.well-known/openid-configuration",
+    "SENDE_SOKNAD_TIL_PROSESSERING_SCOPES": "8de5e926-fefe-47ed-bfb2-83645314c1d3/.default"
+  },
+  "slack-channel": "sif-alerts",
+  "slack-notify-type": "<!channel> | omsorgspengerutbetalingsoknad-arbeidstaker-api | ",
+  "app-alert-ingress": "https://omsorgspengerutbetalingsoknad-arbeidstaker-api.nav.no"
+}

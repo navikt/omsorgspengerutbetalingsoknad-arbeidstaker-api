@@ -1,5 +1,6 @@
 # omsorgspengerutbetalingsoknad-arbeidstaker-api
 ![CI / CD](https://github.com/navikt/omsorgspengerutbetalingsoknad-arbeidstaker-api/workflows/CI%20/%20CD/badge.svg)
+![NAIS Alerts](https://github.com/navikt/omsorgspengerutbetalingsoknad-arbeidstaker-api/workflows/Alerts/badge.svg)
 
 # Innholdsoversikt
 * [1. Kontekst](#1-kontekst)
@@ -68,7 +69,10 @@ For å kjøre kode, kjør:
 # Metrics
 n/a
 
-### Redis
+## Alarmer
+Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette opp alarmer. Disse finner man konfigurert i [nais/alerterator.yml](nais/alerterator.yml).
+
+# Redis
 Vi bruker Redis for mellomlagring. En instanse av Redis må være kjørene før deploy av applikasjonen. 
 Dette gjøres manuelt med kubectl både i preprod og prod. Se [nais/doc](https://github.com/nais/doc/blob/master/content/redis.md)
 
