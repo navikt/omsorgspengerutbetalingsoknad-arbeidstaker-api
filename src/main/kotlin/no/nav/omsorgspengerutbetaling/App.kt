@@ -3,7 +3,7 @@ package no.nav.omsorgspengerutbetaling
 import com.auth0.jwk.JwkProviderBuilder
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
-import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.ktor.application.*
 import io.ktor.auth.Authentication
 import io.ktor.auth.authenticate
@@ -20,9 +20,6 @@ import io.ktor.metrics.micrometer.MicrometerMetrics
 import io.ktor.routing.Routing
 import io.ktor.util.KtorExperimentalAPI
 import io.prometheus.client.hotspot.DefaultExports
-import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgivereGateway
-import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgivereService
-import no.nav.omsorgspengerutbetaling.arbeidsgiver.arbeidsgiverApis
 import no.nav.helse.dusseldorf.ktor.auth.clients
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthCheck
 import no.nav.helse.dusseldorf.ktor.client.HttpRequestHealthConfig
@@ -35,19 +32,22 @@ import no.nav.helse.dusseldorf.ktor.jackson.JacksonStatusPages
 import no.nav.helse.dusseldorf.ktor.jackson.dusseldorfConfigured
 import no.nav.helse.dusseldorf.ktor.metrics.MetricsRoute
 import no.nav.helse.dusseldorf.ktor.metrics.init
-import no.nav.omsorgspengerutbetaling.soknad.SøknadService
-import no.nav.omsorgspengerutbetaling.soknad.arbeidstakerutbetalingsøknadApis
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgivereGateway
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgivereService
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.arbeidsgiverApis
 import no.nav.omsorgspengerutbetaling.general.auth.IdTokenProvider
 import no.nav.omsorgspengerutbetaling.general.auth.authorizationStatusPages
 import no.nav.omsorgspengerutbetaling.general.systemauth.AccessTokenClientResolver
 import no.nav.omsorgspengerutbetaling.mellomlagring.MellomlagringService
 import no.nav.omsorgspengerutbetaling.mellomlagring.mellomlagringApis
+import no.nav.omsorgspengerutbetaling.mottak.OmsorgpengesøknadMottakGateway
 import no.nav.omsorgspengerutbetaling.redis.RedisConfig
 import no.nav.omsorgspengerutbetaling.redis.RedisStore
 import no.nav.omsorgspengerutbetaling.soker.SøkerGateway
 import no.nav.omsorgspengerutbetaling.soker.SøkerService
 import no.nav.omsorgspengerutbetaling.soker.søkerApis
-import no.nav.omsorgspengerutbetaling.mottak.OmsorgpengesøknadMottakGateway
+import no.nav.omsorgspengerutbetaling.soknad.SøknadService
+import no.nav.omsorgspengerutbetaling.soknad.arbeidstakerutbetalingsøknadApis
 import no.nav.omsorgspengerutbetaling.vedlegg.K9DokumentGateway
 import no.nav.omsorgspengerutbetaling.vedlegg.VedleggService
 import no.nav.omsorgspengerutbetaling.vedlegg.vedleggApis
@@ -264,6 +264,12 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
     }
 }
 
-internal fun ObjectMapper.omsorgspengerKonfiguert() = dusseldorfConfigured()
-    .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
-    .configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false)
+internal fun ObjectMapper.omsorgspengerKonfiguert() = dusseldorfConfigured().apply {}
+
+internal fun k9DokumentKonfigurert() = jacksonObjectMapper().dusseldorfConfigured().apply {
+    propertyNamingStrategy = PropertyNamingStrategy.SNAKE_CASE
+}
+
+internal fun k9SelvbetjeningOppslagKonfigurert() = jacksonObjectMapper().dusseldorfConfigured().apply {
+    propertyNamingStrategy = PropertyNamingStrategy.SNAKE_CASE
+}

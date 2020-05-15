@@ -13,6 +13,7 @@ import no.nav.omsorgspengerutbetaling.general.CallId
 import no.nav.omsorgspengerutbetaling.general.auth.ApiGatewayApiKey
 import no.nav.omsorgspengerutbetaling.general.auth.IdToken
 import no.nav.omsorgspengerutbetaling.general.oppslag.K9OppslagGateway
+import no.nav.omsorgspengerutbetaling.k9SelvbetjeningOppslagKonfigurert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URI
@@ -28,10 +29,7 @@ class ArbeidsgivereGateway(
     private companion object {
         private val logger: Logger = LoggerFactory.getLogger("nav.ArbeidsgivereGateway")
         private const val HENTE_ARBEIDSGIVERE_OPERATION = "hente-arbeidsgivere"
-        private val objectMapper = jacksonObjectMapper().apply {
-            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            registerModule(JavaTimeModule())
-        }
+        private val objectMapper = k9SelvbetjeningOppslagKonfigurert()
         private val attributer = Pair("a", listOf( "arbeidsgivere[].organisasjoner[].organisasjonsnummer",
             "arbeidsgivere[].organisasjoner[].navn"))
     }
