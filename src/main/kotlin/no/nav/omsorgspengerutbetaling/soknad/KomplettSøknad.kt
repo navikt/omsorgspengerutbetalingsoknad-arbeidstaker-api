@@ -16,5 +16,6 @@ data class KomplettSøknad(
     val bekreftelser: Bekreftelser,
     val andreUtbetalinger: List<String>,
     val fosterbarn: List<FosterBarn>? = listOf(),
-    val vedlegg: List<Vedlegg>
+    val vedlegg: List<Vedlegg>,
+    val hjemmePgaSmittevernhensyn: Boolean
 )

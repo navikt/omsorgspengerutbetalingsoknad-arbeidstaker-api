@@ -60,7 +60,8 @@ internal class SøknadService(
             andreUtbetalinger = søknad.andreUtbetalinger,
             fosterbarn = søknad.fosterbarn,
             bekreftelser = søknad.bekreftelser,
-            vedlegg = vedlegg
+            vedlegg = vedlegg,
+            hjemmePgaSmittevernhensyn = søknad.hjemmePgaSmittevernhensyn
         )
 
         omsorgpengesøknadMottakGateway.leggTilProsessering(

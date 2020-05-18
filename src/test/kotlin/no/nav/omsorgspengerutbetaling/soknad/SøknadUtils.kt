@@ -142,7 +142,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 fødselsnummer = "02119970078"
             )
         ),
-        vedlegg = emptyList()
+        vedlegg = emptyList(),
+        hjemmePgaSmittevernhensyn = true
     )
 
     internal val defaultKomplettSøknad = KomplettSøknad(
@@ -282,7 +283,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
             harForståttRettigheterOgPlikter = JaNei.Ja,
             harBekreftetOpplysninger = JaNei.Ja
         ),
-        vedlegg = emptyList()
+        vedlegg = emptyList(),
+        hjemmePgaSmittevernhensyn = true
     )
 }
 

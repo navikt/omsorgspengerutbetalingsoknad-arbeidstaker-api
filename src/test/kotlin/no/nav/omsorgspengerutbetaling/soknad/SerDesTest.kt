@@ -39,6 +39,7 @@ internal class SerDesTest {
             mottatt = now
         )
 
+        //language=json
         internal val SøknadJson = """
         {
             "språk": "nb",
@@ -174,10 +175,12 @@ internal class SerDesTest {
             "fosterbarn": [{
                 "fødselsnummer": "02119970078"
             }],
-            "vedlegg": []
+            "vedlegg": [],
+            "hjemmePgaSmittevernhensyn": true
         }
         """.trimIndent()
 
+        //language=json
         internal val KomplettSøknadJson = """
         {
             "mottatt": "2018-01-02T03:04:05.000000006Z",
@@ -323,7 +326,8 @@ internal class SerDesTest {
             "fosterbarn": [{
                 "fødselsnummer": "02119970078"
             }],
-            "vedlegg": []
+            "vedlegg": [],
+            "hjemmePgaSmittevernhensyn": true
         }
         """.trimIndent()
     }
