@@ -30,16 +30,7 @@ fun Ansettelseslengde.valider(vedlegg: List<URL>, felt: String) = mutableSetOf<V
             )
         )
     }
-    if (merEnn4Uker && vedlegg.isEmpty()) {
-        add(
-            Violation(
-                parameterType = ParameterType.ENTITY,
-                parameterName = "${felt}.merEnn4Uker && vedlegg",
-                reason = "Vedlegg kan ikke være tom, dersom merEnn4Uker er satt til true.",
-                invalidValue = vedlegg
-            )
-        )
-    }
+
     if (begrunnelse == INGEN_AV_SITUASJONENE && ingenAvSituasjoneneForklaring.isNullOrBlank()) {
         add(
             Violation(

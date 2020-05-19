@@ -568,46 +568,6 @@ class SøknadApplicationTest {
     }
 
     @Test
-    fun `Sende ugyldig søknad, der ansettelseslengde er mer enn 4 uker, men mangler vedlegg`() {
-        val cookie = getAuthCookie(gyldigFodselsnummerA)
-
-        requestAndAssert(
-            httpMethod = HttpMethod.Post,
-            path = "/soknad",
-            expectedResponse = """
-                {
-                  "type": "/problem-details/invalid-request-parameters",
-                  "title": "invalid-request-parameters",
-                  "status": 400,
-                  "detail": "Requesten inneholder ugyldige paramtere.",
-                  "instance": "about:blank",
-                  "invalid_parameters": [
-                    {
-                      "type": "entity",
-                      "name": "arbeidsgivere[0].ansettelseslengde.merEnn4Uker && vedlegg",
-                      "reason": "Vedlegg kan ikke være tom, dersom merEnn4Uker er satt til true.",
-                      "invalid_value": []
-                    }
-                  ]
-                }
-            """.trimIndent(),
-            expectedCode = HttpStatusCode.BadRequest,
-            cookie = cookie,
-            requestEntity = defaultSøknad.copy(
-                arbeidsgivere = listOf(
-                    defaultSøknad.arbeidsgivere[0].copy(
-                        ansettelseslengde = Ansettelseslengde(
-                            merEnn4Uker = true,
-                            begrunnelse = Ansettelseslengde.Begrunnelse.ANNET_ARBEIDSFORHOLD
-                        )
-                    )
-                ),
-                vedlegg = listOf()
-            ).somJson()
-        )
-    }
-
-    @Test
     fun `Sende ugyldig søknad, der ansettelseslengde er begrunnelse er INGEN_AV_SITUASJONENE, men mangler forklaring`() {
         val cookie = getAuthCookie(gyldigFodselsnummerA)
 
