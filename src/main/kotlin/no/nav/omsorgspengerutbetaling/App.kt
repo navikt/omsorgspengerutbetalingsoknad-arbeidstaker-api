@@ -84,11 +84,6 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
         method(HttpMethod.Delete)
         allowNonSimpleContentTypes = true
         allowCredentials = true
-        exposedHeaders.addAll(
-            listOf(
-                "X-Request-Id"
-            )
-        )
         log.info("Configuring CORS")
         configuration.getWhitelistedCorsAddreses().forEach {
             log.info("Adding host {} with scheme {}", it.host, it.scheme)
