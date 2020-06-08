@@ -46,7 +46,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(20),
                         tilOgMed = start.plusDays(20),
-                        lengde = Duration.ofHours(5).plusMinutes(30)
+                        antallTimerBorte = Duration.ofHours(5),
+                        antallTimerPlanlagt = Duration.ofHours(8)
                     )
                 )
             ),
@@ -62,7 +63,9 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35)
+                        tilOgMed = start.plusDays(35),
+                        antallTimerBorte = Duration.ofHours(5),
+                        antallTimerPlanlagt = Duration.ofHours(8)
                     )
                 )
             ),
@@ -187,7 +190,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(20),
                         tilOgMed = start.plusDays(20),
-                        lengde = Duration.ofHours(5).plusMinutes(30)
+                        antallTimerBorte = Duration.ofHours(5),
+                        antallTimerPlanlagt = Duration.ofHours(8)
                     )
                 )
             ),

@@ -19,6 +19,7 @@ import no.nav.omsorgspengerutbetaling.soknad.ArbeidstakerutbetalingSøknadUtils.
 import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
 import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.JaNei
+import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
 import no.nav.omsorgspengerutbetaling.getAuthCookie
 import no.nav.omsorgspengerutbetaling.jpegUrl
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
@@ -30,6 +31,8 @@ import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URL
+import java.time.Duration
+import java.time.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -600,6 +603,93 @@ class SøknadApplicationTest {
                             merEnn4Uker = false,
                             begrunnelse = Ansettelseslengde.Begrunnelse.INGEN_AV_SITUASJONENE,
                             ingenAvSituasjoneneForklaring = null
+                        )
+                    )
+                ),
+                vedlegg = listOf()
+            ).somJson()
+        )
+    }
+
+    @Test
+    fun `Sende ugyldig søknad hvor antallTimerPlanlagt ikke er satt mens antallTimerBorte er satt`() {
+        val cookie = getAuthCookie(gyldigFodselsnummerA)
+
+        requestAndAssert(
+            httpMethod = HttpMethod.Post,
+            path = "/soknad",
+            expectedResponse = """
+                {
+                  "type": "/problem-details/invalid-request-parameters",
+                  "title": "invalid-request-parameters",
+                  "status": 400,
+                  "detail": "Requesten inneholder ugyldige paramtere.",
+                  "instance": "about:blank",
+                  "invalid_parameters": [
+                    {
+                      "type": "entity",
+                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=null, antallTimerPlanlagt=PT5H, lengde=null)]",
+                      "reason": "Dersom antallTimerPlanlagt er satt så kan ikke antallTimerBorte være tom",
+                      "invalid_value": "antallTimerBorte = null, antallTimerPlanlagt=PT5H"
+                    }
+                  ]
+                }
+            """.trimIndent(),
+            expectedCode = HttpStatusCode.BadRequest,
+            cookie = cookie,
+            requestEntity = defaultSøknad.copy(
+                arbeidsgivere = listOf(
+                    defaultSøknad.arbeidsgivere[0].copy(
+                        perioder = listOf(
+                            Utbetalingsperiode(
+                                fraOgMed = LocalDate.parse("2020-01-01"),
+                                tilOgMed = LocalDate.parse("2020-01-10"),
+                                antallTimerPlanlagt = Duration.ofHours(5)
+                            )
+                        )
+                    )
+                ),
+                vedlegg = listOf()
+            ).somJson()
+        )
+    }
+
+    @Test
+    fun `Sende ugyldig søknad hvor antallTimerBorte er større enn antallTimerPlanlagt`() {
+        val cookie = getAuthCookie(gyldigFodselsnummerA)
+
+        requestAndAssert(
+            httpMethod = HttpMethod.Post,
+            path = "/soknad",
+            expectedResponse = """
+                {
+                  "type": "/problem-details/invalid-request-parameters",
+                  "title": "invalid-request-parameters",
+                  "status": 400,
+                  "detail": "Requesten inneholder ugyldige paramtere.",
+                  "instance": "about:blank",
+                  "invalid_parameters": [
+                    {
+                      "type": "entity",
+                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=PT6H, antallTimerPlanlagt=PT5H, lengde=null)]",
+                      "reason": "Antall timer borte kan ikke være større enn antall timer planlagt jobbe",
+                      "invalid_value": "antallTimerBorte = PT6H, antallTimerPlanlagt=PT5H"
+                    }
+                  ]
+                }
+            """.trimIndent(),
+            expectedCode = HttpStatusCode.BadRequest,
+            cookie = cookie,
+            requestEntity = defaultSøknad.copy(
+                arbeidsgivere = listOf(
+                    defaultSøknad.arbeidsgivere[0].copy(
+                        perioder = listOf(
+                            Utbetalingsperiode(
+                                fraOgMed = LocalDate.parse("2020-01-01"),
+                                tilOgMed = LocalDate.parse("2020-01-10"),
+                                antallTimerPlanlagt = Duration.ofHours(5),
+                                antallTimerBorte = Duration.ofHours(6)
+                            )
                         )
                     )
                 ),
