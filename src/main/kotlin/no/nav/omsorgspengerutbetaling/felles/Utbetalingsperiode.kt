@@ -122,7 +122,7 @@ internal fun List<UtbetalingsperiodeMedVedlegg>.valider() : Set<Violation> {
     return violations
 }
 
-internal fun List<Utbetalingsperiode>.validerUenVedlegg() : Set<Violation> {
+internal fun List<Utbetalingsperiode>.validerUtenVedlegg() : Set<Violation> {
     val violations = mutableSetOf<Violation>()
 
     if (isEmpty()) {
