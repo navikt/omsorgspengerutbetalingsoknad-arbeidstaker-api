@@ -25,8 +25,10 @@ private object Verktøy{
 data class UtbetalingsperiodeMedVedlegg(
     @JsonFormat(pattern = "yyyy-MM-dd") val fraOgMed: LocalDate,
     @JsonFormat(pattern = "yyyy-MM-dd") val tilOgMed: LocalDate,
-    val lengde: Duration? = null,
-    val legeerklæringer: List<URI> = listOf()
+    val legeerklæringer: List<URI> = listOf(),
+    val antallTimerBorte: Duration? = null,
+    val antallTimerPlanlagt: Duration? = null,
+    val lengde: Duration? = null //TODO: beholde lengde i en periode slik at vi ikke mister info i overgangen
 )
 
 internal fun UtbetalingsperiodeMedVedlegg.somPeriode() =
@@ -44,7 +46,9 @@ internal fun Utbetalingsperiode.somPeriode() =
 data class Utbetalingsperiode(
     @JsonFormat(pattern = "yyyy-MM-dd") val fraOgMed: LocalDate,
     @JsonFormat(pattern = "yyyy-MM-dd") val tilOgMed: LocalDate,
-    val lengde: Duration? = null
+    val antallTimerBorte: Duration? = null,
+    val antallTimerPlanlagt: Duration? = null,
+    val lengde: Duration? = null //TODO: beholde lengde i en periode slik at vi ikke mister info i overgangen
 )
 
 internal fun List<UtbetalingsperiodeMedVedlegg>.valider() : Set<Violation> {
@@ -78,11 +82,47 @@ internal fun List<UtbetalingsperiodeMedVedlegg>.valider() : Set<Violation> {
                 )
             }
         }
+
+        if(utbetalingsperiode.antallTimerPlanlagt != null && utbetalingsperiode.antallTimerBorte == null){
+            violations.add(
+                Violation(
+                    parameterName = "${Verktøy.JsonPath}[$utbetalingsperiodeIndex]",
+                    parameterType = ParameterType.ENTITY,
+                    reason = "Dersom antallTimerPlanlagt er satt så kan ikke antallTimerBorte være tom",
+                    invalidValue = "antallTimerBorte = ${utbetalingsperiode.antallTimerBorte}, antallTimerPlanlagt=${utbetalingsperiode.antallTimerPlanlagt}"
+                )
+            )
+        }
+
+        if(utbetalingsperiode.antallTimerBorte != null && utbetalingsperiode.antallTimerPlanlagt == null){
+            violations.add(
+                Violation(
+                    parameterName = "${Verktøy.JsonPath}[$utbetalingsperiodeIndex]",
+                    parameterType = ParameterType.ENTITY,
+                    reason = "Dersom antallTimerBorte er satt så kan ikke antallTimerPlanlagt være tom",
+                    invalidValue = "antallTimerBorte = ${utbetalingsperiode.antallTimerBorte}, antallTimerPlanlagt=${utbetalingsperiode.antallTimerPlanlagt}"
+                )
+            )
+        }
+
+        if(utbetalingsperiode.antallTimerBorte != null && utbetalingsperiode.antallTimerPlanlagt != null){
+            if(utbetalingsperiode.antallTimerBorte > utbetalingsperiode.antallTimerPlanlagt){
+                violations.add(
+                    Violation(
+                        parameterName = "${Verktøy.JsonPath}[$utbetalingsperiodeIndex]",
+                        parameterType = ParameterType.ENTITY,
+                        reason = "Antall timer borte kan ikke være større enn antall timer planlagt jobbe",
+                        invalidValue = "antallTimerBorte = ${utbetalingsperiode.antallTimerBorte}, antallTimerPlanlagt=${utbetalingsperiode.antallTimerPlanlagt}"
+                    )
+                )
+            }
+        }
+
     }
     return violations
 }
 
-internal fun List<Utbetalingsperiode>.validerUenVedlegg() : Set<Violation> {
+internal fun List<Utbetalingsperiode>.validerUtenVedlegg() : Set<Violation> {
     val violations = mutableSetOf<Violation>()
 
     if (isEmpty()) {
@@ -94,6 +134,42 @@ internal fun List<Utbetalingsperiode>.validerUenVedlegg() : Set<Violation> {
                 invalidValue = this
             )
         )
+    }
+    map {
+        if(it.antallTimerPlanlagt != null && it.antallTimerBorte == null){
+            violations.add(
+                Violation(
+                    parameterName = "${Verktøy.JsonPath}[$it]",
+                    parameterType = ParameterType.ENTITY,
+                    reason = "Dersom antallTimerPlanlagt er satt så kan ikke antallTimerBorte være tom",
+                    invalidValue = "antallTimerBorte = ${it.antallTimerBorte}, antallTimerPlanlagt=${it.antallTimerPlanlagt}"
+                )
+            )
+        }
+
+        if(it.antallTimerBorte != null && it.antallTimerPlanlagt == null){
+            violations.add(
+                Violation(
+                    parameterName = "${Verktøy.JsonPath}[$it]",
+                    parameterType = ParameterType.ENTITY,
+                    reason = "Dersom antallTimerBorte er satt så kan ikke antallTimerPlanlagt være tom",
+                    invalidValue = "antallTimerBorte = ${it.antallTimerBorte}, antallTimerPlanlagt=${it.antallTimerPlanlagt}"
+                )
+            )
+        }
+
+        if(it.antallTimerBorte != null && it.antallTimerPlanlagt != null){
+            if(it.antallTimerBorte > it.antallTimerPlanlagt){
+                violations.add(
+                    Violation(
+                        parameterName = "${Verktøy.JsonPath}[$it]",
+                        parameterType = ParameterType.ENTITY,
+                        reason = "Antall timer borte kan ikke være større enn antall timer planlagt jobbe",
+                        invalidValue = "antallTimerBorte = ${it.antallTimerBorte}, antallTimerPlanlagt=${it.antallTimerPlanlagt}"
+                    )
+                )
+            }
+        }
     }
 
     val perioder = map { it.somPeriode() }

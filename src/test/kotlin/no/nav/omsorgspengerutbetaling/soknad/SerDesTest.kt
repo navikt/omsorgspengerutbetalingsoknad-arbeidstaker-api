@@ -65,7 +65,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-01-01",
                         "tilOgMed": "2020-01-11",
-                        "lengde": null
+                        "lengde": null,
+                        "antallTimerBorte": null,
+                        "antallTimerPlanlagt": null
                       }
                     ]
                 },
@@ -83,7 +85,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-01-21",
                         "tilOgMed": "2020-01-21",
-                        "lengde": "PT5H30M"
+                        "lengde": null,
+                        "antallTimerBorte": "PT5H",
+                        "antallTimerPlanlagt": "PT8H"
                       }
                     ]
                 },
@@ -101,7 +105,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-01-31",
                         "tilOgMed": "2020-02-05",
-                        "lengde": null
+                        "lengde": null,
+                        "antallTimerBorte": "PT5H",
+                        "antallTimerPlanlagt": "PT8H"
                       }
                     ]
                 },
@@ -119,7 +125,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-01-31",
                         "tilOgMed": "2020-02-05",
-                        "lengde": null
+                        "lengde": null,
+                        "antallTimerBorte": null,
+                        "antallTimerPlanlagt": null
                       }
                     ]
                 },
@@ -137,7 +145,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-02-01",
                         "tilOgMed": "2020-02-06",
-                        "lengde": null
+                        "lengde": null,
+                        "antallTimerBorte": null,
+                        "antallTimerPlanlagt": null
                       }
                     ]
                 },
@@ -155,7 +165,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-02-01",
                         "tilOgMed": "2020-02-06",
-                        "lengde": null
+                        "lengde": null,
+                        "antallTimerBorte": null,
+                        "antallTimerPlanlagt": null
                       }
                     ]
                 }
@@ -209,7 +221,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-01-01",
                         "tilOgMed": "2020-01-11",
-                        "lengde": null
+                        "lengde": null,
+                        "antallTimerBorte": null,
+                        "antallTimerPlanlagt": null
                       }
                     ]
                 },
@@ -227,7 +241,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-01-21",
                         "tilOgMed": "2020-01-21",
-                        "lengde": "PT5H30M"
+                        "lengde": null,
+                        "antallTimerBorte": "PT5H",
+                        "antallTimerPlanlagt": "PT8H"
                       }
                     ]
                 },
@@ -245,7 +261,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-01-31",
                         "tilOgMed": "2020-02-05",
-                        "lengde": null
+                        "lengde": null,
+                        "antallTimerBorte": null,
+                        "antallTimerPlanlagt": null
                       }
                     ]
                 },
@@ -263,7 +281,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-01-31",
                         "tilOgMed": "2020-02-05",
-                        "lengde": null
+                        "lengde": null,
+                        "antallTimerBorte": null,
+                        "antallTimerPlanlagt": null
                       }
                     ]
                 },
@@ -281,7 +301,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-02-01",
                         "tilOgMed": "2020-02-06",
-                        "lengde": null
+                        "lengde": null,
+                        "antallTimerBorte": null,
+                        "antallTimerPlanlagt": null
                       }
                     ]
                 },
@@ -299,7 +321,9 @@ internal class SerDesTest {
                       {
                         "fraOgMed": "2020-02-01",
                         "tilOgMed": "2020-02-06",
-                        "lengde": null
+                        "lengde": null,
+                        "antallTimerBorte": null,
+                        "antallTimerPlanlagt": null
                       }
                     ]
                 }
