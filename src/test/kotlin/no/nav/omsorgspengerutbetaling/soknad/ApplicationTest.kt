@@ -499,6 +499,91 @@ class SøknadApplicationTest {
     }
 
     @Test
+    fun `Sende søknad med ugyldig selvstendigOgEllerFrilans`() {
+        val cookie = getAuthCookie(gyldigFodselsnummerA)
+        val jpegUrl = engine.jpegUrl(cookie)
+        val pdfUrl = engine.pdUrl(cookie)
+
+        requestAndAssert(
+            httpMethod = HttpMethod.Post,
+            path = "/soknad",
+            //language=json
+            expectedResponse = """
+                {
+                  "type": "/problem-details/invalid-request-parameters",
+                  "title": "invalid-request-parameters",
+                  "status": 400,
+                  "detail": "Requesten inneholder ugyldige paramtere.",
+                  "instance": "about:blank",
+                  "invalid_parameters": [
+                    {
+                      "type": "entity",
+                      "name": "selvstendigOgEllerFrilans[0]",
+                      "reason": "Ugyldig verdi for andre selvstendigOgEllerFrilans. Kun 'selvstendig' og 'frilans' er tillatt.",
+                      "invalid_value": "denneSkalDetIkkeVæreLovÅSende"
+                    }
+                  ]
+                }
+            """.trimIndent(),
+            expectedCode = HttpStatusCode.BadRequest,
+            cookie = cookie,
+            //language=json
+            requestEntity = """
+                {
+                  "språk": "nb",
+                  "bosteder": [
+                    {
+                      "fraOgMed": "2019-12-12",
+                      "tilOgMed": "2019-12-22",
+                      "landkode": "GB",
+                      "landnavn": "Great Britain",
+                      "erEØSLand": true
+                    }
+                  ],
+                  "opphold": [
+                    {
+                      "fraOgMed": "2019-12-12",
+                      "tilOgMed": "2019-12-22",
+                      "landkode": "GB",
+                      "landnavn": "Great Britain",
+                      "erEØSLand": true
+                    }
+                  ],
+                  "arbeidsgivere": [
+                    {
+                      "navn": "Arbeidsgiver 1",
+                      "organisasjonsnummer": "917755736",
+                      "harHattFraværHosArbeidsgiver": true,
+                      "arbeidsgiverHarUtbetaltLønn": false,
+                      "ansettelseslengde": {
+                        "merEnn4Uker": true,
+                        "begrunnelse": null
+                      },
+                      "perioder": [
+                        {
+                          "fraOgMed": "2020-01-01",
+                          "tilOgMed": "2020-01-11",
+                          "lengde": null
+                        }
+                      ]
+                    }
+                  ],
+                  "bekreftelser": {
+                    "harBekreftetOpplysninger": true,
+                    "harForståttRettigheterOgPlikter": true
+                  },
+                  "andreUtbetalinger": [],
+                  "selvstendigOgEllerFrilans": ["denneSkalDetIkkeVæreLovÅSende"],
+                  "vedlegg": [
+                    "$jpegUrl",
+                    "$pdfUrl"
+                  ]
+                }
+                """.trimIndent()
+        )
+    }
+
+    @Test
     fun `Sende ugyldig søknad, der begrunnelse på ansettelseslengde ikke er satt når det har vart mer enn 4 uker`() {
         val cookie = getAuthCookie(gyldigFodselsnummerA)
 

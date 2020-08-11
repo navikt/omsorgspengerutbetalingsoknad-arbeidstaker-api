@@ -11,6 +11,7 @@ data class Søknad(
     val arbeidsgivere: List<ArbeidsgiverDetaljer>,
     val bekreftelser: Bekreftelser,
     val andreUtbetalinger: List<String>,
+    val selvstendigOgEllerFrilans: List<String> = listOf(),
     val fosterbarn: List<FosterBarn>? = listOf(),
     val vedlegg: List<URL>,
     val hjemmePgaSmittevernhensyn: Boolean

@@ -184,6 +184,7 @@ internal class SerDesTest {
                 "harForståttRettigheterOgPlikter": true
             },
             "andreUtbetalinger": ["dagpenger", "sykepenger"],
+            "selvstendigOgEllerFrilans": [],
             "fosterbarn": [{
                 "fødselsnummer": "02119970078"
             }],
@@ -347,6 +348,7 @@ internal class SerDesTest {
                 "harForståttRettigheterOgPlikter": true
             },
             "andreUtbetalinger": ["dagpenger", "sykepenger"],
+            "selvstendigOgEllerFrilans": [],
             "fosterbarn": [{
                 "fødselsnummer": "02119970078"
             }],

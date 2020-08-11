@@ -15,6 +15,7 @@ data class KomplettSøknad(
     val arbeidsgivere: List<ArbeidsgiverDetaljer>,
     val bekreftelser: Bekreftelser,
     val andreUtbetalinger: List<String>,
+    val selvstendigOgEllerFrilans: List<String>,
     val fosterbarn: List<FosterBarn>? = listOf(),
     val vedlegg: List<Vedlegg>,
     val hjemmePgaSmittevernhensyn: Boolean
