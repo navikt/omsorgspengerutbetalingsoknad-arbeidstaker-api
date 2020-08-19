@@ -20,7 +20,6 @@ internal fun Søknad.valider() {
         addAll(bosteder.valider("bosteder"))
         addAll(bekreftelser.valider())
         addAll(andreUtbetalinger.valider())
-        addAll(selvstendigOgEllerFrilans.validerSelvstendigAndOrFrilans())
         fosterbarn?.let { addAll(validerFosterbarn(it)) }
     }
 
