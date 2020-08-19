@@ -140,7 +140,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
             harBekreftetOpplysninger = JaNei.Ja
         ),
         andreUtbetalinger = listOf(DAGPENGER, SYKEPENGER),
-        selvstendigOgEllerFrilans = listOf(),
+        erSelvstendig = JaNei.Nei,
+        erFrilanser = JaNei.Nei,
         fosterbarn = listOf(
             FosterBarn(
                 fødselsnummer = "02119970078"
@@ -279,7 +280,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
             )
         ),
         andreUtbetalinger = listOf(DAGPENGER, SYKEPENGER),
-        selvstendigOgEllerFrilans = listOf(),
+        erSelvstendig = JaNei.Nei,
+        erFrilanser = JaNei.Nei,
         fosterbarn = listOf(
             FosterBarn(
                 fødselsnummer = "02119970078"
