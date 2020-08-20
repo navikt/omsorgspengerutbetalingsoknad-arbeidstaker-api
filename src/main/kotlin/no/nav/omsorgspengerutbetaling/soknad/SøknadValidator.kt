@@ -1,7 +1,7 @@
 package no.nav.omsorgspengerutbetaling.soknad
 
-import no.nav.omsorgspengerutbetaling.arbeidsgiver.valider
 import no.nav.helse.dusseldorf.ktor.core.*
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.valider
 import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.valider
 import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg

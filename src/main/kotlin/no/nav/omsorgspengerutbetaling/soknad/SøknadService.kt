@@ -58,6 +58,8 @@ internal class SøknadService(
             opphold = søknad.opphold,
             arbeidsgivere = søknad.arbeidsgivere,
             andreUtbetalinger = søknad.andreUtbetalinger,
+            erSelvstendig = søknad.erSelvstendig,
+            erFrilanser = søknad.erFrilanser,
             fosterbarn = søknad.fosterbarn,
             bekreftelser = søknad.bekreftelser,
             vedlegg = vedlegg,
