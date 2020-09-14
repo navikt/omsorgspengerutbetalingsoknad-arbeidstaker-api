@@ -15,5 +15,6 @@ data class Søknad(
     val erFrilanser: JaNei = JaNei.Nei,
     val fosterbarn: List<FosterBarn>? = listOf(),
     val vedlegg: List<URL>,
-    val hjemmePgaSmittevernhensyn: Boolean
+    val hjemmePgaSmittevernhensyn: Boolean,
+    val hjemmePgaStengtBhgSkole: Boolean? = null // TODO låses til JaNei etter lansering.
 )

@@ -190,7 +190,8 @@ internal class SerDesTest {
                 "fødselsnummer": "02119970078"
             }],
             "vedlegg": [],
-            "hjemmePgaSmittevernhensyn": true
+            "hjemmePgaSmittevernhensyn": true,
+            "hjemmePgaStengtBhgSkole": true
         }
         """.trimIndent()
 
@@ -355,7 +356,8 @@ internal class SerDesTest {
                 "fødselsnummer": "02119970078"
             }],
             "vedlegg": [],
-            "hjemmePgaSmittevernhensyn": true
+            "hjemmePgaSmittevernhensyn": true,
+            "hjemmePgaStengtBhgSkole": true
         }
         """.trimIndent()
     }

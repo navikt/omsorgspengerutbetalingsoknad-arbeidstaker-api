@@ -135,7 +135,9 @@ class SøknadApplicationTest {
             expectedResponse = null,
             expectedCode = HttpStatusCode.Accepted,
             cookie = cookie,
-            requestEntity = """
+            requestEntity =
+            //language=json
+            """
                 {
                   "språk": "nb",
                   "bosteder": [

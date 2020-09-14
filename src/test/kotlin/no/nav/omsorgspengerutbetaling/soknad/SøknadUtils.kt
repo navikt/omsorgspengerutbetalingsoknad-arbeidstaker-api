@@ -148,7 +148,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
             )
         ),
         vedlegg = emptyList(),
-        hjemmePgaSmittevernhensyn = true
+        hjemmePgaSmittevernhensyn = true,
+        hjemmePgaStengtBhgSkole = true
     )
 
     internal val defaultKomplettSøknad = KomplettSøknad(
@@ -292,7 +293,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
             harBekreftetOpplysninger = JaNei.Ja
         ),
         vedlegg = emptyList(),
-        hjemmePgaSmittevernhensyn = true
+        hjemmePgaSmittevernhensyn = true,
+        hjemmePgaStengtBhgSkole = true
     )
 }
 
