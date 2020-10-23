@@ -170,8 +170,7 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-01",
-                            "tilOgMed": "2020-01-11",
-                            "lengde": null
+                            "tilOgMed": "2020-01-11"
                           }
                         ]
                       },
@@ -187,8 +186,7 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-21",
-                            "tilOgMed": "2020-01-21",
-                            "lengde": "PT5H30M"
+                            "tilOgMed": "2020-01-21"
                           }
                         ]
                       },
@@ -204,8 +202,7 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-31",
-                            "tilOgMed": "2020-02-05",
-                            "lengde": null
+                            "tilOgMed": "2020-02-05"
                           }
                         ]
                       },
@@ -221,8 +218,7 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-02-01",
-                            "tilOgMed": "2020-02-06",
-                            "lengde": null
+                            "tilOgMed": "2020-02-06"
                           }
                         ]
                       },
@@ -237,8 +233,7 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-02-01",
-                            "tilOgMed": "2020-02-06",
-                            "lengde": null
+                            "tilOgMed": "2020-02-06"
                           }
                         ]
                       }
@@ -250,18 +245,15 @@ class SøknadApplicationTest {
                   "utbetalingsperioder": [
                     {
                       "fraOgMed": "2020-01-01",
-                      "tilOgMed": "2020-01-11",
-                      "lengde": null
+                      "tilOgMed": "2020-01-11"
                     },
                     {
                       "fraOgMed": "2020-01-21",
-                      "tilOgMed": "2020-01-21",
-                      "lengde": "PT5H30M"
+                      "tilOgMed": "2020-01-21"
                     },
                     {
                       "fraOgMed": "2020-01-31",
-                      "tilOgMed": "2020-02-05",
-                      "lengde": null
+                      "tilOgMed": "2020-02-05"
                     }
                   ],
                   "andreUtbetalinger": [
@@ -477,8 +469,7 @@ class SøknadApplicationTest {
                       "perioder": [
                         {
                           "fraOgMed": "2020-01-01",
-                          "tilOgMed": "2020-01-11",
-                          "lengde": null
+                          "tilOgMed": "2020-01-11"
                         }
                       ]
                     }
@@ -555,8 +546,7 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-01",
-                            "tilOgMed": "2020-01-11",
-                            "lengde": null
+                            "tilOgMed": "2020-01-11"
                           }
                         ]
                       }
@@ -630,7 +620,7 @@ class SøknadApplicationTest {
                   "invalid_parameters": [
                     {
                       "type": "entity",
-                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=null, antallTimerPlanlagt=PT5H, lengde=null)]",
+                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=null, antallTimerPlanlagt=PT5H)]",
                       "reason": "Dersom antallTimerPlanlagt er satt så kan ikke antallTimerBorte være tom",
                       "invalid_value": "antallTimerBorte = null, antallTimerPlanlagt=PT5H"
                     }
@@ -673,7 +663,7 @@ class SøknadApplicationTest {
                   "invalid_parameters": [
                     {
                       "type": "entity",
-                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=PT6H, antallTimerPlanlagt=PT5H, lengde=null)]",
+                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=PT6H, antallTimerPlanlagt=PT5H)]",
                       "reason": "Antall timer borte kan ikke være større enn antall timer planlagt jobbe",
                       "invalid_value": "antallTimerBorte = PT6H, antallTimerPlanlagt=PT5H"
                     }
