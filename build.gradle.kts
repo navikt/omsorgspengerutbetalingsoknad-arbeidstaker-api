@@ -8,7 +8,7 @@ val lettuceVersion = "5.2.2.RELEASE"
 
 plugins {
     kotlin("jvm") version "1.3.70"
-    id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 buildscript {
@@ -89,5 +89,5 @@ tasks.withType<ShadowJar> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "6.2.2"
+    gradleVersion = "6.7"
 }
