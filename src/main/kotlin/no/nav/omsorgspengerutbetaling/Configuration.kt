@@ -2,6 +2,9 @@ package no.nav.omsorgspengerutbetaling
 
 import io.ktor.config.ApplicationConfig
 import io.ktor.util.KtorExperimentalAPI
+import no.nav.helse.dusseldorf.ktor.auth.EnforceEqualsOrContains
+import no.nav.helse.dusseldorf.ktor.auth.issuers
+import no.nav.helse.dusseldorf.ktor.auth.withAdditionalClaimRules
 import no.nav.helse.dusseldorf.ktor.core.getOptionalList
 import no.nav.helse.dusseldorf.ktor.core.getRequiredList
 import no.nav.helse.dusseldorf.ktor.core.getRequiredString
@@ -10,13 +13,17 @@ import java.net.URI
 
 @KtorExperimentalAPI
 data class Configuration(val config : ApplicationConfig) {
-    internal fun getJwksUrl() = URI(config.getRequiredString("nav.authorization.jwks_uri", secret = false))
 
-    internal fun getIssuer() : String {
-        return config.getRequiredString("nav.authorization.issuer", secret = false)
-    }
+    private val loginServiceClaimRules = setOf(
+        EnforceEqualsOrContains("acr", "Level4")
+    )
 
-    internal fun getCookieName() : String {
+    internal fun issuers() = config.issuers().withAdditionalClaimRules(mapOf(
+        "login-service-v1" to loginServiceClaimRules,
+        "login-service-v2" to loginServiceClaimRules
+    ))
+
+    internal fun getCookieName(): String {
         return config.getRequiredString("nav.authorization.cookie_name", secret = false)
     }
 
@@ -46,7 +53,7 @@ data class Configuration(val config : ApplicationConfig) {
     internal fun getRedisPort() = config.getRequiredString("nav.redis.port", secret = false).toInt()
     internal fun getRedisHost() = config.getRequiredString("nav.redis.host", secret = false)
 
-    internal fun getStoragePassphrase() : String {
+    internal fun getStoragePassphrase(): String {
         return config.getRequiredString("nav.storage.passphrase", secret = true)
     }
 }
