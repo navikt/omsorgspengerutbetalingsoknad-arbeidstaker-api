@@ -351,12 +351,12 @@ class SøknadApplicationTest {
                     "type": "entity",
                     "name": "bekreftlser.harBekreftetOpplysninger",
                     "reason": "Må besvars Ja.",
-                    "invalid_value": "Nei"
+                    "invalid_value": false
                 }, {
                     "type": "entity",
                     "name": "bekreftelser.harForståttRettigheterOgPlikter",
                     "reason": "Må besvars Ja.",
-                    "invalid_value": "Nei"
+                    "invalid_value": false
                 }]
             }
             """.trimIndent()
@@ -509,7 +509,8 @@ class SøknadApplicationTest {
                     {
                       "type": "entity",
                       "name": "arbeidsgivere[0].ansettelseslengde.begrunnelse",
-                      "reason": "Begrunnelse kan ikke være null, dersom merEnn4Uker er satt til false."
+                      "reason": "Begrunnelse kan ikke være null, dersom merEnn4Uker er satt til false.",
+                      "invalid_value": null
                     }
                   ]
                 }
@@ -579,7 +580,8 @@ class SøknadApplicationTest {
                     {
                       "type": "entity",
                       "name": "arbeidsgivere[0].ansettelseslengde.ingenAvSituasjoneneForklaring",
-                      "reason": "Forklaring for ingen av situasjonene kan ikke være null/tom, dersom begrunnelsen er INGEN_AV_SITUASJONENE"
+                      "reason": "Forklaring for ingen av situasjonene kan ikke være null/tom, dersom begrunnelsen er INGEN_AV_SITUASJONENE",
+                      "invalid_value": null
                     }
                   ]
                 }
