@@ -191,7 +191,7 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
                 omsorgpengesoknadMottakGateway,
                 HttpRequestHealthCheck(
                     mapOf(
-                        Url.buildURL(baseUrl = configuration.getK9DokumentUrl(),
+                        Url.buildURL(baseUrl = configuration.getK9MellomlagringUrl(),
                             pathParts = listOf("health")
                         ) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK),
                         Url.buildURL(

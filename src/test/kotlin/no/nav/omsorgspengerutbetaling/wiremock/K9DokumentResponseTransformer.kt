@@ -34,15 +34,18 @@ class K9DokumentResponseTransformer() : ResponseTransformer() {
     ): Response {
         return when {
             request == null -> throw IllegalStateException("request == null")
-            request.method == RequestMethod.GET -> {
+
+            request.erHenteDokument() -> {
 
                 val vedleggId = request.getVedleggId()
                 return if (storage.containsKey(vedleggId)) {
                     Response.Builder.like(response)
                         .status(200)
-                        .headers(HttpHeaders(
-                            HttpHeader.httpHeader("Content-Type", "application/json")
-                        ))
+                        .headers(
+                            HttpHeaders(
+                                HttpHeader.httpHeader("Content-Type", "application/json")
+                            )
+                        )
                         .body(objectMapper.writeValueAsString(storage[vedleggId]))
                         .build()
                 } else {
@@ -52,24 +55,53 @@ class K9DokumentResponseTransformer() : ResponseTransformer() {
                 }
             }
 
-            request.method == RequestMethod.POST -> {
+            request.erLagreDokument() -> {
                 val vedlegg = objectMapper.readValue<Vedlegg>(request.bodyAsString)
                 val vedleggId = VedleggId(UUID.randomUUID().toString())
                 storage[vedleggId] = vedlegg
                 Response.Builder.like(response)
                     .status(201)
-                    .headers(HttpHeaders(
-                        HttpHeader.httpHeader("Location", "http://localhost:8080/v1/dokument/${vedleggId.value}"),
-                        HttpHeader.httpHeader("Content-Type", "application/json")
-                    ))
-                    .body("""
+                    .headers(
+                        HttpHeaders(
+                            HttpHeader.httpHeader("Location", "http://localhost:8080/v1/dokument/${vedleggId.value}"),
+                            HttpHeader.httpHeader("Content-Type", "application/json")
+                        )
+                    )
+                    .body(
+                        """
                         {
                             "id" : "${vedleggId.value}"
                         }
-                    """.trimIndent())
+                    """.trimIndent()
+                    )
                     .build()
 
             }
+
+            request.method == RequestMethod.PUT -> {
+                val vedleggId = VedleggId(UUID.randomUUID().toString())
+                Response.Builder.like(response)
+                    .status(201)
+                    .headers(
+                        HttpHeaders(
+                            HttpHeader.httpHeader(
+                                "Location",
+                                "http://localhost:8080/v1/dokument/${vedleggId.value}/persister"
+                            ),
+                            HttpHeader.httpHeader("Content-Type", "application/json")
+                        )
+                    )
+                    .body(
+                        """
+                        {
+                            "id" : "${vedleggId.value}"
+                        }
+                    """.trimIndent()
+                    )
+                    .build()
+
+            }
+
             request.method == RequestMethod.DELETE -> {
                 val vedleggId = request.getVedleggId()
                 if (storage.containsKey(vedleggId)) {
@@ -88,4 +120,6 @@ class K9DokumentResponseTransformer() : ResponseTransformer() {
     }
 }
 
+private fun Request.erLagreDokument() = method == RequestMethod.POST && url.substringAfterLast("/") == "dokument"
+private fun Request.erHenteDokument() = method == RequestMethod.POST && url.substringAfterLast("/") != "dokument"
 private fun Request.getVedleggId() : VedleggId = VedleggId(url.substringAfterLast("/"))

@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class Vedlegg(
     val content: ByteArray,
     val contentType: String,
-    var title: String
+    var title: String,
+    val eier: DokumentEier
 
 ) {
     override fun equals(other: Any?): Boolean {

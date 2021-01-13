@@ -9,7 +9,7 @@ import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 
 internal const val k9OppslagPath = "/helse-reverse-proxy/k9-selvbetjening-oppslag-mock"
 private const val omsorgpengerutbetalingsoknadMottakPath = "/helse-reverse-proxy/omsorgspengerutbetalingsoknad-arbeidstaker-mottak-mock"
-private const val k9MellomlagringPath = "/k9-mellomlagring-mock"
+private const val k9MellomlagringPath = "/k9-mellomlagring-mock/v1/dokument"
 
 internal fun WireMockBuilder.omsorgspengesoknadApiConfig() = wireMockConfiguration {
     it
@@ -80,9 +80,9 @@ internal fun WireMockServer.stubLeggSoknadTilProsessering(path: String): WireMoc
     return this
 }
 
-internal fun WireMockServer.stubK9Dokument() : WireMockServer{
+internal fun WireMockServer.stubK9Mellomlagring() : WireMockServer{
     WireMock.stubFor(
-        WireMock.any(WireMock.urlMatching(".*$k9MellomlagringPath/v1/dokument.*"))
+        WireMock.any(WireMock.urlMatching(".*$k9MellomlagringPath.*"))
             .willReturn(
                 WireMock.aResponse()
                     .withTransformers("K9DokumentResponseTransformer")
@@ -93,4 +93,4 @@ internal fun WireMockServer.stubK9Dokument() : WireMockServer{
 
 internal fun WireMockServer.getK9OppslagUrl() = baseUrl() + k9OppslagPath
 internal fun WireMockServer.getOmsorgpengerutbetalingsoknadMottakUrl() = baseUrl() + omsorgpengerutbetalingsoknadMottakPath
-internal fun WireMockServer.getK9DokumentUrl() = baseUrl() + k9MellomlagringPath
+internal fun WireMockServer.getK9MellomlagringUrl() = baseUrl() + k9MellomlagringPath
