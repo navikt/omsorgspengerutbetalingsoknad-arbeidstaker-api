@@ -35,7 +35,7 @@ private val vedleggNotFoundProblemDetails = DefaultProblemDetails(title = "attac
 private val vedleggNotAttachedProblemDetails = DefaultProblemDetails(title = "attachment-not-attached", status = 400, detail = "Fant ingen 'part' som er en fil, har 'name=vedlegg' og har Content-Type header satt.")
 private val vedleggTooLargeProblemDetails = DefaultProblemDetails(title = "attachment-too-large", status = 413, detail = "vedlegget var over maks tillatt størrelse på 8MB.")
 private val vedleggContentTypeNotSupportedProblemDetails = DefaultProblemDetails(title = "attachment-content-type-not-supported", status = 400, detail = "Vedleggets type må være en av $supportedContentTypes")
-
+internal val feilVedSlettingAvVedlegg = DefaultProblemDetails(title = "feil-ved-sletting", status = 500, detail = "Feil ved sletting av vedlegg")
 
 @KtorExperimentalLocationsAPI
 fun Route.vedleggApis(
@@ -49,37 +49,24 @@ fun Route.vedleggApis(
     @Location("/vedlegg/{vedleggId}")
     data class EksisterendeVedlegg(val vedleggId: String)
 
-    get<EksisterendeVedlegg> { eksisterendeVedlegg ->
-        val vedleggId = VedleggId(eksisterendeVedlegg.vedleggId)
-        logger.info("Henter vedlegg")
-        logger.info("$vedleggId")
-        val vedlegg = vedleggService.hentVedlegg(
-            vedleggId = vedleggId,
-            idToken = idTokenProvider.getIdToken(call),
-            callId = call.getCallId()
-        )
-
-        if (vedlegg == null) {
-            call.respondProblemDetails(vedleggNotFoundProblemDetails)
-        } else {
-            call.respondBytes(
-                bytes = vedlegg.content,
-                contentType = ContentType.parse(vedlegg.contentType),
-                status = HttpStatusCode.OK
-            )
-        }
-    }
-
     delete<EksisterendeVedlegg> { eksisterendeVedlegg ->
         val vedleggId = VedleggId(eksisterendeVedlegg.vedleggId)
         logger.info("Sletter vedlegg")
         logger.info("$vedleggId")
-        vedleggService.slettVedleg(
-            vedleggId = vedleggId,
-            idToken = idTokenProvider.getIdToken(call),
-            callId = call.getCallId()
-        )
-        call.respond(HttpStatusCode.NoContent)
+        var eier = idTokenProvider.getIdToken(call).getSubject()
+        if(eier == null) call.respond(HttpStatusCode.Forbidden) else {
+            val resultat = vedleggService.slettVedleg(
+                vedleggId = vedleggId,
+                idToken = idTokenProvider.getIdToken(call),
+                callId = call.getCallId(),
+                eier = DokumentEier(eier)
+            )
+
+            when (resultat) {
+                true -> call.respond(HttpStatusCode.NoContent)
+                false -> call.respondProblemDetails(feilVedSlettingAvVedlegg)
+            }
+        }
     }
 
     post<NyttVedleg> { _ ->

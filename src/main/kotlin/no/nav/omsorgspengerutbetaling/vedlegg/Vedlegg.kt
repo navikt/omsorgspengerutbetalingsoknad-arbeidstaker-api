@@ -1,5 +1,7 @@
 package no.nav.omsorgspengerutbetaling.vedlegg
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class Vedlegg(
     val content: ByteArray,
     val contentType: String,
@@ -27,3 +29,7 @@ data class Vedlegg(
     }
 
 }
+
+data class DokumentEier(
+    @JsonProperty("eiers_fødselsnummer") val eiersFødselsnummer: String
+)
