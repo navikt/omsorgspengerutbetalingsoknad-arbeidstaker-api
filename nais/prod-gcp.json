@@ -11,7 +11,7 @@
     "https://omsorgspengerutbetalingsoknad-arbeidstaker-api.nav.no"
   ],
   "externalHosts": [
-    "api-gw-q1.oera.no",
+    "api-gw.oera.no",
     "oauth2.googleapis.com",
     "login.microsoftonline.com"
   ],
