@@ -48,6 +48,10 @@ class K9MellomlagringGateway(
     }
 
     private val cachedAccessTokenClient = CachedAccessTokenClient(accessTokenClient)
+    private val komplettUrl = Url.buildURL(
+        baseUrl = baseUrl,
+        pathParts = listOf("v1", "dokument")
+    )
 
     override suspend fun check(): Result {
         return try {
@@ -79,7 +83,7 @@ class K9MellomlagringGateway(
             ) {
                 val contentStream = { ByteArrayInputStream(body) }
 
-                baseUrl
+                komplettUrl
                     .toString()
                     .httpPost()
                     .body(contentStream)
@@ -114,7 +118,7 @@ class K9MellomlagringGateway(
         val body = objectMapper.writeValueAsBytes(eier)
 
         val urlMedId = Url.buildURL(
-            baseUrl = baseUrl,
+            baseUrl = komplettUrl,
             pathParts = listOf(vedleggId.value)
         )
 
@@ -216,7 +220,7 @@ class K9MellomlagringGateway(
     ) {
 
         val urlMedId = Url.buildURL(
-            baseUrl = baseUrl,
+            baseUrl = komplettUrl,
             pathParts = listOf(vedleggId.value)
         )
 
@@ -282,7 +286,7 @@ class K9MellomlagringGateway(
     ) {
 
         val urlMedId = Url.buildURL(
-            baseUrl = baseUrl,
+            baseUrl = komplettUrl,
             pathParts = listOf(vedleggId.value, "persister")
         )
 
@@ -320,7 +324,7 @@ class K9MellomlagringGateway(
         val body = objectMapper.writeValueAsBytes(eier)
 
         val urlMedId = Url.buildURL(
-            baseUrl = baseUrl,
+            baseUrl = komplettUrl,
             pathParts = listOf(vedleggId.value)
         )
 
