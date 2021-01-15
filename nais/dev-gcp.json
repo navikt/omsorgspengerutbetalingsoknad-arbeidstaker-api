@@ -15,7 +15,6 @@
     "oauth2.googleapis.com",
     "login.microsoftonline.com"
   ],
-  "omsorgspengerutbetalingsoknad-arbeidstaker-mottak-cluster": "dev-fss",
   "env": {
     "REDIS_HOST": "omsorgspengerutbetalingsoknad-arbeidstaker-api-redis",
     "CORS_ADDRESSES": "https://www-q0.nav.no, https://omsorgspengerutbetalingsoknad-arbeidstaker.dev.nav.no",
