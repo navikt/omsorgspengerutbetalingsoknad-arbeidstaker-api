@@ -24,7 +24,6 @@
     "OMSORGSPENGERUTBETALINGSOKNAD_MOTTAK_BASE_URL": "https://api-gw.oera.no/helse-reverse-proxy/omsorgspengerutbetalingsoknad-arbeidstaker-mottak",
     "K9_MELLOMLAGRING_SERVICE_DISCOVERY": "http://k9-mellomlagring",
     "K9_MELLOMLAGRING_CLIENT_ID": "19aaf0b2-f40a-4a64-bf7f-fd2dd62f0552/.default",
-    "AZURE_V2_DISCOVERY_ENDPOINT": "https://login.microsoftonline.com/62366534-1ec3-4962-8869-9b5535279d0b/v2.0/.well-known/openid-configuration",
     "OMSORGSPENGERUTBETALINGSOKNAD_MOTTAK_SCOPE": "90b18030-2c75-4fc4-8810-42e0b164503e/.default"
   },
   "slack-channel": "sif-alerts",
