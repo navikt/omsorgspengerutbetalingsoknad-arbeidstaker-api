@@ -56,10 +56,10 @@ class K9MellomlagringGateway(
     override suspend fun check(): Result {
         return try {
             accessTokenClient.getAccessToken(k9MellomlagringScope)
-            Healthy("K9MellomlagringGateway", "Henting av access token for å persistere vedlegg.")
+            Healthy("K9MellomlagringGateway", "Henting av access token for K9MellomlagringGateway.")
         } catch (cause: Throwable) {
-            logger.error("Feil ved henting av access token for å persistere vedlegg", cause)
-            UnHealthy("K9MellomlagringGateway", "Henting av access token for å persistere vedlegg.")
+            logger.error("Feil ved henting av access token for K9MellomlagringGateway", cause)
+            UnHealthy("K9MellomlagringGateway", "Henting av access token for K9MellomlagringGateway.")
         }
     }
 
