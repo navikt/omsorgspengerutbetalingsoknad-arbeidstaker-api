@@ -31,7 +31,7 @@ class MellomlagringTest {
             .stubOppslagHealth()
             .stubLeggSoknadTilProsessering("v1/soknad")
             .stubK9OppslagSoker()
-            .stubK9Dokument()
+            .stubK9Mellomlagring()
 
         val redisServer: RedisServer = RedisServer
             .newRedisServer(6379)

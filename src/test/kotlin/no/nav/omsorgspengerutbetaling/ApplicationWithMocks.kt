@@ -29,7 +29,7 @@ class ApplicationWithMocks {
                 .stubOppslagHealth()
                 .stubLeggSoknadTilProsessering("/v1/soknad")
                 .stubLeggSoknadTilProsessering("/arbeidstaker/soknad")
-                .stubK9Dokument()
+                .stubK9Mellomlagring()
                 .stubK9OppslagSoker()
 
             val redisServer: RedisServer = RedisServer

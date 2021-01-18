@@ -6,6 +6,7 @@ import no.nav.omsorgspengerutbetaling.mottak.OmsorgpengesøknadMottakGateway
 import no.nav.omsorgspengerutbetaling.soker.Søker
 import no.nav.omsorgspengerutbetaling.soker.SøkerService
 import no.nav.omsorgspengerutbetaling.soker.validate
+import no.nav.omsorgspengerutbetaling.vedlegg.DokumentEier
 import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
 import no.nav.omsorgspengerutbetaling.vedlegg.VedleggService
 
@@ -41,7 +42,8 @@ internal class SøknadService(
         val vedlegg: List<Vedlegg> = vedleggService.hentVedlegg(
             idToken = idToken,
             vedleggUrls = søknad.vedlegg,
-            callId = callId
+            callId = callId,
+            eier = DokumentEier(søker.fødselsnummer)
         )
 
         logger.trace("Vedlegg hentet. Validerer vedlegg.")
@@ -72,16 +74,7 @@ internal class SøknadService(
             callId = callId
         )
 
-        logger.trace("Søknad lagt til prosessering. Sletter vedlegg.")
-
-        vedleggService.slettVedleg(
-            vedleggUrls = søknad.vedlegg,
-            callId = callId,
-            idToken = idToken
-        )
-
-        logger.trace("Vedlegg slettet.")
-
+        logger.trace("Søknad lagt til mottak.")
     }
 }
 

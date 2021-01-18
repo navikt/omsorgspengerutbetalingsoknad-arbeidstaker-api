@@ -4,9 +4,13 @@ metadata:
   labels:
     team: dusseldorf
   name: omsorgspengerutbetalingsoknad-arbeidstaker-api-redis
-  namespace: default
+  namespace: dusseldorf
 spec:
   image: redis:5-alpine # or a custom Redis-image
+  accessPolicy:
+    inbound:
+      rules:
+        - application: omsorgspengerutbetalingsoknad-arbeidstaker-api
   port: 6379
   replicas: # A single Redis-app doesn't scale
     min: 1

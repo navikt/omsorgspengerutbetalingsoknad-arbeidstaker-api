@@ -39,7 +39,8 @@ data class Configuration(val config : ApplicationConfig) {
 
     internal fun getK9OppslagUrl() = URI(config.getRequiredString("nav.gateways.k9_oppslag_url", secret = false))
 
-    internal fun getK9DokumentUrl() = URI(config.getRequiredString("nav.gateways.k9_dokument_url", secret = false))
+    internal fun getK9MellomlagringUrl() = URI(config.getRequiredString("nav.gateways.k9_mellomlagring_url", secret = false))
+    internal fun getK9MellomlagringScopes() = getScopesFor("k9-mellomlagring-scope")
 
     internal fun getOmsorgpengesoknadMottakBaseUrl() = URI(config.getRequiredString("nav.gateways.omsorgpengesoknad_mottak_base_url", secret = false))
 

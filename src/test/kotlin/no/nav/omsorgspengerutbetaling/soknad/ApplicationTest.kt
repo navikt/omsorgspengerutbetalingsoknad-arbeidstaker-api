@@ -13,17 +13,15 @@ import io.ktor.server.testing.createTestEnvironment
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.ktor.util.KtorExperimentalAPI
+import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
-import no.nav.omsorgspengerutbetaling.TestConfiguration
+import no.nav.omsorgspengerutbetaling.*
 import no.nav.omsorgspengerutbetaling.soknad.ArbeidstakerutbetalingSøknadUtils.defaultSøknad
 import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
 import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.JaNei
 import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
-import no.nav.omsorgspengerutbetaling.getAuthCookie
-import no.nav.omsorgspengerutbetaling.jpegUrl
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
-import no.nav.omsorgspengerutbetaling.pdUrl
 import no.nav.omsorgspengerutbetaling.wiremock.*
 import org.junit.AfterClass
 import org.junit.BeforeClass
@@ -61,7 +59,7 @@ class SøknadApplicationTest {
             .stubOppslagHealth()
             .stubLeggSoknadTilProsessering("/v1/soknad")
             .stubK9OppslagSoker()
-            .stubK9Dokument()
+            .stubK9Mellomlagring()
 
         val redisServer: RedisServer = RedisServer
             .newRedisServer(6379)
@@ -105,22 +103,28 @@ class SøknadApplicationTest {
 
     @Test
     fun `Sende soknad`() {
-        val cookie = getAuthCookie(gyldigFodselsnummerA)
-        val jpegUrl = engine.jpegUrl(cookie)
-        val pdfUrl = engine.pdUrl(cookie)
+        with(engine) {
+            val cookie = getAuthCookie(gyldigFodselsnummerA)
+            val jpegUrl = "vedlegg/iPhone_6.jpg".fromResources().readBytes()
 
-        requestAndAssert(
-            httpMethod = HttpMethod.Post,
-            path = "/soknad",
-            expectedResponse = null,
-            expectedCode = HttpStatusCode.Accepted,
-            cookie = cookie,
-            requestEntity = defaultSøknad.copy(
-                vedlegg = listOf(
-                    URL(pdfUrl), URL(jpegUrl)
-                )
-            ).somJson()
-        )
+            // LASTER OPP VEDLEGG
+            val vedleggId = handleRequestUploadImage(
+                cookie = cookie,
+                vedlegg = jpegUrl
+            ).substringAfterLast("/")
+
+            requestAndAssert(
+                httpMethod = HttpMethod.Post,
+                path = "/soknad",
+                expectedResponse = null,
+                expectedCode = HttpStatusCode.Accepted,
+                cookie = cookie,
+                requestEntity = defaultSøknad.copy(
+                    vedlegg =
+                    listOf(URL("${wireMockServer.getK9MellomlagringUrl()}/$vedleggId"))
+                ).somJson()
+            )
+        }
     }
 
     @Test

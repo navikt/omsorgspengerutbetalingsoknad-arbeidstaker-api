@@ -1,14 +1,11 @@
 package no.nav.omsorgspengerutbetaling
 
-import com.auth0.jwk.JwkProviderBuilder
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.ktor.application.*
 import io.ktor.auth.Authentication
 import io.ktor.auth.authenticate
-import io.ktor.auth.jwt.JWTPrincipal
-import io.ktor.auth.jwt.jwt
 import io.ktor.features.*
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -50,7 +47,7 @@ import no.nav.omsorgspengerutbetaling.soker.SøkerService
 import no.nav.omsorgspengerutbetaling.soker.søkerApis
 import no.nav.omsorgspengerutbetaling.soknad.SøknadService
 import no.nav.omsorgspengerutbetaling.soknad.arbeidstakerutbetalingsøknadApis
-import no.nav.omsorgspengerutbetaling.vedlegg.K9DokumentGateway
+import no.nav.omsorgspengerutbetaling.vedlegg.K9MellomlagringGateway
 import no.nav.omsorgspengerutbetaling.vedlegg.VedleggService
 import no.nav.omsorgspengerutbetaling.vedlegg.vedleggApis
 import java.time.Duration
@@ -114,10 +111,14 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
 
     install(Routing) {
 
+        val k9MellomlagringGateway = K9MellomlagringGateway(
+            baseUrl = configuration.getK9MellomlagringUrl(),
+            accessTokenClient = accessTokenClientResolver.accessTokenClient(),
+            k9MellomlagringScope = configuration.getK9MellomlagringScopes()
+        )
+
         val vedleggService = VedleggService(
-            k9DokumentGateway = K9DokumentGateway(
-                baseUrl = configuration.getK9DokumentUrl()
-            )
+            k9MellomlagringGateway = k9MellomlagringGateway
         )
 
         val omsorgpengesoknadMottakGateway =
@@ -189,7 +190,7 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
                 omsorgpengesoknadMottakGateway,
                 HttpRequestHealthCheck(
                     mapOf(
-                        Url.buildURL(baseUrl = configuration.getK9DokumentUrl(),
+                        Url.buildURL(baseUrl = configuration.getK9MellomlagringUrl(),
                             pathParts = listOf("health")
                         ) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK),
                         Url.buildURL(
@@ -245,9 +246,9 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
 internal fun ObjectMapper.omsorgspengerKonfiguert() = dusseldorfConfigured().apply {}
 
 internal fun k9DokumentKonfigurert() = jacksonObjectMapper().dusseldorfConfigured().apply {
-    propertyNamingStrategy = PropertyNamingStrategy.SNAKE_CASE
+    propertyNamingStrategy = PropertyNamingStrategies.SNAKE_CASE
 }
 
 internal fun k9SelvbetjeningOppslagKonfigurert() = jacksonObjectMapper().dusseldorfConfigured().apply {
-    propertyNamingStrategy = PropertyNamingStrategy.SNAKE_CASE
+    propertyNamingStrategy = PropertyNamingStrategies.SNAKE_CASE
 }
