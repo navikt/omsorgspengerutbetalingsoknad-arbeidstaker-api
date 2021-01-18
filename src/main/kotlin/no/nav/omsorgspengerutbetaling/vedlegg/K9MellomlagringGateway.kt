@@ -45,6 +45,7 @@ class K9MellomlagringGateway(
         private const val LAGRE_VEDLEGG_OPERATION = "lagre-vedlegg"
         private const val PERSISTER_VEDLEGG = "persister-vedlegg"
         private const val SLETT_PERSISTERT_VEDLEGG = "slett-persistert-vedlegg"
+        private const val TJENESTE = "omsorgspengerutbetaling-arbeidstaker-api"
     }
 
     private val cachedAccessTokenClient = CachedAccessTokenClient(accessTokenClient)
@@ -77,7 +78,7 @@ class K9MellomlagringGateway(
             logger = logger
         ) {
             val (request, _, result) = monitored(
-                app = "omsorgsdager-melding-api",
+                app = TJENESTE,
                 operation = LAGRE_VEDLEGG_OPERATION,
                 resultResolver = { 201 == it.second.statusCode }
             ) {
@@ -143,7 +144,7 @@ class K9MellomlagringGateway(
         logger = logger
     ) {
         val (request, _, result) = monitored(
-            app = "omsorgsdager-melding-api",
+            app = TJENESTE,
             operation = SLETTE_VEDLEGG_OPERATION,
             resultResolver = { 204 == it.second.statusCode }
         ) { httpRequest.awaitStringResponseResult() }
@@ -170,7 +171,7 @@ class K9MellomlagringGateway(
         logger = logger
     ) {
         val (request, _, result) = monitored(
-            app = "omsorgsdager-melding-api",
+            app = TJENESTE,
             operation = HENTE_VEDLEGG_OPERATION,
             resultResolver = { 200 == it.second.statusCode }
         ) { httpRequest.awaitStringResponseResult() }
@@ -236,7 +237,7 @@ class K9MellomlagringGateway(
             )
 
         val (request, _, result) = Operation.monitored(
-            app = "omsorgsdager-melding-api",
+            app = TJENESTE,
             operation = SLETT_PERSISTERT_VEDLEGG,
             resultResolver = { 204 == it.second.statusCode }
         ) {
@@ -302,7 +303,7 @@ class K9MellomlagringGateway(
             )
 
         val (request, _, result) = Operation.monitored(
-            app = "omsorgsdager-melding-api",
+            app = TJENESTE,
             operation = PERSISTER_VEDLEGG,
             resultResolver = { 204 == it.second.statusCode }
         ) {
