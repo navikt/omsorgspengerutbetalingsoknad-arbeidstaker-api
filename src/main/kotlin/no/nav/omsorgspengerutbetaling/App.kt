@@ -2,7 +2,6 @@ package no.nav.omsorgspengerutbetaling
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.ktor.application.*
 import io.ktor.auth.Authentication
@@ -115,7 +114,7 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
         val k9MellomlagringGateway = K9MellomlagringGateway(
             baseUrl = configuration.getK9MellomlagringUrl(),
             accessTokenClient = accessTokenClientResolver.accessTokenClient(),
-            k9MellomlagringScope = configuration.getK9MellomlagringCScopes()
+            k9MellomlagringScope = configuration.getK9MellomlagringScopes()
         )
 
         val vedleggService = VedleggService(
