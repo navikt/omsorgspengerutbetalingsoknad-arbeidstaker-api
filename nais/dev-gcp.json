@@ -1,6 +1,5 @@
 {
   "app": "omsorgspengerutbetalingsoknad-arbeidstaker-api",
-  "cluster": "dev-sbs",
   "namespace": "dusseldorf",
   "team": "dusseldorf",
   "minReplicas": "1",
