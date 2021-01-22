@@ -24,3 +24,4 @@ spec:
       memory: 256Mi
   service:
     port: 6379
+    protocol: redis
