@@ -78,6 +78,7 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
         method(HttpMethod.Options)
         method(HttpMethod.Get)
         method(HttpMethod.Post)
+        method(HttpMethod.Put)
         method(HttpMethod.Delete)
         allowNonSimpleContentTypes = true
         allowCredentials = true
