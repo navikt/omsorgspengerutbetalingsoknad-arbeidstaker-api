@@ -5,7 +5,6 @@ import no.nav.omsorgspengerutbetaling.general.auth.IdToken
 import no.nav.omsorgspengerutbetaling.mottak.OmsorgpengesøknadMottakGateway
 import no.nav.omsorgspengerutbetaling.soker.Søker
 import no.nav.omsorgspengerutbetaling.soker.SøkerService
-import no.nav.omsorgspengerutbetaling.soker.validate
 import no.nav.omsorgspengerutbetaling.vedlegg.DokumentEier
 import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
 import no.nav.omsorgspengerutbetaling.vedlegg.VedleggService
@@ -14,6 +13,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import no.nav.k9.søknad.Søknad as K9Søknad
 
 internal class SøknadService(
     private val omsorgpengesøknadMottakGateway: OmsorgpengesøknadMottakGateway,
@@ -27,16 +27,12 @@ internal class SøknadService(
 
     internal suspend fun registrer(
         søknad: Søknad,
+        søker: Søker,
+        k9Format: K9Søknad,
         idToken: IdToken,
-        callId: CallId) {
-        logger.trace("Registrerer søknad. Henter søker")
-
-        val søker: Søker = søkerService.getSoker(idToken = idToken, callId = callId)
-
-        logger.trace("Søker hentet. Validerer søker.")
-
-        søker.validate()
-        logger.trace("Søker Validert.")
+        callId: CallId
+    ) {
+        logger.trace("Registrerer søknad.")
 
         logger.trace("Henter ${søknad.vedlegg.size} vedlegg.")
         val vedlegg: List<Vedlegg> = vedleggService.hentVedlegg(
@@ -53,6 +49,7 @@ internal class SøknadService(
         logger.info("Legger søknad til prosessering")
 
         val komplettSoknad = KomplettSøknad(
+            søknadId = søknad.søknadId,
             språk = søknad.språk,
             mottatt = ZonedDateTime.now(ZoneOffset.UTC),
             søker = søker,
@@ -66,11 +63,12 @@ internal class SøknadService(
             bekreftelser = søknad.bekreftelser,
             vedlegg = vedlegg,
             hjemmePgaSmittevernhensyn = søknad.hjemmePgaSmittevernhensyn,
-            hjemmePgaStengtBhgSkole = søknad.hjemmePgaStengtBhgSkole
+            hjemmePgaStengtBhgSkole = søknad.hjemmePgaStengtBhgSkole,
+            k9Format = k9Format
         )
 
         omsorgpengesøknadMottakGateway.leggTilProsessering(
-            soknad = komplettSoknad,
+            søknad = komplettSoknad,
             callId = callId
         )
 

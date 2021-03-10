@@ -3,25 +3,19 @@ package no.nav.omsorgspengerutbetaling.soknad
 import com.github.fppt.jedismock.RedisServer
 import com.github.tomakehurst.wiremock.http.Cookie
 import com.typesafe.config.ConfigFactory
-import io.ktor.config.ApplicationConfig
-import io.ktor.config.HoconApplicationConfig
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.testing.TestApplicationEngine
-import io.ktor.server.testing.createTestEnvironment
-import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.setBody
-import io.ktor.util.KtorExperimentalAPI
+import io.ktor.config.*
+import io.ktor.http.*
+import io.ktor.server.testing.*
+import io.ktor.util.*
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.omsorgspengerutbetaling.*
-import no.nav.omsorgspengerutbetaling.soknad.ArbeidstakerutbetalingSøknadUtils.defaultSøknad
 import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
 import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.JaNei
 import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
+import no.nav.omsorgspengerutbetaling.soknad.SøknadUtils.defaultSøknad
 import no.nav.omsorgspengerutbetaling.wiremock.*
 import org.junit.AfterClass
 import org.junit.BeforeClass
@@ -341,27 +335,39 @@ class SøknadApplicationTest {
             ).somJson(),
             expectedResponse = """
             {
-                "type": "/problem-details/invalid-request-parameters",
-                "title": "invalid-request-parameters",
-                "status": 400,
-                "detail": "Requesten inneholder ugyldige paramtere.",
-                "instance": "about:blank",
-                "invalid_parameters": [{
-                    "type": "entity",
-                    "name": "utbetalingsperioder",
-                    "reason": "Må settes minst en utbetalingsperiode.",
-                    "invalid_value": []
-                }, {
-                    "type": "entity",
-                    "name": "bekreftlser.harBekreftetOpplysninger",
-                    "reason": "Må besvars Ja.",
-                    "invalid_value": false
-                }, {
-                    "type": "entity",
-                    "name": "bekreftelser.harForståttRettigheterOgPlikter",
-                    "reason": "Må besvars Ja.",
-                    "invalid_value": false
-                }]
+              "type": "/problem-details/invalid-request-parameters",
+              "title": "invalid-request-parameters",
+              "status": 400,
+              "detail": "Requesten inneholder ugyldige paramtere.",
+              "instance": "about:blank",
+              "invalid_parameters": [
+                {
+                  "type": "entity",
+                  "name": "utbetalingsperioder",
+                  "reason": "Må settes minst en utbetalingsperiode.",
+                  "invalid_value": [
+                    
+                  ]
+                },
+                {
+                  "type": "entity",
+                  "name": "bekreftlser.harBekreftetOpplysninger",
+                  "reason": "Må besvars Ja.",
+                  "invalid_value": false
+                },
+                {
+                  "type": "entity",
+                  "name": "bekreftelser.harForståttRettigheterOgPlikter",
+                  "reason": "Må besvars Ja.",
+                  "invalid_value": false
+                },
+                {
+                  "type": "entity",
+                  "name": "fraværsperioder",
+                  "reason": "Minst 1 fraværsperiode må oppgis",
+                  "invalid_value": "k9-format feilkode: påkrevd"
+                }
+              ]
             }
             """.trimIndent()
         )
@@ -377,21 +383,21 @@ class SøknadApplicationTest {
             httpMethod = HttpMethod.Post,
             path = "/soknad",
             expectedResponse = """
+            {
+              "type": "/problem-details/invalid-request-parameters",
+              "title": "invalid-request-parameters",
+              "status": 400,
+              "detail": "Requesten inneholder ugyldige paramtere.",
+              "instance": "about:blank",
+              "invalid_parameters": [
                 {
-                  "type": "/problem-details/invalid-request-parameters",
-                  "title": "invalid-request-parameters",
-                  "status": 400,
-                  "detail": "Requesten inneholder ugyldige paramtere.",
-                  "instance": "about:blank",
-                  "invalid_parameters": [
-                    {
-                      "type": "entity",
-                      "name": "fosterbarn[1].fødselsnummer",
-                      "reason": "Ikke gyldig fødselsnummer.",
-                      "invalid_value": "ugyldig fødselsnummer"
-                    }
-                  ]
+                  "type": "entity",
+                  "name": "fosterbarn[1].fødselsnummer",
+                  "reason": "Ikke gyldig fødselsnummer.",
+                  "invalid_value": "111"
                 }
+              ]
+            }
             """.trimIndent(),
             expectedCode = HttpStatusCode.BadRequest,
             cookie = cookie,
@@ -401,7 +407,7 @@ class SøknadApplicationTest {
                         fødselsnummer = "02119970078"
                     ),
                     FosterBarn(
-                        fødselsnummer = "ugyldig fødselsnummer"
+                        fødselsnummer = "111"
                     )
                 ),
                 vedlegg = listOf(

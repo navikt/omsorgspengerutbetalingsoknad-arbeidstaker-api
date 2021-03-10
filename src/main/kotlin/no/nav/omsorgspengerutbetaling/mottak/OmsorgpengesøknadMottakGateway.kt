@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.github.kittinunf.fuel.httpPost
-import io.ktor.http.HttpHeaders
-import io.ktor.http.Url
+import io.ktor.http.*
 import no.nav.helse.dusseldorf.ktor.client.buildURL
 import no.nav.helse.dusseldorf.ktor.health.HealthCheck
 import no.nav.helse.dusseldorf.ktor.health.Healthy
@@ -16,9 +15,10 @@ import no.nav.helse.dusseldorf.ktor.jackson.dusseldorfConfigured
 import no.nav.helse.dusseldorf.ktor.metrics.Operation
 import no.nav.helse.dusseldorf.oauth2.client.AccessTokenClient
 import no.nav.helse.dusseldorf.oauth2.client.CachedAccessTokenClient
-import no.nav.omsorgspengerutbetaling.soknad.KomplettSøknad
+import no.nav.k9.søknad.JsonUtils
 import no.nav.omsorgspengerutbetaling.general.CallId
 import no.nav.omsorgspengerutbetaling.general.auth.ApiGatewayApiKey
+import no.nav.omsorgspengerutbetaling.soknad.KomplettSøknad
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.ByteArrayInputStream
@@ -56,13 +56,14 @@ class OmsorgpengesøknadMottakGateway(
     }
 
     suspend fun leggTilProsessering(
-        soknad: KomplettSøknad,
+        søknad: KomplettSøknad,
         callId: CallId
     ) {
         val authorizationHeader =
             cachedAccessTokenClient.getAccessToken(sendeSoknadTilProsesseringScopes).asAuthoriationHeader()
 
-        val body = objectMapper.writeValueAsBytes(soknad)
+        logger.info("SKAL IKKE VISES I PROD! K9-Format: {}", JsonUtils.toString(søknad.k9Format)) //TODO 10.03.2021 - fjerne
+        val body = objectMapper.writeValueAsBytes(søknad)
         val contentStream = { ByteArrayInputStream(body) }
 
         val httpRequet = komplettUrl

@@ -5,6 +5,7 @@ val dusseldorfKtorVersion = "1.5.0.3315e68"
 val ktorVersion = ext.get("ktorVersion").toString()
 val mainClass = "no.nav.omsorgspengerutbetaling.AppKt"
 val lettuceVersion = "5.2.2.RELEASE"
+val k9FormatVersion = "5.1.17"
 
 plugins {
     kotlin("jvm") version "1.4.30"
@@ -31,6 +32,10 @@ dependencies {
 
     // Redis
     implementation ("io.lettuce:lettuce-core:$lettuceVersion")
+
+    //K9-format
+    implementation("no.nav.k9:soknad:$k9FormatVersion")
+    implementation("org.glassfish:jakarta.el:3.0.3")
 
     // Test
     testImplementation("com.github.fppt:jedis-mock:0.1.16")

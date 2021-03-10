@@ -3,8 +3,10 @@ package no.nav.omsorgspengerutbetaling.soknad
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
 import no.nav.omsorgspengerutbetaling.felles.*
 import java.net.URL
+import java.util.*
 
 data class Søknad(
+    val søknadId: String = UUID.randomUUID().toString(),
     val språk: Språk,
     val bosteder: List<Bosted>,
     val opphold: List<Opphold>,
