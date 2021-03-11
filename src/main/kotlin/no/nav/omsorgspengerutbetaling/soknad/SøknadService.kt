@@ -48,7 +48,7 @@ internal class SøknadService(
 
         logger.info("Legger søknad til prosessering")
 
-        val komplettSoknad = KomplettSøknad(
+        val komplettSøknad = KomplettSøknad(
             søknadId = søknad.søknadId,
             språk = søknad.språk,
             mottatt = ZonedDateTime.now(ZoneOffset.UTC),
@@ -68,7 +68,7 @@ internal class SøknadService(
         )
 
         omsorgpengesøknadMottakGateway.leggTilProsessering(
-            søknad = komplettSoknad,
+            søknad = komplettSøknad,
             callId = callId
         )
 

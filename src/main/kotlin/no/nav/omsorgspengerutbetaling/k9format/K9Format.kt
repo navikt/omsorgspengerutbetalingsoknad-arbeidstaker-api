@@ -10,6 +10,7 @@ import no.nav.k9.søknad.felles.type.NorskIdentitetsnummer
 import no.nav.k9.søknad.felles.type.Periode
 import no.nav.k9.søknad.felles.type.SøknadId
 import no.nav.k9.søknad.ytelse.omsorgspenger.v1.OmsorgspengerUtbetaling
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
 import no.nav.omsorgspengerutbetaling.felles.Bosted
 import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.Opphold
@@ -32,7 +33,7 @@ fun Søknad.tilK9Format(mottatt: ZonedDateTime, søker: Søker): K9Søknad {
         OmsorgspengerUtbetaling(
             fosterbarn?.tilK9Barn(),
             byggK9ArbeidAktivitet(),
-            byggK9Fraværsperiode(),
+            arbeidsgivere.byggK9Fraværsperiode(),
             bosteder.tilK9Bosteder(),
             opphold.tilK9Utenlandsopphold()
         )
@@ -69,10 +70,10 @@ fun List<Opphold>.tilK9Utenlandsopphold(): Utenlandsopphold {
     return Utenlandsopphold(perioder)
 }
 
-fun Søknad.byggK9Fraværsperiode(): List<FraværPeriode> {
+fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
     val fraværsperioder = mutableListOf<FraværPeriode>()
 
-    arbeidsgivere.forEach { arbeidsgiver ->
+    forEach { arbeidsgiver ->
         arbeidsgiver.perioder.forEach { utbetalingsperiode ->
             val periode = Periode(utbetalingsperiode.fraOgMed, utbetalingsperiode.tilOgMed)
             val lengde = utbetalingsperiode.antallTimerBorte ?: fullArbeidsdag
