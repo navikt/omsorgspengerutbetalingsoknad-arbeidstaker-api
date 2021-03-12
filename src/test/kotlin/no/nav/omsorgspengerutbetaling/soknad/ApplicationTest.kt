@@ -17,7 +17,6 @@ import no.nav.omsorgspengerutbetaling.felles.JaNei
 import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
 import no.nav.omsorgspengerutbetaling.soknad.SøknadUtils.defaultSøknad
-import no.nav.omsorgspengerutbetaling.soknad.ArbeidstakerutbetalingSøknadUtils.defaultSøknad
 import no.nav.omsorgspengerutbetaling.wiremock.*
 import org.json.JSONObject
 import org.junit.AfterClass
