@@ -10,13 +10,16 @@ import io.ktor.util.*
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.omsorgspengerutbetaling.*
+import no.nav.omsorgspengerutbetaling.barn.BARN_URL
 import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
 import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.JaNei
 import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
 import no.nav.omsorgspengerutbetaling.soknad.SøknadUtils.defaultSøknad
+import no.nav.omsorgspengerutbetaling.soknad.ArbeidstakerutbetalingSøknadUtils.defaultSøknad
 import no.nav.omsorgspengerutbetaling.wiremock.*
+import org.json.JSONObject
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.skyscreamer.jsonassert.JSONAssert
@@ -27,6 +30,7 @@ import java.time.Duration
 import java.time.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 private const val fnr = "290990123456"
 private const val ikkeMyndigFnr = "12125012345"
@@ -54,6 +58,7 @@ class SøknadApplicationTest {
             .stubLeggSoknadTilProsessering("/v1/soknad")
             .stubK9OppslagSoker()
             .stubK9Mellomlagring()
+            .stubK9OppslagBarn()
 
         val redisServer: RedisServer = RedisServer
             .newRedisServer(6379)
@@ -93,6 +98,59 @@ class SøknadApplicationTest {
             redisServer.stop()
             logger.info("Tear down complete")
         }
+    }
+
+    @Test
+    fun `Hente barn og sjekk eksplisit at identitetsnummer ikke blir med ved get kall`(){
+
+        val respons = requestAndAssert(
+            httpMethod = HttpMethod.Get,
+            path = BARN_URL,
+            expectedCode = HttpStatusCode.OK,
+            //language=json
+            expectedResponse = """
+                {
+                  "barnOppslag": [
+                    {
+                      "fødselsdato": "2000-08-27",
+                      "fornavn": "BARN",
+                      "mellomnavn": "EN",
+                      "etternavn": "BARNESEN",
+                      "aktørId": "1000000000001"
+                    },
+                    {
+                      "fødselsdato": "2001-04-10",
+                      "fornavn": "BARN",
+                      "mellomnavn": "TO",
+                      "etternavn": "BARNESEN",
+                      "aktørId": "1000000000002"
+                    }
+                  ]
+                }
+            """.trimIndent()
+        )
+
+        val responsSomJSONArray = JSONObject(respons).getJSONArray("barnOppslag")
+
+        assertFalse(responsSomJSONArray.getJSONObject(0).has("identitetsnummer"))
+        assertFalse(responsSomJSONArray.getJSONObject(1).has("identitetsnummer"))
+    }
+
+    @Test
+    fun `Feil ved henting av barn skal returnere tom liste`() {
+        wireMockServer.stubK9OppslagBarn(simulerFeil = true)
+        requestAndAssert(
+            httpMethod = HttpMethod.Get,
+            path = BARN_URL,
+            expectedCode = HttpStatusCode.OK,
+            expectedResponse = """
+            {
+                "barnOppslag": []
+            }
+            """.trimIndent(),
+            cookie = getAuthCookie("25118921464")
+        )
+        wireMockServer.stubK9OppslagBarn()
     }
 
     @Test
@@ -708,7 +766,8 @@ class SøknadApplicationTest {
         expectedCode: HttpStatusCode,
         leggTilCookie: Boolean = true,
         cookie: Cookie = getAuthCookie(fnr)
-    ) {
+    ): String? {
+        val respons: String?
         with(engine) {
             handleRequest(httpMethod, path) {
                 if (leggTilCookie) addHeader(HttpHeaders.Cookie, cookie.toString())
@@ -719,6 +778,7 @@ class SøknadApplicationTest {
             }.apply {
                 logger.info("Response Entity = ${response.content}")
                 logger.info("Expected Entity = $expectedResponse")
+                respons = response.content
                 assertEquals(expectedCode, response.status())
                 if (expectedResponse != null) {
                     JSONAssert.assertEquals(expectedResponse, response.content!!, true)
@@ -727,5 +787,6 @@ class SøknadApplicationTest {
                 }
             }
         }
+        return respons
     }
 }

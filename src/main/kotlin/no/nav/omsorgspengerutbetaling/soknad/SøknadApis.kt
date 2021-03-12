@@ -6,6 +6,13 @@ import io.ktor.locations.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import io.ktor.application.*
+import io.ktor.http.*
+import io.ktor.locations.*
+import io.ktor.request.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import no.nav.omsorgspengerutbetaling.barn.BarnService
 import no.nav.omsorgspengerutbetaling.general.auth.IdTokenProvider
 import no.nav.omsorgspengerutbetaling.general.getCallId
 import no.nav.omsorgspengerutbetaling.k9format.tilK9Format
@@ -23,6 +30,7 @@ private val logger: Logger = LoggerFactory.getLogger("nav.soknadApis")
 internal fun Route.arbeidstakerutbetalingsøknadApis(
     søknadService: SøknadService,
     søkerService: SøkerService,
+    barnService: BarnService,
     idTokenProvider: IdTokenProvider
 ) {
 
