@@ -22,7 +22,6 @@ class BarnService(
         if(listeOverBarnOppslag != null) return listeOverBarnOppslag
 
         return try {
-            logger.info("FANT IKKE BARN I CACHE")
             val barnOppslag = barnGateway.hentBarn(
                 idToken = idToken,
                 callId = callId
