@@ -20,5 +20,6 @@ data class KomplettSøknad(
     val fosterbarn: List<FosterBarn>? = listOf(),
     val vedlegg: List<Vedlegg>,
     val hjemmePgaSmittevernhensyn: Boolean,
-    val hjemmePgaStengtBhgSkole: Boolean? = null // TODO låses til JaNei etter lansering.
+    val hjemmePgaStengtBhgSkole: Boolean? = null, // TODO låses til JaNei etter lansering.
+    val barn: List<Barn>
 )

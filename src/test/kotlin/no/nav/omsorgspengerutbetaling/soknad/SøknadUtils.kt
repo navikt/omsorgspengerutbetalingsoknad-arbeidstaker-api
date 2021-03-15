@@ -149,7 +149,15 @@ internal object ArbeidstakerutbetalingSøknadUtils {
         ),
         vedlegg = emptyList(),
         hjemmePgaSmittevernhensyn = true,
-        hjemmePgaStengtBhgSkole = true
+        hjemmePgaStengtBhgSkole = true,
+        barn = listOf(
+            Barn(
+                identitetsnummer = "26104500284",
+                navn = "Ole Dole",
+                aleneOmOmsorgen = true,
+                aktørId = null
+            )
+        )
     )
 
     internal val defaultKomplettSøknad = KomplettSøknad(
@@ -294,7 +302,15 @@ internal object ArbeidstakerutbetalingSøknadUtils {
         ),
         vedlegg = emptyList(),
         hjemmePgaSmittevernhensyn = true,
-        hjemmePgaStengtBhgSkole = true
+        hjemmePgaStengtBhgSkole = true,
+        barn = listOf(
+            Barn(
+                identitetsnummer = "26104500284",
+                navn = "Ole Dole",
+                aleneOmOmsorgen = true,
+                aktørId = null
+            )
+        )
     )
 }
 

@@ -185,7 +185,15 @@ internal class SerDesTest {
             }],
             "vedlegg": [],
             "hjemmePgaSmittevernhensyn": true,
-            "hjemmePgaStengtBhgSkole": true
+            "hjemmePgaStengtBhgSkole": true,
+            "barn": [
+              {
+                "identitetsnummer": "26104500284",
+                "aktørId": null,
+                "navn": "Ole Dole",
+                "aleneOmOmsorgen": true
+              }
+            ]
         }
         """.trimIndent()
 
@@ -345,7 +353,15 @@ internal class SerDesTest {
             }],
             "vedlegg": [],
             "hjemmePgaSmittevernhensyn": true,
-            "hjemmePgaStengtBhgSkole": true
+            "hjemmePgaStengtBhgSkole": true,
+            "barn": [
+              {
+                "identitetsnummer": "26104500284",
+                "aktørId": null,
+                "navn": "Ole Dole",
+                "aleneOmOmsorgen": true
+              }
+            ]
         }
         """.trimIndent()
     }
