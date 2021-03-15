@@ -29,7 +29,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start,
-                        tilOgMed = start.plusDays(10)
+                        tilOgMed = start.plusDays(10),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             ),
@@ -47,7 +48,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                         fraOgMed = start.plusDays(20),
                         tilOgMed = start.plusDays(20),
                         antallTimerBorte = Duration.ofHours(5),
-                        antallTimerPlanlagt = Duration.ofHours(8)
+                        antallTimerPlanlagt = Duration.ofHours(8),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             ),
@@ -65,7 +67,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                         fraOgMed = start.plusDays(30),
                         tilOgMed = start.plusDays(35),
                         antallTimerBorte = Duration.ofHours(5),
-                        antallTimerPlanlagt = Duration.ofHours(8)
+                        antallTimerPlanlagt = Duration.ofHours(8),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             ),
@@ -82,7 +85,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35)
+                        tilOgMed = start.plusDays(35),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             ),
@@ -97,7 +101,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5)
+                        tilOgMed = start.plusMonths(1).plusDays(5),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             ),
@@ -112,7 +117,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5)
+                        tilOgMed = start.plusMonths(1).plusDays(5),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             )
@@ -184,7 +190,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start,
-                        tilOgMed = start.plusDays(10)
+                        tilOgMed = start.plusDays(10),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             ),
@@ -202,7 +209,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                         fraOgMed = start.plusDays(20),
                         tilOgMed = start.plusDays(20),
                         antallTimerBorte = Duration.ofHours(5),
-                        antallTimerPlanlagt = Duration.ofHours(8)
+                        antallTimerPlanlagt = Duration.ofHours(8),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             ),
@@ -218,7 +226,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35)
+                        tilOgMed = start.plusDays(35),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             ),
@@ -235,7 +244,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35)
+                        tilOgMed = start.plusDays(35),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             ),
@@ -250,7 +260,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5)
+                        tilOgMed = start.plusMonths(1).plusDays(5),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             ),
@@ -265,7 +276,8 @@ internal object ArbeidstakerutbetalingSøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5)
+                        tilOgMed = start.plusMonths(1).plusDays(5),
+                        årsak = FraværÅrsak.ANNET
                     )
                 )
             )

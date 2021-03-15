@@ -1,5 +1,6 @@
 package no.nav.omsorgspengerutbetaling.felles
 
+import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonFormat
 import no.nav.helse.dusseldorf.ktor.core.*
 import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
@@ -27,7 +28,8 @@ data class UtbetalingsperiodeMedVedlegg(
     @JsonFormat(pattern = "yyyy-MM-dd") val tilOgMed: LocalDate,
     val legeerklæringer: List<URI> = listOf(),
     val antallTimerBorte: Duration? = null,
-    val antallTimerPlanlagt: Duration? = null
+    val antallTimerPlanlagt: Duration? = null,
+    val årsak: FraværÅrsak? = null //Fjernes null og optional når feltet er prodsatt
 )
 
 internal fun UtbetalingsperiodeMedVedlegg.somPeriode() =
@@ -46,8 +48,15 @@ data class Utbetalingsperiode(
     @JsonFormat(pattern = "yyyy-MM-dd") val fraOgMed: LocalDate,
     @JsonFormat(pattern = "yyyy-MM-dd") val tilOgMed: LocalDate,
     val antallTimerBorte: Duration? = null,
-    val antallTimerPlanlagt: Duration? = null
+    val antallTimerPlanlagt: Duration? = null,
+    val årsak: FraværÅrsak? = null //Fjernes null og optional når feltet er prodsatt
 )
+
+enum class FraværÅrsak {
+    @JsonAlias("stengtSkoleBhg") STENGT_SKOLE_BHG,
+    @JsonAlias("smittevernhensyn") SMITTEVERNHENSYN,
+    @JsonAlias("annet") ANNET
+}
 
 internal fun List<UtbetalingsperiodeMedVedlegg>.valider() : Set<Violation> {
     val violations = mutableSetOf<Violation>()

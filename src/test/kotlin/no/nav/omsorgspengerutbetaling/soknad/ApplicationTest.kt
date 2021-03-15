@@ -11,12 +11,10 @@ import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.omsorgspengerutbetaling.*
 import no.nav.omsorgspengerutbetaling.barn.BARN_URL
-import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
-import no.nav.omsorgspengerutbetaling.felles.FosterBarn
-import no.nav.omsorgspengerutbetaling.felles.JaNei
-import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
+import no.nav.omsorgspengerutbetaling.felles.*
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
 import no.nav.omsorgspengerutbetaling.soknad.ArbeidstakerutbetalingSøknadUtils.defaultSøknad
+import no.nav.omsorgspengerutbetaling.soknad.somJson
 import no.nav.omsorgspengerutbetaling.wiremock.*
 import org.json.JSONObject
 import org.junit.AfterClass
@@ -675,7 +673,7 @@ class SøknadApplicationTest {
                   "invalid_parameters": [
                     {
                       "type": "entity",
-                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=null, antallTimerPlanlagt=PT5H)]",
+                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=null, antallTimerPlanlagt=PT5H, årsak=ANNET)]",
                       "reason": "Dersom antallTimerPlanlagt er satt så kan ikke antallTimerBorte være tom",
                       "invalid_value": "antallTimerBorte = null, antallTimerPlanlagt=PT5H"
                     }
@@ -691,7 +689,8 @@ class SøknadApplicationTest {
                             Utbetalingsperiode(
                                 fraOgMed = LocalDate.parse("2020-01-01"),
                                 tilOgMed = LocalDate.parse("2020-01-10"),
-                                antallTimerPlanlagt = Duration.ofHours(5)
+                                antallTimerPlanlagt = Duration.ofHours(5),
+                                årsak = FraværÅrsak.ANNET
                             )
                         )
                     )
@@ -718,7 +717,7 @@ class SøknadApplicationTest {
                   "invalid_parameters": [
                     {
                       "type": "entity",
-                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=PT6H, antallTimerPlanlagt=PT5H)]",
+                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=PT6H, antallTimerPlanlagt=PT5H, årsak=ANNET)]",
                       "reason": "Antall timer borte kan ikke være større enn antall timer planlagt jobbe",
                       "invalid_value": "antallTimerBorte = PT6H, antallTimerPlanlagt=PT5H"
                     }
@@ -735,7 +734,8 @@ class SøknadApplicationTest {
                                 fraOgMed = LocalDate.parse("2020-01-01"),
                                 tilOgMed = LocalDate.parse("2020-01-10"),
                                 antallTimerPlanlagt = Duration.ofHours(5),
-                                antallTimerBorte = Duration.ofHours(6)
+                                antallTimerBorte = Duration.ofHours(6),
+                                årsak = FraværÅrsak.ANNET
                             )
                         )
                     )
