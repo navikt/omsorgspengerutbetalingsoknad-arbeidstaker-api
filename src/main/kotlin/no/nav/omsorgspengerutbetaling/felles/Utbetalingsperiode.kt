@@ -1,6 +1,5 @@
 package no.nav.omsorgspengerutbetaling.felles
 
-import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonFormat
 import no.nav.helse.dusseldorf.ktor.core.*
 import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
@@ -53,9 +52,9 @@ data class Utbetalingsperiode(
 )
 
 enum class FraværÅrsak {
-    @JsonAlias("stengtSkoleBhg") STENGT_SKOLE_BHG,
-    @JsonAlias("smittevernhensyn") SMITTEVERNHENSYN,
-    @JsonAlias("annet") ANNET
+    STENGT_SKOLE_ELLER_BARNEHAGE,
+    SMITTEVERNHENSYN,
+    ANNET
 }
 
 internal fun List<UtbetalingsperiodeMedVedlegg>.valider() : Set<Violation> {
