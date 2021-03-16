@@ -223,7 +223,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-01",
-                            "tilOgMed": "2020-01-11"
+                            "tilOgMed": "2020-01-11",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       },
@@ -239,7 +240,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-21",
-                            "tilOgMed": "2020-01-21"
+                            "tilOgMed": "2020-01-21",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       },
@@ -255,7 +257,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-31",
-                            "tilOgMed": "2020-02-05"
+                            "tilOgMed": "2020-02-05",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       },
@@ -271,7 +274,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-02-01",
-                            "tilOgMed": "2020-02-06"
+                            "tilOgMed": "2020-02-06",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       },
@@ -286,7 +290,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-02-01",
-                            "tilOgMed": "2020-02-06"
+                            "tilOgMed": "2020-02-06",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       }
@@ -295,20 +300,6 @@ class SøknadApplicationTest {
                     "harBekreftetOpplysninger": true,
                     "harForståttRettigheterOgPlikter": true
                   },
-                  "utbetalingsperioder": [
-                    {
-                      "fraOgMed": "2020-01-01",
-                      "tilOgMed": "2020-01-11"
-                    },
-                    {
-                      "fraOgMed": "2020-01-21",
-                      "tilOgMed": "2020-01-21"
-                    },
-                    {
-                      "fraOgMed": "2020-01-31",
-                      "tilOgMed": "2020-02-05"
-                    }
-                  ],
                   "andreUtbetalinger": [
                     "dagpenger",
                     "sykepenger"
@@ -542,7 +533,8 @@ class SøknadApplicationTest {
                       "perioder": [
                         {
                           "fraOgMed": "2020-01-01",
-                          "tilOgMed": "2020-01-11"
+                          "tilOgMed": "2020-01-11",
+                          "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                         }
                       ]
                     }
@@ -619,7 +611,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-01",
-                            "tilOgMed": "2020-01-11"
+                            "tilOgMed": "2020-01-11",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       }
