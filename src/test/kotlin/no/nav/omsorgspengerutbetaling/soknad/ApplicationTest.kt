@@ -386,6 +386,14 @@ class SøknadApplicationTest {
                 ),
                 vedlegg = listOf(
                     URL(jpegUrl), URL(pdfUrl)
+                ),
+                barn = listOf(
+                    Barn(
+                        identitetsnummer = "12345",
+                        navn = "Ole Dole",
+                        aleneOmOmsorgen = null,
+                        aktørId = null
+                    )
                 )
             ).somJson(),
             expectedResponse = """
@@ -410,6 +418,18 @@ class SøknadApplicationTest {
                     "name": "bekreftelser.harForståttRettigheterOgPlikter",
                     "reason": "Må besvars Ja.",
                     "invalid_value": false
+                },
+                {
+                  "type": "entity",
+                  "name": "barn[0].identitetsnummer",
+                  "reason": "Barn.identitetsnummer må være gyldig norsk identifikator.",
+                  "invalid_value": "12345"
+                },
+                {
+                  "type": "entity",
+                  "name": "barn[0].aleneOmOmsorgen",
+                  "reason": "Barn.aleneOmOmsorgen kan ikke være null.",
+                  "invalid_value": null
                 }]
             }
             """.trimIndent()
