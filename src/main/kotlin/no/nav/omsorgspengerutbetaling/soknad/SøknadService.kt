@@ -75,4 +75,3 @@ internal class SøknadService(
         logger.trace("Søknad lagt til mottak.")
     }
 }
-
