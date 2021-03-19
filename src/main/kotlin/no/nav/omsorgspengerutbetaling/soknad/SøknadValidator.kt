@@ -23,6 +23,7 @@ internal fun Søknad.valider(k9Format: K9Søknad) {
         addAll(bosteder.valider("bosteder"))
         addAll(bekreftelser.valider())
         addAll(andreUtbetalinger.valider())
+        addAll(barn.valider())
         fosterbarn?.let { addAll(validerFosterbarn(it)) }
         addAll(k9Format.valider())
     }

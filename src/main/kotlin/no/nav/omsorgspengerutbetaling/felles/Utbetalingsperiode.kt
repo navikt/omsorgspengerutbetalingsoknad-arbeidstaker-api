@@ -27,7 +27,8 @@ data class UtbetalingsperiodeMedVedlegg(
     @JsonFormat(pattern = "yyyy-MM-dd") val tilOgMed: LocalDate,
     val legeerklæringer: List<URI> = listOf(),
     val antallTimerBorte: Duration? = null,
-    val antallTimerPlanlagt: Duration? = null
+    val antallTimerPlanlagt: Duration? = null,
+    val årsak: FraværÅrsak? = null //Fjernes null og optional når feltet er prodsatt
 )
 
 internal fun UtbetalingsperiodeMedVedlegg.somPeriode() =
@@ -46,8 +47,15 @@ data class Utbetalingsperiode(
     @JsonFormat(pattern = "yyyy-MM-dd") val fraOgMed: LocalDate,
     @JsonFormat(pattern = "yyyy-MM-dd") val tilOgMed: LocalDate,
     val antallTimerBorte: Duration? = null,
-    val antallTimerPlanlagt: Duration? = null
+    val antallTimerPlanlagt: Duration? = null,
+    val årsak: FraværÅrsak? = null //Fjernes null og optional når feltet er prodsatt
 )
+
+enum class FraværÅrsak {
+    STENGT_SKOLE_ELLER_BARNEHAGE,
+    SMITTEVERNHENSYN,
+    ORDINÆRT_FRAVÆR
+}
 
 internal fun List<UtbetalingsperiodeMedVedlegg>.valider() : Set<Violation> {
     val violations = mutableSetOf<Violation>()

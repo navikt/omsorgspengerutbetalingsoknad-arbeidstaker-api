@@ -64,7 +64,8 @@ internal class SerDesTest {
                         "fraOgMed": "2020-01-01",
                         "tilOgMed": "2020-01-11",
                         "antallTimerBorte": null,
-                        "antallTimerPlanlagt": null
+                        "antallTimerPlanlagt": null,
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -83,7 +84,8 @@ internal class SerDesTest {
                         "fraOgMed": "2020-01-21",
                         "tilOgMed": "2020-01-21",
                         "antallTimerBorte": "PT5H",
-                        "antallTimerPlanlagt": "PT8H"
+                        "antallTimerPlanlagt": "PT8H",
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -102,7 +104,8 @@ internal class SerDesTest {
                         "fraOgMed": "2020-01-31",
                         "tilOgMed": "2020-02-05",
                         "antallTimerBorte": "PT5H",
-                        "antallTimerPlanlagt": "PT8H"
+                        "antallTimerPlanlagt": "PT8H",
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -121,7 +124,8 @@ internal class SerDesTest {
                         "fraOgMed": "2020-01-31",
                         "tilOgMed": "2020-02-05",
                         "antallTimerBorte": null,
-                        "antallTimerPlanlagt": null
+                        "antallTimerPlanlagt": null,
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -140,7 +144,8 @@ internal class SerDesTest {
                         "fraOgMed": "2020-02-01",
                         "tilOgMed": "2020-02-06",
                         "antallTimerBorte": null,
-                        "antallTimerPlanlagt": null
+                        "antallTimerPlanlagt": null,
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -159,7 +164,8 @@ internal class SerDesTest {
                         "fraOgMed": "2020-02-01",
                         "tilOgMed": "2020-02-06",
                         "antallTimerBorte": null,
-                        "antallTimerPlanlagt": null
+                        "antallTimerPlanlagt": null,
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 }
@@ -183,7 +189,15 @@ internal class SerDesTest {
             }],
             "vedlegg": [],
             "hjemmePgaSmittevernhensyn": true,
-            "hjemmePgaStengtBhgSkole": true
+            "hjemmePgaStengtBhgSkole": true,
+            "barn": [
+              {
+                "identitetsnummer": "26104500284",
+                "aktørId": null,
+                "navn": "Ole Dole",
+                "aleneOmOmsorgen": true
+              }
+            ]
         }
         """.trimIndent()
 
@@ -237,8 +251,8 @@ internal class SerDesTest {
                       "fraOgMed": "2020-01-01",
                       "tilOgMed": "2020-01-11",
                       "antallTimerBorte": null,
-                      "antallTimerPlanlagt": null
-                    }
+                      "antallTimerPlanlagt": null,
+                    "årsak": "ORDINÆRT_FRAVÆR"}
                   ]
                 },
                 {
@@ -256,8 +270,8 @@ internal class SerDesTest {
                       "fraOgMed": "2020-01-21",
                       "tilOgMed": "2020-01-21",
                       "antallTimerBorte": "PT5H",
-                      "antallTimerPlanlagt": "PT8H"
-                    }
+                      "antallTimerPlanlagt": "PT8H",
+                    "årsak": "ORDINÆRT_FRAVÆR"}
                   ]
                 },
                 {
@@ -275,8 +289,8 @@ internal class SerDesTest {
                       "fraOgMed": "2020-01-31",
                       "tilOgMed": "2020-02-05",
                       "antallTimerBorte": null,
-                      "antallTimerPlanlagt": null
-                    }
+                      "antallTimerPlanlagt": null,
+                    "årsak": "ORDINÆRT_FRAVÆR"}
                   ]
                 },
                 {
@@ -294,8 +308,8 @@ internal class SerDesTest {
                       "fraOgMed": "2020-01-31",
                       "tilOgMed": "2020-02-05",
                       "antallTimerBorte": null,
-                      "antallTimerPlanlagt": null
-                    }
+                      "antallTimerPlanlagt": null,
+                    "årsak": "ORDINÆRT_FRAVÆR"}
                   ]
                 },
                 {
@@ -313,8 +327,8 @@ internal class SerDesTest {
                       "fraOgMed": "2020-02-01",
                       "tilOgMed": "2020-02-06",
                       "antallTimerBorte": null,
-                      "antallTimerPlanlagt": null
-                    }
+                      "antallTimerPlanlagt": null,
+                    "årsak": "ORDINÆRT_FRAVÆR"}
                   ]
                 },
                 {
@@ -332,8 +346,8 @@ internal class SerDesTest {
                       "fraOgMed": "2020-02-01",
                       "tilOgMed": "2020-02-06",
                       "antallTimerBorte": null,
-                      "antallTimerPlanlagt": null
-                    }
+                      "antallTimerPlanlagt": null,
+                    "årsak": "ORDINÆRT_FRAVÆR"}
                   ]
                 }
               ],
@@ -357,6 +371,14 @@ internal class SerDesTest {
               ],
               "hjemmePgaSmittevernhensyn": true,
               "hjemmePgaStengtBhgSkole": true,
+                "barn": [
+                  {
+                    "identitetsnummer": "26104500284",
+                    "aktørId": null,
+                    "navn": "Ole Dole",
+                    "aleneOmOmsorgen": true
+                  }
+                ],
               "k9Format": {
                 "søknadId": "$søknadId",
                 "versjon": "1.0.0",

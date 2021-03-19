@@ -48,6 +48,13 @@ internal fun Route.arbeidstakerutbetalingsøknadApis(
         val søker: Søker = søkerService.getSoker(idToken = idToken, callId = callId)
         søker.validate()
 
+        if(søknad.barn.isNotEmpty()){
+            logger.trace("Oppdaterer barn med identitetsnummer")
+            val listeOverBarnMedIdentitetsnummer = barnService.hentNåværendeBarn(idTokenProvider.getIdToken(call), call.getCallId())
+            søknad.oppdaterBarnMedIdentitetsnummer(listeOverBarnMedIdentitetsnummer)
+            logger.info("Oppdatering av identitetsnummer på barn OK")
+        }
+
         logger.info("Mapper om til K9Format")
         val k9Format = søknad.tilK9Format(mottatt, søker)
 

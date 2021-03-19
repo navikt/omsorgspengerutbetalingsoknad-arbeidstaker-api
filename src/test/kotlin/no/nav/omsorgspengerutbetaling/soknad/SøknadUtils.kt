@@ -52,7 +52,8 @@ internal object SøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start,
-                        tilOgMed = start.plusDays(10)
+                        tilOgMed = start.plusDays(10),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             ),
@@ -70,7 +71,8 @@ internal object SøknadUtils {
                         fraOgMed = start.plusDays(20),
                         tilOgMed = start.plusDays(20),
                         antallTimerBorte = Duration.ofHours(5),
-                        antallTimerPlanlagt = Duration.ofHours(8)
+                        antallTimerPlanlagt = Duration.ofHours(8),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             ),
@@ -88,7 +90,8 @@ internal object SøknadUtils {
                         fraOgMed = start.plusDays(30),
                         tilOgMed = start.plusDays(35),
                         antallTimerBorte = Duration.ofHours(5),
-                        antallTimerPlanlagt = Duration.ofHours(8)
+                        antallTimerPlanlagt = Duration.ofHours(8),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             ),
@@ -105,7 +108,8 @@ internal object SøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35)
+                        tilOgMed = start.plusDays(35),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             ),
@@ -120,7 +124,8 @@ internal object SøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5)
+                        tilOgMed = start.plusMonths(1).plusDays(5),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             ),
@@ -135,7 +140,8 @@ internal object SøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5)
+                        tilOgMed = start.plusMonths(1).plusDays(5),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             )
@@ -172,7 +178,15 @@ internal object SøknadUtils {
         ),
         vedlegg = emptyList(),
         hjemmePgaSmittevernhensyn = true,
-        hjemmePgaStengtBhgSkole = true
+        hjemmePgaStengtBhgSkole = true,
+        barn = listOf(
+            Barn(
+                identitetsnummer = "26104500284",
+                navn = "Ole Dole",
+                aleneOmOmsorgen = true,
+                aktørId = null
+            )
+        )
     )
 
     fun defaultKomplettSøknad(søknadId: String = UUID.randomUUID().toString(), mottatt: ZonedDateTime = ZonedDateTime.now()) = KomplettSøknad(
@@ -200,7 +214,8 @@ internal object SøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start,
-                        tilOgMed = start.plusDays(10)
+                        tilOgMed = start.plusDays(10),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             ),
@@ -218,7 +233,8 @@ internal object SøknadUtils {
                         fraOgMed = start.plusDays(20),
                         tilOgMed = start.plusDays(20),
                         antallTimerBorte = Duration.ofHours(5),
-                        antallTimerPlanlagt = Duration.ofHours(8)
+                        antallTimerPlanlagt = Duration.ofHours(8),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             ),
@@ -234,7 +250,8 @@ internal object SøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35)
+                        tilOgMed = start.plusDays(35),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             ),
@@ -251,7 +268,8 @@ internal object SøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35)
+                        tilOgMed = start.plusDays(35),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             ),
@@ -266,7 +284,8 @@ internal object SøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5)
+                        tilOgMed = start.plusMonths(1).plusDays(5),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             ),
@@ -281,7 +300,8 @@ internal object SøknadUtils {
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5)
+                        tilOgMed = start.plusMonths(1).plusDays(5),
+                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
                 )
             )
@@ -319,6 +339,14 @@ internal object SøknadUtils {
         vedlegg = emptyList(),
         hjemmePgaSmittevernhensyn = true,
         hjemmePgaStengtBhgSkole = true,
+        barn = listOf(
+            Barn(
+                identitetsnummer = "26104500284",
+                navn = "Ole Dole",
+                aleneOmOmsorgen = true,
+                aktørId = null
+            )
+        ),
         k9Format = defaultK9Format(søknadId, mottatt)
     )
 
