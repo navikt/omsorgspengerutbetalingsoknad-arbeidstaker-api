@@ -28,10 +28,12 @@ internal fun Route.arbeidstakerutbetalingsøknadApis(
         logger.trace("Mottatt ny søknad om arbeidstakerutbetaling. Mapper søknad.")
         val søknad = call.receive<Søknad>()
 
-        logger.trace("Oppdaterer barn med identitetsnummer")
-        val listeOverBarnMedIdentitetsnummer = barnService.hentNåværendeBarn(idTokenProvider.getIdToken(call), call.getCallId())
-        søknad.oppdaterBarnMedIdentitetsnummer(listeOverBarnMedIdentitetsnummer)
-        logger.info("Oppdatering av identitetsnummer på barn OK")
+        if(søknad.barn.isNotEmpty()){
+            logger.trace("Oppdaterer barn med identitetsnummer")
+            val listeOverBarnMedIdentitetsnummer = barnService.hentNåværendeBarn(idTokenProvider.getIdToken(call), call.getCallId())
+            søknad.oppdaterBarnMedIdentitetsnummer(listeOverBarnMedIdentitetsnummer)
+            logger.info("Oppdatering av identitetsnummer på barn OK")
+        }
 
         søknad.valider()
         logger.trace("Validering OK. Registrerer søknad.")
