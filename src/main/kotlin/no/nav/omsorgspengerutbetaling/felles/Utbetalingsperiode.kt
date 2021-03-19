@@ -54,7 +54,7 @@ data class Utbetalingsperiode(
 enum class FraværÅrsak {
     STENGT_SKOLE_ELLER_BARNEHAGE,
     SMITTEVERNHENSYN,
-    ANNET
+    ORDINÆRT_FRAVÆR
 }
 
 internal fun List<UtbetalingsperiodeMedVedlegg>.valider() : Set<Violation> {

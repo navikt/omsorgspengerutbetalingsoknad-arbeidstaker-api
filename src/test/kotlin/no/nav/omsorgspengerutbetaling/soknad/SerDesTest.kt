@@ -67,7 +67,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-01-11",
                         "antallTimerBorte": null,
                         "antallTimerPlanlagt": null,
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -87,7 +87,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-01-21",
                         "antallTimerBorte": "PT5H",
                         "antallTimerPlanlagt": "PT8H",
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -107,7 +107,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-02-05",
                         "antallTimerBorte": "PT5H",
                         "antallTimerPlanlagt": "PT8H",
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -127,7 +127,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-02-05",
                         "antallTimerBorte": null,
                         "antallTimerPlanlagt": null,
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -147,7 +147,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-02-06",
                         "antallTimerBorte": null,
                         "antallTimerPlanlagt": null,
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -167,7 +167,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-02-06",
                         "antallTimerBorte": null,
                         "antallTimerPlanlagt": null,
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 }
@@ -234,7 +234,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-01-11",
                         "antallTimerBorte": null,
                         "antallTimerPlanlagt": null,
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -254,7 +254,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-01-21",
                         "antallTimerBorte": "PT5H",
                         "antallTimerPlanlagt": "PT8H",
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -274,7 +274,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-02-05",
                         "antallTimerBorte": null,
                         "antallTimerPlanlagt": null,
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -294,7 +294,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-02-05",
                         "antallTimerBorte": null,
                         "antallTimerPlanlagt": null,
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -314,7 +314,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-02-06",
                         "antallTimerBorte": null,
                         "antallTimerPlanlagt": null,
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 },
@@ -334,7 +334,7 @@ internal class SerDesTest {
                         "tilOgMed": "2020-02-06",
                         "antallTimerBorte": null,
                         "antallTimerPlanlagt": null,
-                        "årsak": "ANNET"
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ]
                 }

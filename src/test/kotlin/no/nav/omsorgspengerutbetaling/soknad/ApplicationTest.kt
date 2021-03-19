@@ -686,7 +686,7 @@ class SøknadApplicationTest {
                   "invalid_parameters": [
                     {
                       "type": "entity",
-                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=null, antallTimerPlanlagt=PT5H, årsak=ANNET)]",
+                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=null, antallTimerPlanlagt=PT5H, årsak=ORDINÆRT_FRAVÆR)]",
                       "reason": "Dersom antallTimerPlanlagt er satt så kan ikke antallTimerBorte være tom",
                       "invalid_value": "antallTimerBorte = null, antallTimerPlanlagt=PT5H"
                     }
@@ -703,7 +703,7 @@ class SøknadApplicationTest {
                                 fraOgMed = LocalDate.parse("2020-01-01"),
                                 tilOgMed = LocalDate.parse("2020-01-10"),
                                 antallTimerPlanlagt = Duration.ofHours(5),
-                                årsak = FraværÅrsak.ANNET
+                                årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                             )
                         )
                     )
@@ -730,7 +730,7 @@ class SøknadApplicationTest {
                   "invalid_parameters": [
                     {
                       "type": "entity",
-                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=PT6H, antallTimerPlanlagt=PT5H, årsak=ANNET)]",
+                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=PT6H, antallTimerPlanlagt=PT5H, årsak=ORDINÆRT_FRAVÆR)]",
                       "reason": "Antall timer borte kan ikke være større enn antall timer planlagt jobbe",
                       "invalid_value": "antallTimerBorte = PT6H, antallTimerPlanlagt=PT5H"
                     }
@@ -748,7 +748,7 @@ class SøknadApplicationTest {
                                 tilOgMed = LocalDate.parse("2020-01-10"),
                                 antallTimerPlanlagt = Duration.ofHours(5),
                                 antallTimerBorte = Duration.ofHours(6),
-                                årsak = FraværÅrsak.ANNET
+                                årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                             )
                         )
                     )
