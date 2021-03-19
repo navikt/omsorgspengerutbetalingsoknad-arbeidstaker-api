@@ -14,7 +14,6 @@ import no.nav.omsorgspengerutbetaling.barn.BARN_URL
 import no.nav.omsorgspengerutbetaling.felles.*
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
 import no.nav.omsorgspengerutbetaling.soknad.SøknadUtils.defaultSøknad
-import no.nav.omsorgspengerutbetaling.soknad.ArbeidstakerutbetalingSøknadUtils.defaultSøknad
 import no.nav.omsorgspengerutbetaling.soknad.somJson
 import no.nav.omsorgspengerutbetaling.wiremock.*
 import org.json.JSONObject
