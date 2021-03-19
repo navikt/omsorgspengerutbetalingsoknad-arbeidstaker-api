@@ -66,7 +66,8 @@ internal class SøknadService(
             bekreftelser = søknad.bekreftelser,
             vedlegg = vedlegg,
             hjemmePgaSmittevernhensyn = søknad.hjemmePgaSmittevernhensyn,
-            hjemmePgaStengtBhgSkole = søknad.hjemmePgaStengtBhgSkole
+            hjemmePgaStengtBhgSkole = søknad.hjemmePgaStengtBhgSkole,
+            barn = søknad.barn
         )
 
         omsorgpengesøknadMottakGateway.leggTilProsessering(

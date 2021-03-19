@@ -11,12 +11,10 @@ import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.omsorgspengerutbetaling.*
 import no.nav.omsorgspengerutbetaling.barn.BARN_URL
-import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
-import no.nav.omsorgspengerutbetaling.felles.FosterBarn
-import no.nav.omsorgspengerutbetaling.felles.JaNei
-import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
+import no.nav.omsorgspengerutbetaling.felles.*
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
 import no.nav.omsorgspengerutbetaling.soknad.ArbeidstakerutbetalingSøknadUtils.defaultSøknad
+import no.nav.omsorgspengerutbetaling.soknad.somJson
 import no.nav.omsorgspengerutbetaling.wiremock.*
 import org.json.JSONObject
 import org.junit.AfterClass
@@ -225,7 +223,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-01",
-                            "tilOgMed": "2020-01-11"
+                            "tilOgMed": "2020-01-11",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       },
@@ -241,7 +240,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-21",
-                            "tilOgMed": "2020-01-21"
+                            "tilOgMed": "2020-01-21",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       },
@@ -257,7 +257,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-31",
-                            "tilOgMed": "2020-02-05"
+                            "tilOgMed": "2020-02-05",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       },
@@ -273,7 +274,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-02-01",
-                            "tilOgMed": "2020-02-06"
+                            "tilOgMed": "2020-02-06",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       },
@@ -288,7 +290,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-02-01",
-                            "tilOgMed": "2020-02-06"
+                            "tilOgMed": "2020-02-06",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       }
@@ -297,20 +300,6 @@ class SøknadApplicationTest {
                     "harBekreftetOpplysninger": true,
                     "harForståttRettigheterOgPlikter": true
                   },
-                  "utbetalingsperioder": [
-                    {
-                      "fraOgMed": "2020-01-01",
-                      "tilOgMed": "2020-01-11"
-                    },
-                    {
-                      "fraOgMed": "2020-01-21",
-                      "tilOgMed": "2020-01-21"
-                    },
-                    {
-                      "fraOgMed": "2020-01-31",
-                      "tilOgMed": "2020-02-05"
-                    }
-                  ],
                   "andreUtbetalinger": [
                     "dagpenger",
                     "sykepenger"
@@ -388,6 +377,14 @@ class SøknadApplicationTest {
                 ),
                 vedlegg = listOf(
                     URL(jpegUrl), URL(pdfUrl)
+                ),
+                barn = listOf(
+                    Barn(
+                        identitetsnummer = "12345",
+                        navn = "Ole Dole",
+                        aleneOmOmsorgen = null,
+                        aktørId = null
+                    )
                 )
             ).somJson(),
             expectedResponse = """
@@ -412,6 +409,18 @@ class SøknadApplicationTest {
                     "name": "bekreftelser.harForståttRettigheterOgPlikter",
                     "reason": "Må besvars Ja.",
                     "invalid_value": false
+                },
+                {
+                  "type": "entity",
+                  "name": "barn[0].identitetsnummer",
+                  "reason": "Barn.identitetsnummer må være gyldig norsk identifikator.",
+                  "invalid_value": "12345"
+                },
+                {
+                  "type": "entity",
+                  "name": "barn[0].aleneOmOmsorgen",
+                  "reason": "Barn.aleneOmOmsorgen kan ikke være null.",
+                  "invalid_value": null
                 }]
             }
             """.trimIndent()
@@ -524,7 +533,8 @@ class SøknadApplicationTest {
                       "perioder": [
                         {
                           "fraOgMed": "2020-01-01",
-                          "tilOgMed": "2020-01-11"
+                          "tilOgMed": "2020-01-11",
+                          "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                         }
                       ]
                     }
@@ -601,7 +611,8 @@ class SøknadApplicationTest {
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-01",
-                            "tilOgMed": "2020-01-11"
+                            "tilOgMed": "2020-01-11",
+                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                           }
                         ]
                       }
@@ -675,7 +686,7 @@ class SøknadApplicationTest {
                   "invalid_parameters": [
                     {
                       "type": "entity",
-                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=null, antallTimerPlanlagt=PT5H)]",
+                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=null, antallTimerPlanlagt=PT5H, årsak=ORDINÆRT_FRAVÆR)]",
                       "reason": "Dersom antallTimerPlanlagt er satt så kan ikke antallTimerBorte være tom",
                       "invalid_value": "antallTimerBorte = null, antallTimerPlanlagt=PT5H"
                     }
@@ -691,7 +702,8 @@ class SøknadApplicationTest {
                             Utbetalingsperiode(
                                 fraOgMed = LocalDate.parse("2020-01-01"),
                                 tilOgMed = LocalDate.parse("2020-01-10"),
-                                antallTimerPlanlagt = Duration.ofHours(5)
+                                antallTimerPlanlagt = Duration.ofHours(5),
+                                årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                             )
                         )
                     )
@@ -718,7 +730,7 @@ class SøknadApplicationTest {
                   "invalid_parameters": [
                     {
                       "type": "entity",
-                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=PT6H, antallTimerPlanlagt=PT5H)]",
+                      "name": "utbetalingsperioder[Utbetalingsperiode(fraOgMed=2020-01-01, tilOgMed=2020-01-10, antallTimerBorte=PT6H, antallTimerPlanlagt=PT5H, årsak=ORDINÆRT_FRAVÆR)]",
                       "reason": "Antall timer borte kan ikke være større enn antall timer planlagt jobbe",
                       "invalid_value": "antallTimerBorte = PT6H, antallTimerPlanlagt=PT5H"
                     }
@@ -735,7 +747,8 @@ class SøknadApplicationTest {
                                 fraOgMed = LocalDate.parse("2020-01-01"),
                                 tilOgMed = LocalDate.parse("2020-01-10"),
                                 antallTimerPlanlagt = Duration.ofHours(5),
-                                antallTimerBorte = Duration.ofHours(6)
+                                antallTimerBorte = Duration.ofHours(6),
+                                årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                             )
                         )
                     )
