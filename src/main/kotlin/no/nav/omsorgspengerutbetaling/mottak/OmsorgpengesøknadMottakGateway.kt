@@ -15,7 +15,6 @@ import no.nav.helse.dusseldorf.ktor.jackson.dusseldorfConfigured
 import no.nav.helse.dusseldorf.ktor.metrics.Operation
 import no.nav.helse.dusseldorf.oauth2.client.AccessTokenClient
 import no.nav.helse.dusseldorf.oauth2.client.CachedAccessTokenClient
-import no.nav.k9.søknad.JsonUtils
 import no.nav.omsorgspengerutbetaling.general.CallId
 import no.nav.omsorgspengerutbetaling.general.auth.ApiGatewayApiKey
 import no.nav.omsorgspengerutbetaling.soknad.KomplettSøknad
@@ -59,10 +58,8 @@ class OmsorgpengesøknadMottakGateway(
         søknad: KomplettSøknad,
         callId: CallId
     ) {
-        val authorizationHeader =
-            cachedAccessTokenClient.getAccessToken(sendeSoknadTilProsesseringScopes).asAuthoriationHeader()
+        val authorizationHeader = cachedAccessTokenClient.getAccessToken(sendeSoknadTilProsesseringScopes).asAuthoriationHeader()
 
-        logger.info("SKAL IKKE VISES I PROD! K9-Format: {}", JsonUtils.toString(søknad.k9Format)) //TODO 10.03.2021 - fjerne
         val body = objectMapper.writeValueAsBytes(søknad)
         val contentStream = { ByteArrayInputStream(body) }
 

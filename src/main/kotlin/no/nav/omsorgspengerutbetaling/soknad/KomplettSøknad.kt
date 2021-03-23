@@ -24,5 +24,5 @@ data class KomplettSøknad(
     val hjemmePgaSmittevernhensyn: Boolean? = null, //TODO 15.03.2021 - Fjernes når frontend er prodsatt
     val hjemmePgaStengtBhgSkole: Boolean? = null, //TODO 15.03.2021 - Fjernes når frontend er prodsatt
     val barn: List<Barn>,
-    val k9Format: Søknad? = null
+    val k9Format: Søknad
 )

@@ -78,7 +78,7 @@ class K9FormatTest {
                   "språk": "nb"
                 }
         """.trimIndent()
-        //TODO 10.03.2021 - Sjekk opp om det er riktig at bosted ikke blir tatt med.
+
         JSONAssert.assertEquals(forventetK9FormatJson, JsonUtils.toString(k9Format), true)
     }
 
