@@ -6,7 +6,6 @@ import io.ktor.locations.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import no.nav.omsorgspengerutbetaling.barn.BarnService
 import no.nav.omsorgspengerutbetaling.general.auth.IdTokenProvider
 import no.nav.omsorgspengerutbetaling.general.getCallId
 import org.slf4j.Logger
@@ -17,7 +16,6 @@ private val logger: Logger = LoggerFactory.getLogger("nav.soknadApis")
 @KtorExperimentalLocationsAPI
 internal fun Route.arbeidstakerutbetalingsøknadApis(
     søknadService: SøknadService,
-    barnService: BarnService,
     idTokenProvider: IdTokenProvider
 ) {
 
@@ -27,14 +25,6 @@ internal fun Route.arbeidstakerutbetalingsøknadApis(
     post { _ : sendSoknadUtbetalingArbeidstaker ->
         logger.trace("Mottatt ny søknad om arbeidstakerutbetaling. Mapper søknad.")
         val søknad = call.receive<Søknad>()
-
-        if(søknad.barn.isNotEmpty()){
-            logger.trace("Oppdaterer barn med identitetsnummer")
-            val listeOverBarnMedIdentitetsnummer = barnService.hentNåværendeBarn(idTokenProvider.getIdToken(call), call.getCallId())
-            søknad.oppdaterBarnMedIdentitetsnummer(listeOverBarnMedIdentitetsnummer)
-            logger.info("Oppdatering av identitetsnummer på barn OK")
-        }
-
         søknad.valider()
         logger.trace("Validering OK. Registrerer søknad.")
 
