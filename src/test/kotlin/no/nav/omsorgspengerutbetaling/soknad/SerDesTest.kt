@@ -189,15 +189,7 @@ internal class SerDesTest {
             }],
             "vedlegg": [],
             "hjemmePgaSmittevernhensyn": true,
-            "hjemmePgaStengtBhgSkole": true,
-            "barn": [
-              {
-                "identitetsnummer": "26104500284",
-                "aktørId": null,
-                "navn": "Ole Dole",
-                "aleneOmOmsorgen": true
-              }
-            ]
+            "hjemmePgaStengtBhgSkole": true
         }
         """.trimIndent()
 

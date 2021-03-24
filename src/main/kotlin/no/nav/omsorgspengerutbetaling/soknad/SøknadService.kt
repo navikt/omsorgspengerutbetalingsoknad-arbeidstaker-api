@@ -64,7 +64,6 @@ internal class SøknadService(
             vedlegg = vedlegg,
             hjemmePgaSmittevernhensyn = søknad.hjemmePgaSmittevernhensyn,
             hjemmePgaStengtBhgSkole = søknad.hjemmePgaStengtBhgSkole,
-            barn = søknad.barn,
             k9Format = k9Format
         )
 

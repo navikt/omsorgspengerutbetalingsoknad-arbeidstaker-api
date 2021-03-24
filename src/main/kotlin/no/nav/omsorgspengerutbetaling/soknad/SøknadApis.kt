@@ -12,7 +12,6 @@ import io.ktor.locations.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import no.nav.omsorgspengerutbetaling.barn.BarnService
 import no.nav.omsorgspengerutbetaling.general.auth.IdTokenProvider
 import no.nav.omsorgspengerutbetaling.general.getCallId
 import no.nav.omsorgspengerutbetaling.k9format.tilK9Format
@@ -47,13 +46,6 @@ internal fun Route.arbeidstakerutbetalingsøknadApis(
         logger.trace("Henter søker")
         val søker: Søker = søkerService.getSoker(idToken = idToken, callId = callId)
         søker.validate()
-
-        if(søknad.barn.isNotEmpty()){
-            logger.trace("Oppdaterer barn med identitetsnummer")
-            val listeOverBarnMedIdentitetsnummer = barnService.hentNåværendeBarn(idTokenProvider.getIdToken(call), call.getCallId())
-            søknad.oppdaterBarnMedIdentitetsnummer(listeOverBarnMedIdentitetsnummer)
-            logger.info("Oppdatering av identitetsnummer på barn OK")
-        }
 
         logger.info("Mapper om til K9Format")
         val k9Format = søknad.tilK9Format(mottatt, søker)

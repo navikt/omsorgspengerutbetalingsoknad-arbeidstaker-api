@@ -178,15 +178,7 @@ internal object SøknadUtils {
         ),
         vedlegg = emptyList(),
         hjemmePgaSmittevernhensyn = true,
-        hjemmePgaStengtBhgSkole = true,
-        barn = listOf(
-            Barn(
-                identitetsnummer = "26104500284",
-                navn = "Ole Dole",
-                aleneOmOmsorgen = true,
-                aktørId = null
-            )
-        )
+        hjemmePgaStengtBhgSkole = true
     )
 
     fun defaultKomplettSøknad(søknadId: String = UUID.randomUUID().toString(), mottatt: ZonedDateTime = ZonedDateTime.now()) = KomplettSøknad(
@@ -339,14 +331,6 @@ internal object SøknadUtils {
         vedlegg = emptyList(),
         hjemmePgaSmittevernhensyn = true,
         hjemmePgaStengtBhgSkole = true,
-        barn = listOf(
-            Barn(
-                identitetsnummer = "26104500284",
-                navn = "Ole Dole",
-                aleneOmOmsorgen = true,
-                aktørId = null
-            )
-        ),
         k9Format = defaultK9Format(søknadId, mottatt)
     )
 
