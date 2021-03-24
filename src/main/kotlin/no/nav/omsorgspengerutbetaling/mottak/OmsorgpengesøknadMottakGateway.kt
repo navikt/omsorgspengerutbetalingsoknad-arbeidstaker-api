@@ -1,6 +1,6 @@
 package no.nav.omsorgspengerutbetaling.mottak
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
@@ -33,7 +33,7 @@ class OmsorgpengesøknadMottakGateway(
     private companion object {
         private val logger: Logger = LoggerFactory.getLogger(OmsorgpengesøknadMottakGateway::class.java)
         private val objectMapper = jacksonObjectMapper().dusseldorfConfigured()
-            .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
+            .setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE)
             .configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false)
     }
 

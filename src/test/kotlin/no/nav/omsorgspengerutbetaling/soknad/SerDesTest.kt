@@ -384,7 +384,8 @@ internal class SerDesTest {
                   "fraværsperioder": [
                     {
                       "periode": "2020-01-01/2020-01-10",
-                      "duration": "PT7H30M"
+                      "duration": "PT7H30M",
+                      "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
                     }
                   ],
                   "bosteder": null,

@@ -14,12 +14,15 @@ import no.nav.k9.søknad.ytelse.omsorgspenger.v1.OmsorgspengerUtbetaling
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
 import no.nav.omsorgspengerutbetaling.felles.Bosted
 import no.nav.omsorgspengerutbetaling.felles.FosterBarn
+import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak
+import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak.*
 import no.nav.omsorgspengerutbetaling.felles.Opphold
 import no.nav.omsorgspengerutbetaling.soker.Søker
 import no.nav.omsorgspengerutbetaling.soknad.Søknad
 import java.time.Duration
 import java.time.ZonedDateTime
 import no.nav.k9.søknad.Søknad as K9Søknad
+import no.nav.k9.søknad.felles.fravær.FraværÅrsak as K9FraværÅrsak
 import no.nav.k9.søknad.felles.personopplysninger.Søker as K9Søker
 
 private val k9FormatVersjon = Versjon.of("1.0.0")
@@ -78,9 +81,18 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
         arbeidsgiver.perioder.forEach { utbetalingsperiode ->
             val periode = Periode(utbetalingsperiode.fraOgMed, utbetalingsperiode.tilOgMed)
             val lengde = utbetalingsperiode.antallTimerBorte ?: fullArbeidsdag
-            fraværsperioder.add(FraværPeriode(periode, lengde))
+            val årsak = utbetalingsperiode.årsak?.tilK9Årsak()
+            fraværsperioder.add(FraværPeriode(periode, lengde, årsak))
         }
     }
 
     return fraværsperioder
+}
+
+private fun FraværÅrsak.tilK9Årsak(): K9FraværÅrsak {
+    return when(this) {
+        ORDINÆRT_FRAVÆR -> K9FraværÅrsak.ORDINÆRT_FRAVÆR
+        SMITTEVERNHENSYN -> K9FraværÅrsak.SMITTEVERNHENSYN
+        STENGT_SKOLE_ELLER_BARNEHAGE -> K9FraværÅrsak.STENGT_SKOLE_ELLER_BARNEHAGE
+    }
 }

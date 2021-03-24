@@ -42,27 +42,33 @@ class K9FormatTest {
                     "fraværsperioder": [
                       {
                         "periode": "2020-01-01/2020-01-11",
-                        "duration": "PT7H30M"
+                        "duration": "PT7H30M",
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       },
                       {
                         "periode": "2020-01-21/2020-01-21",
-                        "duration": "PT5H"
+                        "duration": "PT5H",
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       },
                       {
                         "periode": "2020-01-31/2020-02-05",
-                        "duration": "PT5H"
+                        "duration": "PT5H",
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       },
                       {
                         "periode": "2020-01-31/2020-02-05",
-                        "duration": "PT7H30M"
+                        "duration": "PT7H30M",
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       },
                       {
                         "periode": "2020-02-01/2020-02-06",
-                        "duration": "PT7H30M"
+                        "duration": "PT7H30M",
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       },
                       {
                         "periode": "2020-02-01/2020-02-06",
-                        "duration": "PT7H30M"
+                        "duration": "PT7H30M",
+                        "årsak": "ORDINÆRT_FRAVÆR"
                       }
                     ],
                     "bosteder": null,
