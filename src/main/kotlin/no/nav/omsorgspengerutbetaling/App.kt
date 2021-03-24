@@ -175,7 +175,6 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
             arbeidstakerutbetalingsøknadApis(
                 idTokenProvider = idTokenProvider,
                 søkerService = søkerService,
-                barnService = barnService,
                 søknadService = SøknadService(
                     omsorgpengesøknadMottakGateway = omsorgpengesoknadMottakGateway,
                     søkerService = søkerService,

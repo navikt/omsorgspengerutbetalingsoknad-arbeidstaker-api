@@ -363,14 +363,6 @@ internal class SerDesTest {
               ],
               "hjemmePgaSmittevernhensyn": true,
               "hjemmePgaStengtBhgSkole": true,
-                "barn": [
-                  {
-                    "identitetsnummer": "26104500284",
-                    "aktørId": null,
-                    "navn": "Ole Dole",
-                    "aleneOmOmsorgen": true
-                  }
-                ],
               "k9Format": {
                 "søknadId": "$søknadId",
                 "versjon": "1.0.0",
