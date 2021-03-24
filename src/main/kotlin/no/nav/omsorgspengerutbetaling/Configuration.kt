@@ -1,7 +1,5 @@
 package no.nav.omsorgspengerutbetaling
 
-import com.github.benmanes.caffeine.cache.Cache
-import com.github.benmanes.caffeine.cache.Caffeine
 import io.ktor.config.*
 import io.ktor.util.*
 import no.nav.helse.dusseldorf.ktor.auth.EnforceEqualsOrContains
@@ -12,7 +10,6 @@ import no.nav.helse.dusseldorf.ktor.core.getRequiredList
 import no.nav.helse.dusseldorf.ktor.core.getRequiredString
 import no.nav.omsorgspengerutbetaling.general.auth.ApiGatewayApiKey
 import java.net.URI
-import java.time.Duration
 
 @KtorExperimentalAPI
 data class Configuration(val config : ApplicationConfig) {
@@ -59,15 +56,5 @@ data class Configuration(val config : ApplicationConfig) {
 
     internal fun getStoragePassphrase(): String {
         return config.getRequiredString("nav.storage.passphrase", secret = true)
-    }
-
-    internal fun<K, V>cache(
-        expiry: Duration = Duration.ofMinutes(config.getRequiredString("nav.cache.barn.expiry_in_minutes", secret = false).toLong())
-    ) : Cache<K, V> {
-        val maxSize = config.getRequiredString("nav.cache.barn.max_size", secret = false).toLong()
-        return Caffeine.newBuilder()
-            .expireAfterWrite(expiry)
-            .maximumSize(maxSize)
-            .build()
     }
 }

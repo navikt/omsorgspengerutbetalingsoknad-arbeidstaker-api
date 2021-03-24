@@ -10,13 +10,10 @@ import io.ktor.util.*
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.omsorgspengerutbetaling.*
-import no.nav.omsorgspengerutbetaling.barn.BARN_URL
 import no.nav.omsorgspengerutbetaling.felles.*
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
 import no.nav.omsorgspengerutbetaling.soknad.ArbeidstakerutbetalingSøknadUtils.defaultSøknad
-import no.nav.omsorgspengerutbetaling.soknad.somJson
 import no.nav.omsorgspengerutbetaling.wiremock.*
-import org.json.JSONObject
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.skyscreamer.jsonassert.JSONAssert
@@ -27,7 +24,6 @@ import java.time.Duration
 import java.time.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 
 private const val fnr = "290990123456"
 private const val ikkeMyndigFnr = "12125012345"
@@ -55,7 +51,6 @@ class SøknadApplicationTest {
             .stubLeggSoknadTilProsessering("/v1/soknad")
             .stubK9OppslagSoker()
             .stubK9Mellomlagring()
-            .stubK9OppslagBarn()
 
         val redisServer: RedisServer = RedisServer
             .newRedisServer(6379)
@@ -95,59 +90,6 @@ class SøknadApplicationTest {
             redisServer.stop()
             logger.info("Tear down complete")
         }
-    }
-
-    @Test
-    fun `Hente barn og sjekk eksplisit at identitetsnummer ikke blir med ved get kall`(){
-
-        val respons = requestAndAssert(
-            httpMethod = HttpMethod.Get,
-            path = BARN_URL,
-            expectedCode = HttpStatusCode.OK,
-            //language=json
-            expectedResponse = """
-                {
-                  "barnOppslag": [
-                    {
-                      "fødselsdato": "2000-08-27",
-                      "fornavn": "BARN",
-                      "mellomnavn": "EN",
-                      "etternavn": "BARNESEN",
-                      "aktørId": "1000000000001"
-                    },
-                    {
-                      "fødselsdato": "2001-04-10",
-                      "fornavn": "BARN",
-                      "mellomnavn": "TO",
-                      "etternavn": "BARNESEN",
-                      "aktørId": "1000000000002"
-                    }
-                  ]
-                }
-            """.trimIndent()
-        )
-
-        val responsSomJSONArray = JSONObject(respons).getJSONArray("barnOppslag")
-
-        assertFalse(responsSomJSONArray.getJSONObject(0).has("identitetsnummer"))
-        assertFalse(responsSomJSONArray.getJSONObject(1).has("identitetsnummer"))
-    }
-
-    @Test
-    fun `Feil ved henting av barn skal returnere tom liste`() {
-        wireMockServer.stubK9OppslagBarn(simulerFeil = true)
-        requestAndAssert(
-            httpMethod = HttpMethod.Get,
-            path = BARN_URL,
-            expectedCode = HttpStatusCode.OK,
-            expectedResponse = """
-            {
-                "barnOppslag": []
-            }
-            """.trimIndent(),
-            cookie = getAuthCookie("25118921464")
-        )
-        wireMockServer.stubK9OppslagBarn()
     }
 
     @Test
@@ -377,14 +319,6 @@ class SøknadApplicationTest {
                 ),
                 vedlegg = listOf(
                     URL(jpegUrl), URL(pdfUrl)
-                ),
-                barn = listOf(
-                    Barn(
-                        identitetsnummer = "12345",
-                        navn = "Ole Dole",
-                        aleneOmOmsorgen = null,
-                        aktørId = null
-                    )
                 )
             ).somJson(),
             expectedResponse = """
@@ -409,18 +343,6 @@ class SøknadApplicationTest {
                     "name": "bekreftelser.harForståttRettigheterOgPlikter",
                     "reason": "Må besvars Ja.",
                     "invalid_value": false
-                },
-                {
-                  "type": "entity",
-                  "name": "barn[0].identitetsnummer",
-                  "reason": "Barn.identitetsnummer må være gyldig norsk identifikator.",
-                  "invalid_value": "12345"
-                },
-                {
-                  "type": "entity",
-                  "name": "barn[0].aleneOmOmsorgen",
-                  "reason": "Barn.aleneOmOmsorgen kan ikke være null.",
-                  "invalid_value": null
                 }]
             }
             """.trimIndent()
