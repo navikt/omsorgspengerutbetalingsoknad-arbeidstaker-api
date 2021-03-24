@@ -79,10 +79,13 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
 
     forEach { arbeidsgiver ->
         arbeidsgiver.perioder.forEach { utbetalingsperiode ->
-            val periode = Periode(utbetalingsperiode.fraOgMed, utbetalingsperiode.tilOgMed)
-            val lengde = utbetalingsperiode.antallTimerBorte ?: fullArbeidsdag
-            val årsak = utbetalingsperiode.årsak?.tilK9Årsak()
-            fraværsperioder.add(FraværPeriode(periode, lengde, årsak))
+            fraværsperioder.add(
+                FraværPeriode(
+                    Periode(utbetalingsperiode.fraOgMed, utbetalingsperiode.tilOgMed),
+                    utbetalingsperiode.antallTimerBorte ?: fullArbeidsdag,
+                    utbetalingsperiode.årsak?.tilK9Årsak() ?: K9FraværÅrsak.ORDINÆRT_FRAVÆR
+                )
+            )
         }
     }
 
