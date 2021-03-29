@@ -1,12 +1,11 @@
 package no.nav.omsorgspengerutbetaling.mottak
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.github.kittinunf.fuel.httpPost
-import io.ktor.http.HttpHeaders
-import io.ktor.http.Url
+import io.ktor.http.*
 import no.nav.helse.dusseldorf.ktor.client.buildURL
 import no.nav.helse.dusseldorf.ktor.health.HealthCheck
 import no.nav.helse.dusseldorf.ktor.health.Healthy
@@ -16,9 +15,9 @@ import no.nav.helse.dusseldorf.ktor.jackson.dusseldorfConfigured
 import no.nav.helse.dusseldorf.ktor.metrics.Operation
 import no.nav.helse.dusseldorf.oauth2.client.AccessTokenClient
 import no.nav.helse.dusseldorf.oauth2.client.CachedAccessTokenClient
-import no.nav.omsorgspengerutbetaling.soknad.KomplettSøknad
 import no.nav.omsorgspengerutbetaling.general.CallId
 import no.nav.omsorgspengerutbetaling.general.auth.ApiGatewayApiKey
+import no.nav.omsorgspengerutbetaling.soknad.KomplettSøknad
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.ByteArrayInputStream
@@ -34,7 +33,7 @@ class OmsorgpengesøknadMottakGateway(
     private companion object {
         private val logger: Logger = LoggerFactory.getLogger(OmsorgpengesøknadMottakGateway::class.java)
         private val objectMapper = jacksonObjectMapper().dusseldorfConfigured()
-            .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
+            .setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE)
             .configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false)
     }
 
@@ -56,13 +55,12 @@ class OmsorgpengesøknadMottakGateway(
     }
 
     suspend fun leggTilProsessering(
-        soknad: KomplettSøknad,
+        søknad: KomplettSøknad,
         callId: CallId
     ) {
-        val authorizationHeader =
-            cachedAccessTokenClient.getAccessToken(sendeSoknadTilProsesseringScopes).asAuthoriationHeader()
+        val authorizationHeader = cachedAccessTokenClient.getAccessToken(sendeSoknadTilProsesseringScopes).asAuthoriationHeader()
 
-        val body = objectMapper.writeValueAsBytes(soknad)
+        val body = objectMapper.writeValueAsBytes(søknad)
         val contentStream = { ByteArrayInputStream(body) }
 
         val httpRequet = komplettUrl

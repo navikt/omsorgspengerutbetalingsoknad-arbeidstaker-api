@@ -12,7 +12,7 @@ import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.omsorgspengerutbetaling.*
 import no.nav.omsorgspengerutbetaling.felles.*
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
-import no.nav.omsorgspengerutbetaling.soknad.ArbeidstakerutbetalingSøknadUtils.defaultSøknad
+import no.nav.omsorgspengerutbetaling.soknad.SøknadUtils.defaultSøknad
 import no.nav.omsorgspengerutbetaling.wiremock.*
 import org.junit.AfterClass
 import org.junit.BeforeClass
@@ -343,7 +343,14 @@ class SøknadApplicationTest {
                     "name": "bekreftelser.harForståttRettigheterOgPlikter",
                     "reason": "Må besvars Ja.",
                     "invalid_value": false
-                }]
+                },
+                {
+                  "type": "entity",
+                  "name": "fraværsperioder",
+                  "reason": "Minst 1 fraværsperiode må oppgis",
+                  "invalid_value": "k9-format feilkode: påkrevd"
+                }
+                ]
             }
             """.trimIndent()
         )
@@ -359,21 +366,21 @@ class SøknadApplicationTest {
             httpMethod = HttpMethod.Post,
             path = "/soknad",
             expectedResponse = """
+            {
+              "type": "/problem-details/invalid-request-parameters",
+              "title": "invalid-request-parameters",
+              "status": 400,
+              "detail": "Requesten inneholder ugyldige paramtere.",
+              "instance": "about:blank",
+              "invalid_parameters": [
                 {
-                  "type": "/problem-details/invalid-request-parameters",
-                  "title": "invalid-request-parameters",
-                  "status": 400,
-                  "detail": "Requesten inneholder ugyldige paramtere.",
-                  "instance": "about:blank",
-                  "invalid_parameters": [
-                    {
-                      "type": "entity",
-                      "name": "fosterbarn[1].fødselsnummer",
-                      "reason": "Ikke gyldig fødselsnummer.",
-                      "invalid_value": "ugyldig fødselsnummer"
-                    }
-                  ]
+                  "type": "entity",
+                  "name": "fosterbarn[1].fødselsnummer",
+                  "reason": "Ikke gyldig fødselsnummer.",
+                  "invalid_value": "111"
                 }
+              ]
+            }
             """.trimIndent(),
             expectedCode = HttpStatusCode.BadRequest,
             cookie = cookie,
@@ -383,7 +390,7 @@ class SøknadApplicationTest {
                         fødselsnummer = "02119970078"
                     ),
                     FosterBarn(
-                        fødselsnummer = "ugyldig fødselsnummer"
+                        fødselsnummer = "111"
                     )
                 ),
                 vedlegg = listOf(

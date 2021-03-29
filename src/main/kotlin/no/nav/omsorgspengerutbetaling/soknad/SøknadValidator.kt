@@ -1,19 +1,22 @@
 package no.nav.omsorgspengerutbetaling.soknad
 
 import no.nav.helse.dusseldorf.ktor.core.*
+import no.nav.k9.søknad.ytelse.omsorgspenger.v1.OmsorgspengerUtbetaling
+import no.nav.k9.søknad.ytelse.omsorgspenger.v1.OmsorgspengerUtbetalingValidator
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.valider
 import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.valider
 import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
 import java.net.URL
 import java.time.format.DateTimeFormatter
+import no.nav.k9.søknad.Søknad as K9Søknad
 
 
 internal val vekttallProviderFnr1: (Int) -> Int = { arrayOf(3, 7, 6, 1, 8, 9, 4, 5, 2).reversedArray()[it] }
 internal val vekttallProviderFnr2: (Int) -> Int = { arrayOf(5, 4, 3, 2, 7, 6, 5, 4, 3, 2).reversedArray()[it] }
 private val fnrDateFormat = DateTimeFormatter.ofPattern("ddMMyy")
 
-internal fun Søknad.valider() {
+internal fun Søknad.valider(k9Format: K9Søknad) {
     val violations = mutableSetOf<Violation>().apply {
         addAll(arbeidsgivere.valider(vedlegg))
         addAll(opphold.valider("opphold"))
@@ -21,12 +24,23 @@ internal fun Søknad.valider() {
         addAll(bekreftelser.valider())
         addAll(andreUtbetalinger.valider())
         fosterbarn?.let { addAll(validerFosterbarn(it)) }
+        addAll(k9Format.valider())
     }
 
     if (violations.isNotEmpty()) {
         throw Throwblem(ValidationProblemDetails(violations))
     }
 }
+
+private fun K9Søknad.valider() =
+    OmsorgspengerUtbetalingValidator().valider(getYtelse<OmsorgspengerUtbetaling>()).map {
+        Violation(
+            parameterName = it.felt,
+            parameterType = ParameterType.ENTITY,
+            reason = it.feilmelding,
+            invalidValue = "k9-format feilkode: ${it.feilkode}"
+        )
+    }
 
 private fun validerFosterbarn(fosterbarn: List<FosterBarn>) = mutableSetOf<Violation>().apply {
     fosterbarn.mapIndexed { index, barn ->

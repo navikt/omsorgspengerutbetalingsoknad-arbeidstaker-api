@@ -2,7 +2,7 @@ package no.nav.omsorgspengerutbetaling.arbeidsgiver
 
 import no.nav.helse.dusseldorf.ktor.core.Violation
 import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
-import no.nav.omsorgspengerutbetaling.felles.validerUtenVedlegg
+import no.nav.omsorgspengerutbetaling.felles.valider
 import no.nav.omsorgspengerutbetaling.soknad.Ansettelseslengde
 import no.nav.omsorgspengerutbetaling.soknad.valider
 import java.net.URL
@@ -33,6 +33,6 @@ fun List<ArbeidsgiverDetaljer>.valider(vedlegg: List<URL>): List<Violation> =
     mapIndexed { index, arbeidsgiverDetaljer ->
         val violations = mutableSetOf<Violation>()
         violations.addAll(arbeidsgiverDetaljer.ansettelseslengde.valider(vedlegg, "arbeidsgivere[$index].ansettelseslengde"))
-        violations.addAll(arbeidsgiverDetaljer.perioder.validerUtenVedlegg())
+        violations.addAll(arbeidsgiverDetaljer.perioder.valider())
         violations
     }.flatMap { it }
