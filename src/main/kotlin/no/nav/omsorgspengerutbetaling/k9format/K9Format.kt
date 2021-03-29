@@ -1,6 +1,7 @@
 package no.nav.omsorgspengerutbetaling.k9format
 
 import no.nav.k9.søknad.felles.Versjon
+import no.nav.k9.søknad.felles.fravær.AktivitetFravær
 import no.nav.k9.søknad.felles.fravær.FraværPeriode
 import no.nav.k9.søknad.felles.opptjening.OpptjeningAktivitet
 import no.nav.k9.søknad.felles.personopplysninger.Barn
@@ -83,7 +84,8 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
                 FraværPeriode(
                     Periode(utbetalingsperiode.fraOgMed, utbetalingsperiode.tilOgMed),
                     utbetalingsperiode.antallTimerBorte ?: fullArbeidsdag,
-                    utbetalingsperiode.årsak?.tilK9Årsak() ?: K9FraværÅrsak.ORDINÆRT_FRAVÆR
+                    utbetalingsperiode.årsak?.tilK9Årsak() ?: K9FraværÅrsak.ORDINÆRT_FRAVÆR,
+                    listOf(AktivitetFravær.ARBEIDSTAKER)
                 )
             )
         }
