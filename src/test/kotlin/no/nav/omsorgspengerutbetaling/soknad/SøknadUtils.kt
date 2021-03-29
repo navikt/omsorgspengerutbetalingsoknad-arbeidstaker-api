@@ -2,8 +2,8 @@ package no.nav.omsorgspengerutbetaling.soknad
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.k9.søknad.felles.Versjon
-import no.nav.k9.søknad.felles.aktivitet.ArbeidAktivitet
 import no.nav.k9.søknad.felles.fravær.FraværPeriode
+import no.nav.k9.søknad.felles.opptjening.OpptjeningAktivitet
 import no.nav.k9.søknad.felles.personopplysninger.Barn
 import no.nav.k9.søknad.felles.personopplysninger.Bosteder
 import no.nav.k9.søknad.felles.personopplysninger.Utenlandsopphold
@@ -343,7 +343,7 @@ internal object SøknadUtils {
             listOf(
                 Barn(NorskIdentitetsnummer.of("26128027024"), null)
             ),
-            ArbeidAktivitet(null, null, null),
+            OpptjeningAktivitet(null, null, null),
             listOf(
                 FraværPeriode(
                     Periode(LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-10")),

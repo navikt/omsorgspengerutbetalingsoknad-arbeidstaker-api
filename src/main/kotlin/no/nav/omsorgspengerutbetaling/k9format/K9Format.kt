@@ -1,8 +1,8 @@
 package no.nav.omsorgspengerutbetaling.k9format
 
 import no.nav.k9.søknad.felles.Versjon
-import no.nav.k9.søknad.felles.aktivitet.ArbeidAktivitet
 import no.nav.k9.søknad.felles.fravær.FraværPeriode
+import no.nav.k9.søknad.felles.opptjening.OpptjeningAktivitet
 import no.nav.k9.søknad.felles.personopplysninger.Barn
 import no.nav.k9.søknad.felles.personopplysninger.Bosteder
 import no.nav.k9.søknad.felles.personopplysninger.Utenlandsopphold
@@ -36,7 +36,7 @@ fun Søknad.tilK9Format(mottatt: ZonedDateTime, søker: Søker): K9Søknad {
         søker.tilK9Søker(),
         OmsorgspengerUtbetaling(
             fosterbarn?.tilK9Barn(),
-            ArbeidAktivitet(null, null, null), //Trenger ikke ArbeidAktivitet for denne ytelsen.
+            OpptjeningAktivitet(null, null, null), //Trenger ikke OpptjeningAktivitet for denne ytelsen.
             arbeidsgivere.byggK9Fraværsperiode(),
             bosteder.tilK9Bosteder(),
             opphold.tilK9Utenlandsopphold()
