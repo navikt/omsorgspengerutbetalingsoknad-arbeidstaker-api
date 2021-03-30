@@ -43,32 +43,38 @@ class K9FormatTest {
                       {
                         "periode": "2020-01-01/2020-01-11",
                         "duration": "PT7H30M",
-                        "årsak": "ORDINÆRT_FRAVÆR"
+                        "årsak": "ORDINÆRT_FRAVÆR",
+                        "aktivitetFravær" : ["ARBEIDSTAKER"]
                       },
                       {
                         "periode": "2020-01-21/2020-01-21",
                         "duration": "PT5H",
-                        "årsak": "ORDINÆRT_FRAVÆR"
+                        "årsak": "ORDINÆRT_FRAVÆR",
+                        "aktivitetFravær" : ["ARBEIDSTAKER"]
                       },
                       {
                         "periode": "2020-01-31/2020-02-05",
                         "duration": "PT5H",
-                        "årsak": "ORDINÆRT_FRAVÆR"
+                        "årsak": "ORDINÆRT_FRAVÆR",
+                        "aktivitetFravær" : ["ARBEIDSTAKER"]
                       },
                       {
                         "periode": "2020-01-31/2020-02-05",
                         "duration": "PT7H30M",
-                        "årsak": "ORDINÆRT_FRAVÆR"
+                        "årsak": "ORDINÆRT_FRAVÆR",
+                        "aktivitetFravær" : ["ARBEIDSTAKER"]
                       },
                       {
                         "periode": "2020-02-01/2020-02-06",
                         "duration": "PT7H30M",
-                        "årsak": "ORDINÆRT_FRAVÆR"
+                        "årsak": "ORDINÆRT_FRAVÆR",
+                        "aktivitetFravær" : ["ARBEIDSTAKER"]
                       },
                       {
                         "periode": "2020-02-01/2020-02-06",
                         "duration": "PT7H30M",
-                        "årsak": "ORDINÆRT_FRAVÆR"
+                        "årsak": "ORDINÆRT_FRAVÆR",
+                        "aktivitetFravær" : ["ARBEIDSTAKER"]
                       }
                     ],
                     "bosteder": null,
