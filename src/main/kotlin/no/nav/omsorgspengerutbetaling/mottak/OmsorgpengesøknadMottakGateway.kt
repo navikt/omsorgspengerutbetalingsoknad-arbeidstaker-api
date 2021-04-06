@@ -65,8 +65,8 @@ class OmsorgpengesøknadMottakGateway(
 
         val httpRequet = komplettUrl
             .httpPost()
-            .timeout(20_000)
-            .timeoutRead(20_000)
+            .timeout(60_000)
+            .timeoutRead(60_000)
             .body(contentStream)
             .header(
                 HttpHeaders.ContentType to "application/json",
