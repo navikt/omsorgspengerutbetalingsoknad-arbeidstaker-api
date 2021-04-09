@@ -357,7 +357,7 @@ class SøknadApplicationTest {
     }
 
     @Test
-    fun `Sende søknad ugyldig fødselsnummer på fosterbarn, gir feilmelding`() {
+    fun `Sende søknad ugyldig identitetsnummer på fosterbarn, gir feilmelding`() {
         val cookie = getAuthCookie(gyldigFodselsnummerA)
         val jpegUrl = engine.jpegUrl(cookie)
         val pdfUrl = engine.pdUrl(cookie)
@@ -375,8 +375,8 @@ class SøknadApplicationTest {
               "invalid_parameters": [
                 {
                   "type": "entity",
-                  "name": "fosterbarn[1].fødselsnummer",
-                  "reason": "Ikke gyldig fødselsnummer.",
+                  "name": "fosterbarn[1].identitetsnummer",
+                  "reason": "Ikke gyldig identitetsnummer.",
                   "invalid_value": "111"
                 }
               ]
@@ -387,10 +387,10 @@ class SøknadApplicationTest {
             requestEntity = defaultSøknad.copy(
                 fosterbarn = listOf(
                     FosterBarn(
-                        fødselsnummer = "02119970078"
+                        identitetsnummer = "02119970078"
                     ),
                     FosterBarn(
-                        fødselsnummer = "111"
+                        identitetsnummer = "111"
                     )
                 ),
                 vedlegg = listOf(

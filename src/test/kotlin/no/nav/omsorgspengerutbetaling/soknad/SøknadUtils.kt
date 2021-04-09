@@ -174,7 +174,7 @@ internal object SøknadUtils {
         erFrilanser = JaNei.Nei,
         fosterbarn = listOf(
             FosterBarn(
-                fødselsnummer = "02119970078"
+                identitetsnummer = "02119970078"
             )
         ),
         vedlegg = emptyList(),
@@ -322,7 +322,7 @@ internal object SøknadUtils {
         erFrilanser = JaNei.Nei,
         fosterbarn = listOf(
             FosterBarn(
-                fødselsnummer = "02119970078"
+                identitetsnummer = "02119970078"
             )
         ),
         bekreftelser = Bekreftelser(

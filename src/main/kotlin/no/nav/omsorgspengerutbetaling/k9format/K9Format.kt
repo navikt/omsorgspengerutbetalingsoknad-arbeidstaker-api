@@ -48,7 +48,7 @@ fun Søknad.tilK9Format(mottatt: ZonedDateTime, søker: Søker): K9Søknad {
 fun Søker.tilK9Søker(): K9Søker = K9Søker(NorskIdentitetsnummer.of(fødselsnummer))
 
 fun List<FosterBarn>.tilK9Barn(): List<Barn> = map {
-    Barn(NorskIdentitetsnummer.of(it.fødselsnummer), null)
+    Barn(NorskIdentitetsnummer.of(it.identitetsnummer), null)
 }
 
 fun List<Bosted>.tilK9Bosteder(): Bosteder {
