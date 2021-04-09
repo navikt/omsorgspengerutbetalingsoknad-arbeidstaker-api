@@ -44,13 +44,13 @@ private fun K9Søknad.valider() =
 
 private fun validerFosterbarn(fosterbarn: List<FosterBarn>) = mutableSetOf<Violation>().apply {
     fosterbarn.mapIndexed { index, barn ->
-        if (!barn.fødselsnummer.erGyldigNorskIdentifikator()) {
+        if (!barn.identitetsnummer.erGyldigNorskIdentifikator()) {
             add(
                 Violation(
-                    parameterName = "fosterbarn[$index].fødselsnummer",
+                    parameterName = "fosterbarn[$index].identitetsnummer",
                     parameterType = ParameterType.ENTITY,
-                    reason = "Ikke gyldig fødselsnummer.",
-                    invalidValue = barn.fødselsnummer
+                    reason = "Ikke gyldig identitetsnummer.",
+                    invalidValue = barn.identitetsnummer
                 )
             )
         }

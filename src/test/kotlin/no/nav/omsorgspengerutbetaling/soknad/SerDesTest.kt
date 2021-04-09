@@ -185,7 +185,7 @@ internal class SerDesTest {
             "erFrilanser": false,
             "andreUtbetalinger": ["dagpenger", "sykepenger"],
             "fosterbarn": [{
-                "fødselsnummer": "02119970078"
+                "identitetsnummer": "02119970078"
             }],
             "vedlegg": [],
             "hjemmePgaSmittevernhensyn": true,
@@ -355,7 +355,7 @@ internal class SerDesTest {
               "erFrilanser": false,
               "fosterbarn": [
                 {
-                  "fødselsnummer": "02119970078"
+                  "identitetsnummer": "02119970078"
                 }
               ],
               "vedlegg": [
