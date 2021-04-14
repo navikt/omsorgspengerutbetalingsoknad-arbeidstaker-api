@@ -42,7 +42,7 @@ class K9FormatTest {
                     "fraværsperioder": [
                       {
                         "periode": "2020-01-01/2020-01-11",
-                        "duration": "PT7H30M",
+                        "duration": null,
                         "årsak": "ORDINÆRT_FRAVÆR",
                         "aktivitetFravær" : ["ARBEIDSTAKER"]
                       },
@@ -60,19 +60,19 @@ class K9FormatTest {
                       },
                       {
                         "periode": "2020-01-31/2020-02-05",
-                        "duration": "PT7H30M",
+                        "duration": null,
                         "årsak": "ORDINÆRT_FRAVÆR",
                         "aktivitetFravær" : ["ARBEIDSTAKER"]
                       },
                       {
                         "periode": "2020-02-01/2020-02-06",
-                        "duration": "PT7H30M",
+                        "duration": null,
                         "årsak": "ORDINÆRT_FRAVÆR",
                         "aktivitetFravær" : ["ARBEIDSTAKER"]
                       },
                       {
                         "periode": "2020-02-01/2020-02-06",
-                        "duration": "PT7H30M",
+                        "duration": null,
                         "årsak": "ORDINÆRT_FRAVÆR",
                         "aktivitetFravær" : ["ARBEIDSTAKER"]
                       }
