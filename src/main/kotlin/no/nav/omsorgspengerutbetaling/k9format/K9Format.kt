@@ -20,14 +20,12 @@ import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak.*
 import no.nav.omsorgspengerutbetaling.felles.Opphold
 import no.nav.omsorgspengerutbetaling.soker.Søker
 import no.nav.omsorgspengerutbetaling.soknad.Søknad
-import java.time.Duration
 import java.time.ZonedDateTime
 import no.nav.k9.søknad.Søknad as K9Søknad
 import no.nav.k9.søknad.felles.fravær.FraværÅrsak as K9FraværÅrsak
 import no.nav.k9.søknad.felles.personopplysninger.Søker as K9Søker
 
 private val k9FormatVersjon = Versjon.of("1.0.0")
-internal val fullArbeidsdag: Duration = Duration.ofHours(7).plusMinutes(30)
 
 fun Søknad.tilK9Format(mottatt: ZonedDateTime, søker: Søker): K9Søknad {
     return K9Søknad(
@@ -83,7 +81,7 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
             fraværsperioder.add(
                 FraværPeriode(
                     Periode(utbetalingsperiode.fraOgMed, utbetalingsperiode.tilOgMed),
-                    utbetalingsperiode.antallTimerBorte ?: fullArbeidsdag,
+                    utbetalingsperiode.antallTimerBorte,
                     utbetalingsperiode.årsak?.tilK9Årsak() ?: K9FraværÅrsak.ORDINÆRT_FRAVÆR,
                     listOf(AktivitetFravær.ARBEIDSTAKER)
                 )
