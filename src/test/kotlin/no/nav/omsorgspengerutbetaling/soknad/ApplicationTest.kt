@@ -53,7 +53,7 @@ class SøknadApplicationTest {
             .stubK9Mellomlagring()
 
         val redisServer: RedisServer = RedisServer
-            .newRedisServer(6379)
+            .newRedisServer()
             .started()
 
         fun getConfig(): ApplicationConfig {
