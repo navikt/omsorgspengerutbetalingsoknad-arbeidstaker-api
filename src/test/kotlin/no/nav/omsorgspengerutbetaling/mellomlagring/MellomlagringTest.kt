@@ -1,14 +1,14 @@
 package no.nav.omsorgspengerutbetaling.mellomlagring
 
 import com.github.fppt.jedismock.RedisServer
-import io.ktor.util.KtorExperimentalAPI
+import io.ktor.util.*
 import no.nav.omsorgspengerutbetaling.redis.RedisConfig
 import no.nav.omsorgspengerutbetaling.redis.RedisStore
+import org.awaitility.Awaitility
+import org.awaitility.Durations.ONE_SECOND
 import org.junit.AfterClass
 import org.slf4j.LoggerFactory
 import java.util.*
-import org.awaitility.Durations.ONE_SECOND
-import org.awaitility.Awaitility
 import kotlin.test.*
 
 @KtorExperimentalAPI
@@ -17,11 +17,11 @@ class MellomlagringTest {
         val logger = LoggerFactory.getLogger(MellomlagringTest::class.java)
 
         val redisServer: RedisServer = RedisServer
-            .newRedisServer(6379)
+            .newRedisServer()
             .started()
 
         val redisClient = RedisConfig.redisClient(
-            redisHost = redisServer.host,
+            redisHost = "localhost",
             redisPort = redisServer.bindPort
         )
 

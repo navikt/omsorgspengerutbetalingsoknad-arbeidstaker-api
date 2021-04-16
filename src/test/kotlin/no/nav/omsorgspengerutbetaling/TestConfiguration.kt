@@ -9,7 +9,6 @@ import no.nav.helse.dusseldorf.testsupport.wiremock.getLoginServiceV1WellKnownUr
 import no.nav.omsorgspengerutbetaling.wiremock.getK9MellomlagringUrl
 import no.nav.omsorgspengerutbetaling.wiremock.getK9OppslagUrl
 import no.nav.omsorgspengerutbetaling.wiremock.getOmsorgpengerutbetalingsoknadMottakUrl
-import org.json.JSONObject
 
 object TestConfiguration {
 
@@ -51,7 +50,7 @@ object TestConfiguration {
             map["nav.auth.issuers.1.audience"] = LoginService.V1_0.getAudience()
         }
 
-        map["nav.redis.host"] = redisServer.host
+        map["nav.redis.host"] = "localhost"
         map["nav.redis.port"] = "${redisServer.bindPort}"
         map["nav.storage.passphrase"] = "verySecret"
 
