@@ -7,7 +7,7 @@ import com.github.tomakehurst.wiremock.matching.AnythingPattern
 import io.ktor.http.*
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 
-internal const val k9OppslagPath = "/helse-reverse-proxy/k9-selvbetjening-oppslag-mock"
+internal const val k9OppslagPath = "/k9-selvbetjening-oppslag-mock"
 private const val omsorgpengerutbetalingsoknadMottakPath = "/helse-reverse-proxy/omsorgspengerutbetalingsoknad-arbeidstaker-mottak-mock"
 private const val k9MellomlagringPath = "/k9-mellomlagring-mock/v1/dokument"
 
@@ -21,7 +21,6 @@ internal fun WireMockBuilder.omsorgspengesoknadApiConfig() = wireMockConfigurati
 internal fun WireMockServer.stubK9OppslagSoker() : WireMockServer {
     WireMock.stubFor(
         WireMock.get(WireMock.urlPathMatching("$k9OppslagPath/.*"))
-            .withHeader("x-nav-apiKey", AnythingPattern())
             .withHeader(HttpHeaders.Authorization, AnythingPattern())
             .withQueryParam("a", equalTo("aktør_id"))
             .withQueryParam("a", equalTo("fornavn"))
