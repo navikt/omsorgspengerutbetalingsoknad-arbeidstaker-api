@@ -9,9 +9,13 @@ import io.ktor.server.testing.*
 import io.ktor.util.*
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
-import no.nav.omsorgspengerutbetaling.*
+import no.nav.omsorgspengerutbetaling.TestConfiguration
+import no.nav.omsorgspengerutbetaling.TestUtils.Companion.getAuthCookie
 import no.nav.omsorgspengerutbetaling.felles.*
+import no.nav.omsorgspengerutbetaling.handleRequestUploadImage
+import no.nav.omsorgspengerutbetaling.jpegUrl
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
+import no.nav.omsorgspengerutbetaling.pdUrl
 import no.nav.omsorgspengerutbetaling.soknad.SøknadUtils.defaultSøknad
 import no.nav.omsorgspengerutbetaling.wiremock.*
 import org.junit.AfterClass

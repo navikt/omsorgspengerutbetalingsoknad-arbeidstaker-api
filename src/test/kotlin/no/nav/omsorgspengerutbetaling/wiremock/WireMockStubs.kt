@@ -8,7 +8,7 @@ import io.ktor.http.*
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 
 internal const val k9OppslagPath = "/k9-selvbetjening-oppslag-mock"
-private const val omsorgpengerutbetalingsoknadMottakPath = "/helse-reverse-proxy/omsorgspengerutbetalingsoknad-arbeidstaker-mottak-mock"
+private const val omsorgpengerutbetalingsoknadMottakPath = "/omsorgspengerutbetalingsoknad-arbeidstaker-mottak-mock"
 private const val k9MellomlagringPath = "/k9-mellomlagring-mock/v1/dokument"
 
 internal fun WireMockBuilder.omsorgspengesoknadApiConfig() = wireMockConfiguration {
@@ -49,28 +49,13 @@ private fun WireMockServer.stubHealthEndpoint(
     return this
 }
 
-private fun WireMockServer.stubHealthEndpointThroughZones(
-    path : String
-) : WireMockServer{
-    WireMock.stubFor(
-        WireMock.get(WireMock.urlPathMatching(".*$path"))
-            .withHeader("x-nav-apiKey", AnythingPattern())
-            .willReturn(
-            WireMock.aResponse()
-                .withStatus(200)
-        )
-    )
-    return this
-}
-
 internal fun WireMockServer.stubK9DokumentHealth() = stubHealthEndpoint("$k9MellomlagringPath/health")
-internal fun WireMockServer.stubOmsorgspengerutbetalingsoknadMottakHealth() = stubHealthEndpointThroughZones("$omsorgpengerutbetalingsoknadMottakPath/health")
-internal fun WireMockServer.stubOppslagHealth() = stubHealthEndpointThroughZones("$k9OppslagPath/health")
+internal fun WireMockServer.stubOmsorgspengerutbetalingsoknadMottakHealth() = stubHealthEndpoint("$omsorgpengerutbetalingsoknadMottakPath/health")
+internal fun WireMockServer.stubOppslagHealth() = stubHealthEndpoint("$k9OppslagPath/health")
 
 internal fun WireMockServer.stubLeggSoknadTilProsessering(path: String): WireMockServer{
     WireMock.stubFor(
         WireMock.post(WireMock.urlMatching(".*$omsorgpengerutbetalingsoknadMottakPath$path"))
-            .withHeader("x-nav-apiKey", AnythingPattern())
             .willReturn(
                 WireMock.aResponse()
                     .withStatus(202)
