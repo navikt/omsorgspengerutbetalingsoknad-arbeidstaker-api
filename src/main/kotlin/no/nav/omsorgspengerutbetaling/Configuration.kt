@@ -8,7 +8,6 @@ import no.nav.helse.dusseldorf.ktor.auth.withAdditionalClaimRules
 import no.nav.helse.dusseldorf.ktor.core.getOptionalList
 import no.nav.helse.dusseldorf.ktor.core.getRequiredList
 import no.nav.helse.dusseldorf.ktor.core.getRequiredString
-import no.nav.omsorgspengerutbetaling.general.auth.ApiGatewayApiKey
 import java.net.URI
 
 @KtorExperimentalAPI
@@ -44,17 +43,11 @@ data class Configuration(val config : ApplicationConfig) {
 
     internal fun getOmsorgpengesoknadMottakBaseUrl() = URI(config.getRequiredString("nav.gateways.omsorgpengesoknad_mottak_base_url", secret = false))
 
-    internal fun getApiGatewayApiKey() : ApiGatewayApiKey {
-        val apiKey = config.getRequiredString(key = "nav.authorization.api_gateway.api_key", secret = true)
-        return ApiGatewayApiKey(value = apiKey)
-    }
-
     private fun getScopesFor(operation: String) = config.getRequiredList("nav.auth.scopes.$operation", secret = false, builder = { it }).toSet()
     internal fun getSendSoknadTilProsesseringScopes() = getScopesFor("sende-soknad-til-prosessering")
+
     internal fun getRedisPort() = config.getRequiredString("nav.redis.port", secret = false).toInt()
     internal fun getRedisHost() = config.getRequiredString("nav.redis.host", secret = false)
+    internal fun getStoragePassphrase() = config.getRequiredString("nav.storage.passphrase", secret = true)
 
-    internal fun getStoragePassphrase(): String {
-        return config.getRequiredString("nav.storage.passphrase", secret = true)
-    }
 }

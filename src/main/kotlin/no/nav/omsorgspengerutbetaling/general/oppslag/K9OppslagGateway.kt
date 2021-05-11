@@ -2,9 +2,8 @@ package no.nav.omsorgspengerutbetaling.general.oppslag
 
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.httpGet
-import io.ktor.http.HttpHeaders
+import io.ktor.http.*
 import no.nav.omsorgspengerutbetaling.general.CallId
-import no.nav.omsorgspengerutbetaling.general.auth.ApiGatewayApiKey
 import no.nav.omsorgspengerutbetaling.general.auth.IdToken
 import java.net.URI
 

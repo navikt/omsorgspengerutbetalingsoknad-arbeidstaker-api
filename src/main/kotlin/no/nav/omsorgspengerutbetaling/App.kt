@@ -61,7 +61,6 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
     System.setProperty("dusseldorf.ktor.serializeProblemDetailsWithContentNegotiation", "true")
 
     val configuration = Configuration(environment.config)
-    val apiGatewayApiKey = configuration.getApiGatewayApiKey()
     val accessTokenClientResolver = AccessTokenClientResolver(environment.config.clients())
 
     install(ContentNegotiation) {
@@ -91,7 +90,7 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
     install(Authentication) {
         multipleJwtIssuers(
             issuers = issuers,
-            extractHttpAuthHeader = {call ->
+            extractHttpAuthHeader = { call ->
                 idTokenProvider.getIdToken(call)
                     .somHttpAuthHeader()
             }
@@ -118,13 +117,11 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
             k9MellomlagringGateway = k9MellomlagringGateway
         )
 
-        val omsorgpengesoknadMottakGateway =
-            OmsorgpengesøknadMottakGateway(
-                baseUrl = configuration.getOmsorgpengesoknadMottakBaseUrl(),
-                accessTokenClient = accessTokenClientResolver.accessTokenClient(),
-                sendeSoknadTilProsesseringScopes = configuration.getSendSoknadTilProsesseringScopes(),
-                apiGatewayApiKey = apiGatewayApiKey
-            )
+        val omsorgpengesoknadMottakGateway = OmsorgpengesøknadMottakGateway(
+            baseUrl = configuration.getOmsorgpengesoknadMottakBaseUrl(),
+            accessTokenClient = accessTokenClientResolver.accessTokenClient(),
+            sendeSoknadTilProsesseringScopes = configuration.getSendSoknadTilProsesseringScopes()
+        )
 
         val sokerGateway = SøkerGateway(
             baseUrl = configuration.getK9OppslagUrl()
@@ -186,16 +183,14 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
                 omsorgpengesoknadMottakGateway,
                 HttpRequestHealthCheck(
                     mapOf(
-                        Url.buildURL(baseUrl = configuration.getK9MellomlagringUrl(),
+                        Url.buildURL(
+                            baseUrl = configuration.getK9MellomlagringUrl(),
                             pathParts = listOf("health")
                         ) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK),
                         Url.buildURL(
                             baseUrl = configuration.getOmsorgpengesoknadMottakBaseUrl(),
                             pathParts = listOf("health")
-                        ) to HttpRequestHealthConfig(
-                            expectedStatus = HttpStatusCode.OK,
-                            httpHeaders = mapOf(apiGatewayApiKey.headerKey to apiGatewayApiKey.value)
-                        )
+                        ) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK,)
                     )
                 )
             )
