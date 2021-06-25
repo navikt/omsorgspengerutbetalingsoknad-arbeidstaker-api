@@ -8,7 +8,7 @@ val lettuceVersion = "5.2.2.RELEASE"
 val k9FormatVersion = "5.1.28"
 
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.5.20"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
