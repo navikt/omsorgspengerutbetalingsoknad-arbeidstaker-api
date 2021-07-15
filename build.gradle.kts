@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val dusseldorfKtorVersion = "1.5.4.ae44e47"
 val ktorVersion = ext.get("ktorVersion").toString()
 val mainClass = "no.nav.omsorgspengerutbetaling.AppKt"
-val lettuceVersion = "5.2.2.RELEASE"
+val lettuceVersion = "6.1.4.RELEASE"
 val k9FormatVersion = "5.1.28"
 
 plugins {
