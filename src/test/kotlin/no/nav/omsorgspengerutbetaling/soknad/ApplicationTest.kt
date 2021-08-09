@@ -6,7 +6,6 @@ import com.typesafe.config.ConfigFactory
 import io.ktor.config.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import io.ktor.util.*
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.omsorgspengerutbetaling.TestConfiguration
@@ -18,8 +17,8 @@ import no.nav.omsorgspengerutbetaling.mellomlagring.started
 import no.nav.omsorgspengerutbetaling.pdUrl
 import no.nav.omsorgspengerutbetaling.soknad.SøknadUtils.defaultSøknad
 import no.nav.omsorgspengerutbetaling.wiremock.*
-import org.junit.AfterClass
-import org.junit.BeforeClass
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -36,7 +35,6 @@ private const val ikkeMyndigFnr = "12125012345"
 private val gyldigFodselsnummerA = "02119970078"
 private val ikkeMyndigDato = "2050-12-12"
 
-@KtorExperimentalAPI
 class SøknadApplicationTest {
 
     private companion object {
@@ -80,13 +78,13 @@ class SøknadApplicationTest {
         })
 
 
-        @BeforeClass
+        @BeforeAll
         @JvmStatic
         fun buildUp() {
             engine.start(wait = true)
         }
 
-        @AfterClass
+        @AfterAll
         @JvmStatic
         fun tearDown() {
             logger.info("Tearing down")

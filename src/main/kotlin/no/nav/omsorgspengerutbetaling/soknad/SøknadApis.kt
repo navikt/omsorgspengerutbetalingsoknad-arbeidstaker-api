@@ -2,10 +2,11 @@ package no.nav.omsorgspengerutbetaling.soknad
 
 import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.locations.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import no.nav.omsorgspengerutbetaling.felles.SØKNAD_URL
+import no.nav.omsorgspengerutbetaling.felles.VALIDER_SØKNAD_URL
 import no.nav.omsorgspengerutbetaling.general.auth.IdTokenProvider
 import no.nav.omsorgspengerutbetaling.general.getCallId
 import no.nav.omsorgspengerutbetaling.k9format.tilK9Format
@@ -19,17 +20,13 @@ import java.time.ZonedDateTime
 
 private val logger: Logger = LoggerFactory.getLogger("nav.soknadApis")
 
-@KtorExperimentalLocationsAPI
 internal fun Route.arbeidstakerutbetalingsøknadApis(
     søknadService: SøknadService,
     søkerService: SøkerService,
     idTokenProvider: IdTokenProvider
 ) {
 
-    @Location("/soknad")
-    class sendSoknadUtbetalingArbeidstaker
-
-    post { _ : sendSoknadUtbetalingArbeidstaker ->
+    post(SØKNAD_URL) {
         logger.info("Mottatt ny søknad om arbeidstakerutbetaling. Mapper søknad.")
         val søknad = call.receive<Søknad>()
         val idToken = idTokenProvider.getIdToken(call)
@@ -59,10 +56,7 @@ internal fun Route.arbeidstakerutbetalingsøknadApis(
         call.respond(HttpStatusCode.Accepted)
     }
 
-    @Location("/valider/soknad")
-    class validerSoknad
-
-    post { _ : validerSoknad ->
+    post(VALIDER_SØKNAD_URL) {
         val søknad = call.receive<Søknad>()
         val idToken = idTokenProvider.getIdToken(call)
         val callId = call.getCallId()
