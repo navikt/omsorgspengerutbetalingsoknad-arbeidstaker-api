@@ -8,10 +8,8 @@ import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.jackson.*
-import io.ktor.locations.*
 import io.ktor.metrics.micrometer.*
 import io.ktor.routing.*
-import io.ktor.util.*
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.helse.dusseldorf.ktor.auth.allIssuers
 import no.nav.helse.dusseldorf.ktor.auth.clients
@@ -51,8 +49,6 @@ import java.time.Duration
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 
-@KtorExperimentalAPI
-@KtorExperimentalLocationsAPI
 fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
     val appId = environment.config.id()
     logProxyProperties()
@@ -102,8 +98,6 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
         JacksonStatusPages()
         IdTokenStatusPages()
     }
-
-    install(Locations)
 
     install(Routing) {
 
