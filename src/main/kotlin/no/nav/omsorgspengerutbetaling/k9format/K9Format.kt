@@ -7,10 +7,7 @@ import no.nav.k9.søknad.felles.opptjening.OpptjeningAktivitet
 import no.nav.k9.søknad.felles.personopplysninger.Barn
 import no.nav.k9.søknad.felles.personopplysninger.Bosteder
 import no.nav.k9.søknad.felles.personopplysninger.Utenlandsopphold
-import no.nav.k9.søknad.felles.type.Landkode
-import no.nav.k9.søknad.felles.type.NorskIdentitetsnummer
-import no.nav.k9.søknad.felles.type.Periode
-import no.nav.k9.søknad.felles.type.SøknadId
+import no.nav.k9.søknad.felles.type.*
 import no.nav.k9.søknad.ytelse.omsorgspenger.v1.OmsorgspengerUtbetaling
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
 import no.nav.omsorgspengerutbetaling.felles.Bosted
@@ -35,7 +32,7 @@ fun Søknad.tilK9Format(mottatt: ZonedDateTime, søker: Søker): K9Søknad {
         søker.tilK9Søker(),
         OmsorgspengerUtbetaling(
             fosterbarn?.tilK9Barn(),
-            OpptjeningAktivitet(null, null, null), //Trenger ikke OpptjeningAktivitet for denne ytelsen.
+            OpptjeningAktivitet(), //Trenger ikke OpptjeningAktivitet for denne ytelsen.
             arbeidsgivere.byggK9Fraværsperiode(),
             bosteder.tilK9Bosteder(),
             opphold.tilK9Utenlandsopphold()
@@ -54,10 +51,10 @@ fun List<Bosted>.tilK9Bosteder(): Bosteder {
 
     forEach {
         val periode = Periode(it.fraOgMed, it.tilOgMed)
-        perioder[periode] = Bosteder.BostedPeriodeInfo(Landkode.of(it.landkode))
+        perioder[periode] = Bosteder.BostedPeriodeInfo().medLand(Landkode.of(it.landkode))
     }
 
-    return Bosteder(perioder)
+    return Bosteder().medPerioder(perioder)
 }
 
 fun List<Opphold>.tilK9Utenlandsopphold(): Utenlandsopphold {
@@ -65,12 +62,10 @@ fun List<Opphold>.tilK9Utenlandsopphold(): Utenlandsopphold {
 
     forEach {
         val periode = Periode(it.fraOgMed, it.tilOgMed)
-        perioder[periode] = Utenlandsopphold.UtenlandsoppholdPeriodeInfo.builder()
-            .land(Landkode.of(it.landkode))
-            .build()
+        perioder[periode] = Utenlandsopphold.UtenlandsoppholdPeriodeInfo().medLand(Landkode.of(it.landkode))
     }
 
-    return Utenlandsopphold(perioder)
+    return Utenlandsopphold().medPerioder(perioder)
 }
 
 fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
@@ -83,7 +78,8 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
                     Periode(utbetalingsperiode.fraOgMed, utbetalingsperiode.tilOgMed),
                     utbetalingsperiode.antallTimerBorte,
                     utbetalingsperiode.årsak?.tilK9Årsak() ?: K9FraværÅrsak.ORDINÆRT_FRAVÆR,
-                    listOf(AktivitetFravær.ARBEIDSTAKER)
+                    listOf(AktivitetFravær.ARBEIDSTAKER),
+                    Organisasjonsnummer.of(arbeidsgiver.organisasjonsnummer)
                 )
             )
         }
@@ -93,7 +89,7 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
 }
 
 private fun FraværÅrsak.tilK9Årsak(): K9FraværÅrsak {
-    return when(this) {
+    return when (this) {
         ORDINÆRT_FRAVÆR -> K9FraværÅrsak.ORDINÆRT_FRAVÆR
         SMITTEVERNHENSYN -> K9FraværÅrsak.SMITTEVERNHENSYN
         STENGT_SKOLE_ELLER_BARNEHAGE -> K9FraværÅrsak.STENGT_SKOLE_ELLER_BARNEHAGE
