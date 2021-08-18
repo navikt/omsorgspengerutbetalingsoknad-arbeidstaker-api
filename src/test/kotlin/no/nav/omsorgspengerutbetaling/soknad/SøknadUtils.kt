@@ -8,13 +8,12 @@ import no.nav.k9.søknad.felles.opptjening.OpptjeningAktivitet
 import no.nav.k9.søknad.felles.personopplysninger.Barn
 import no.nav.k9.søknad.felles.personopplysninger.Bosteder
 import no.nav.k9.søknad.felles.personopplysninger.Utenlandsopphold
-import no.nav.k9.søknad.felles.type.Landkode
-import no.nav.k9.søknad.felles.type.NorskIdentitetsnummer
+import no.nav.k9.søknad.felles.type.*
 import no.nav.k9.søknad.felles.type.Periode
-import no.nav.k9.søknad.felles.type.SøknadId
 import no.nav.k9.søknad.ytelse.omsorgspenger.v1.OmsorgspengerUtbetaling
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
 import no.nav.omsorgspengerutbetaling.felles.*
+import no.nav.omsorgspengerutbetaling.felles.Språk
 import no.nav.omsorgspengerutbetaling.omsorgspengerKonfiguert
 import no.nav.omsorgspengerutbetaling.soker.Søker
 import no.nav.omsorgspengerutbetaling.soknad.Ansettelseslengde.Begrunnelse.*
@@ -182,7 +181,10 @@ internal object SøknadUtils {
         hjemmePgaStengtBhgSkole = true
     )
 
-    fun defaultKomplettSøknad(søknadId: String = UUID.randomUUID().toString(), mottatt: ZonedDateTime = ZonedDateTime.now()) = KomplettSøknad(
+    fun defaultKomplettSøknad(
+        søknadId: String = UUID.randomUUID().toString(),
+        mottatt: ZonedDateTime = ZonedDateTime.now()
+    ) = KomplettSøknad(
         søknadId = søknadId,
         språk = Språk.BOKMÅL,
         mottatt = mottatt,
@@ -335,41 +337,42 @@ internal object SøknadUtils {
         k9Format = defaultK9Format(søknadId, mottatt)
     )
 
-    fun defaultK9Format(søknadId: String = UUID.randomUUID().toString(), mottatt: ZonedDateTime = ZonedDateTime.now()) = K9Søknad(
-        SøknadId(søknadId),
-        Versjon.of("1.0.0"),
-        mottatt,
-        K9Søker(NorskIdentitetsnummer.of("02119970078")),
-        OmsorgspengerUtbetaling(
-            listOf(
-                Barn(NorskIdentitetsnummer.of("26128027024"), null)
-            ),
-            OpptjeningAktivitet(null, null, null),
-            listOf(
-                FraværPeriode(
-                    Periode(LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-10")),
-                    Duration.ofHours(7).plusMinutes(30),
-                    no.nav.k9.søknad.felles.fravær.FraværÅrsak.STENGT_SKOLE_ELLER_BARNEHAGE,
-                    listOf(AktivitetFravær.ARBEIDSTAKER)
-                )
-            ),
-            Bosteder(
-                mapOf(
-                    Periode(LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-10")) to
-                            Bosteder.BostedPeriodeInfo(Landkode.NORGE)
-                )
-            ),
-            Utenlandsopphold(
-                mapOf(
-                    Periode(LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-10")) to
-                            Utenlandsopphold.UtenlandsoppholdPeriodeInfo.builder()
-                                .land(Landkode.SPANIA)
-                                .årsak(Utenlandsopphold.UtenlandsoppholdÅrsak.BARNET_INNLAGT_I_HELSEINSTITUSJON_DEKKET_ETTER_AVTALE_MED_ET_ANNET_LAND_OM_TRYGD)
-                                .build()
+    fun defaultK9Format(søknadId: String = UUID.randomUUID().toString(), mottatt: ZonedDateTime = ZonedDateTime.now()) =
+        K9Søknad(
+            SøknadId(søknadId),
+            Versjon.of("1.0.0"),
+            mottatt,
+            K9Søker(NorskIdentitetsnummer.of("02119970078")),
+            OmsorgspengerUtbetaling(
+                listOf(
+                    Barn(NorskIdentitetsnummer.of("26128027024"), null)
+                ),
+                OpptjeningAktivitet(),
+                listOf(
+                    FraværPeriode(
+                        Periode(LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-10")),
+                        Duration.ofHours(7).plusMinutes(30),
+                        no.nav.k9.søknad.felles.fravær.FraværÅrsak.STENGT_SKOLE_ELLER_BARNEHAGE,
+                        listOf(AktivitetFravær.ARBEIDSTAKER),
+                        Organisasjonsnummer.of("917755736")
+                    )
+                ),
+                Bosteder().medPerioder(
+                    mapOf(
+                        Periode(LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-10")) to
+                                Bosteder.BostedPeriodeInfo().medLand(Landkode.NORGE)
+                    )
+                ),
+                Utenlandsopphold().medPerioder(
+                    mapOf(
+                        Periode(LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-10")) to
+                                Utenlandsopphold.UtenlandsoppholdPeriodeInfo()
+                                    .medLand(Landkode.SPANIA)
+                                    .medÅrsak(Utenlandsopphold.UtenlandsoppholdÅrsak.BARNET_INNLAGT_I_HELSEINSTITUSJON_DEKKET_ETTER_AVTALE_MED_ET_ANNET_LAND_OM_TRYGD)
+                    )
                 )
             )
         )
-    )
 }
 
 internal fun Søknad.somJson() = SøknadUtils.objectMapper.writeValueAsString(this)
