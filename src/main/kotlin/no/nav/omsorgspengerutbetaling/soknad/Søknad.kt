@@ -17,6 +17,6 @@ data class Søknad(
     val erFrilanser: JaNei = JaNei.Nei,
     val fosterbarn: List<FosterBarn>? = listOf(), // TODO: 31/08/2021 Hele feltet skal fjernes når frontend er prodsatt
     val vedlegg: List<URL>,
-    val hjemmePgaSmittevernhensyn: Boolean? = null, //TODO 15.03.2021 - Fjernes når frontend er prodsatt
-    val hjemmePgaStengtBhgSkole: Boolean? = null //TODO 15.03.2021 - Fjernes når frontend er prodsatt
+    val hjemmePgaSmittevernhensyn: Boolean,
+    val hjemmePgaStengtBhgSkole: Boolean? = null
 )
