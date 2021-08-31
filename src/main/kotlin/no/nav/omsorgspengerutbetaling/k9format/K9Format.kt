@@ -3,6 +3,7 @@ package no.nav.omsorgspengerutbetaling.k9format
 import no.nav.k9.søknad.felles.Versjon
 import no.nav.k9.søknad.felles.fravær.AktivitetFravær
 import no.nav.k9.søknad.felles.fravær.FraværPeriode
+import no.nav.k9.søknad.felles.fravær.SøknadÅrsak
 import no.nav.k9.søknad.felles.opptjening.OpptjeningAktivitet
 import no.nav.k9.søknad.felles.personopplysninger.Barn
 import no.nav.k9.søknad.felles.personopplysninger.Bosteder
@@ -10,6 +11,7 @@ import no.nav.k9.søknad.felles.personopplysninger.Utenlandsopphold
 import no.nav.k9.søknad.felles.type.*
 import no.nav.k9.søknad.ytelse.omsorgspenger.v1.OmsorgspengerUtbetaling
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.Utbetalingsårsak
 import no.nav.omsorgspengerutbetaling.felles.Bosted
 import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak
@@ -78,6 +80,7 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
                     Periode(utbetalingsperiode.fraOgMed, utbetalingsperiode.tilOgMed),
                     utbetalingsperiode.antallTimerBorte,
                     utbetalingsperiode.årsak?.tilK9Årsak() ?: K9FraværÅrsak.ORDINÆRT_FRAVÆR,
+                    arbeidsgiver.utbetalingsårsak.tilK9SøknadÅrsak(),
                     listOf(AktivitetFravær.ARBEIDSTAKER),
                     Organisasjonsnummer.of(arbeidsgiver.organisasjonsnummer)
                 )
@@ -93,5 +96,14 @@ private fun FraværÅrsak.tilK9Årsak(): K9FraværÅrsak {
         ORDINÆRT_FRAVÆR -> K9FraværÅrsak.ORDINÆRT_FRAVÆR
         SMITTEVERNHENSYN -> K9FraværÅrsak.SMITTEVERNHENSYN
         STENGT_SKOLE_ELLER_BARNEHAGE -> K9FraværÅrsak.STENGT_SKOLE_ELLER_BARNEHAGE
+    }
+}
+
+private fun Utbetalingsårsak?.tilK9SøknadÅrsak(): SøknadÅrsak? {
+    return when(this){
+        Utbetalingsårsak.ARBEIDSGIVER_KONKURS -> SøknadÅrsak.ARBEIDSGIVER_KONKURS
+        Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER -> SøknadÅrsak.NYOPPSTARTET_HOS_ARBEIDSGIVER
+        Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER -> SøknadÅrsak.KONFLIKT_MED_ARBEIDSGIVER
+        null -> null
     }
 }

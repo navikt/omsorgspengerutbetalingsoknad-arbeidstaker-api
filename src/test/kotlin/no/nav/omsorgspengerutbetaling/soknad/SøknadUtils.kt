@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.k9.søknad.felles.Versjon
 import no.nav.k9.søknad.felles.fravær.AktivitetFravær
 import no.nav.k9.søknad.felles.fravær.FraværPeriode
+import no.nav.k9.søknad.felles.fravær.SøknadÅrsak
 import no.nav.k9.søknad.felles.opptjening.OpptjeningAktivitet
 import no.nav.k9.søknad.felles.personopplysninger.Barn
 import no.nav.k9.søknad.felles.personopplysninger.Bosteder
@@ -12,6 +13,7 @@ import no.nav.k9.søknad.felles.type.*
 import no.nav.k9.søknad.felles.type.Periode
 import no.nav.k9.søknad.ytelse.omsorgspenger.v1.OmsorgspengerUtbetaling
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.Utbetalingsårsak
 import no.nav.omsorgspengerutbetaling.felles.*
 import no.nav.omsorgspengerutbetaling.felles.Språk
 import no.nav.omsorgspengerutbetaling.omsorgspengerKonfiguert
@@ -212,7 +214,8 @@ internal object SøknadUtils {
                         tilOgMed = start.plusDays(10),
                         årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
                     )
-                )
+                ),
+                utbetalingsårsak = Utbetalingsårsak.ARBEIDSGIVER_KONKURS
             ),
             ArbeidsgiverDetaljer(
                 navn = "Arbeidsgiver 2",
@@ -334,7 +337,7 @@ internal object SøknadUtils {
         vedlegg = emptyList(),
         hjemmePgaSmittevernhensyn = true,
         hjemmePgaStengtBhgSkole = true,
-        k9Format = defaultK9Format(søknadId, mottatt)
+        k9Format = defaultK9Format(søknadId, mottatt),
     )
 
     fun defaultK9Format(søknadId: String = UUID.randomUUID().toString(), mottatt: ZonedDateTime = ZonedDateTime.now()) =
@@ -353,6 +356,7 @@ internal object SøknadUtils {
                         Periode(LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-10")),
                         Duration.ofHours(7).plusMinutes(30),
                         no.nav.k9.søknad.felles.fravær.FraværÅrsak.STENGT_SKOLE_ELLER_BARNEHAGE,
+                        SøknadÅrsak.ARBEIDSGIVER_KONKURS,
                         listOf(AktivitetFravær.ARBEIDSTAKER),
                         Organisasjonsnummer.of("917755736")
                     )

@@ -22,8 +22,8 @@ internal fun Søknad.valider(k9Format: K9Søknad) {
         addAll(opphold.valider("opphold"))
         addAll(bosteder.valider("bosteder"))
         addAll(bekreftelser.valider())
-        addAll(andreUtbetalinger.valider())
-        fosterbarn?.let { addAll(validerFosterbarn(it)) }
+        andreUtbetalinger?.let { addAll(it.valider()) } // TODO: 31/08/2021 Fjernes helt når frontend er prodsatt
+        fosterbarn?.let { addAll(validerFosterbarn(it)) } // TODO: 31/08/2021 Fjernes helt når frontend er prodsatt
         addAll(k9Format.valider())
     }
 

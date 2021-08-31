@@ -16,7 +16,7 @@ data class KomplettSøknad(
     val opphold: List<Opphold>,
     val arbeidsgivere: List<ArbeidsgiverDetaljer>,
     val bekreftelser: Bekreftelser,
-    val andreUtbetalinger: List<String>,
+    val andreUtbetalinger: List<String>?,
     val erSelvstendig: JaNei,
     val erFrilanser: JaNei,
     val fosterbarn: List<FosterBarn>? = listOf(),
