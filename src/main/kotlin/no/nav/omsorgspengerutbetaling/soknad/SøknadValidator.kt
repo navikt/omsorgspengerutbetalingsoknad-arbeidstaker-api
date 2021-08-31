@@ -18,7 +18,7 @@ private val fnrDateFormat = DateTimeFormatter.ofPattern("ddMMyy")
 
 internal fun Søknad.valider(k9Format: K9Søknad) {
     val violations = mutableSetOf<Violation>().apply {
-        addAll(arbeidsgivere.valider(vedlegg))
+        addAll(arbeidsgivere.valider())
         addAll(opphold.valider("opphold"))
         addAll(bosteder.valider("bosteder"))
         addAll(bekreftelser.valider())

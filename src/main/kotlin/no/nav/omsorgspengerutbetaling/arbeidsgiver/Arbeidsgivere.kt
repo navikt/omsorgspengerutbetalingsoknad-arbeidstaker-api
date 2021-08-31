@@ -5,7 +5,6 @@ import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
 import no.nav.omsorgspengerutbetaling.felles.valider
 import no.nav.omsorgspengerutbetaling.soknad.Ansettelseslengde
 import no.nav.omsorgspengerutbetaling.soknad.valider
-import java.net.URL
 
 data class ArbeidsgivereOppslagRespons(
     val arbeidsgivere: Arbeidsgivere
@@ -37,12 +36,14 @@ enum class Utbetalingsårsak(){
     KONFLIKT_MED_ARBEIDSGIVER
 }
 
-fun List<ArbeidsgiverDetaljer>.valider(vedlegg: List<URL>): List<Violation> =
-    mapIndexed { index, arbeidsgiverDetaljer ->
-        val violations = mutableSetOf<Violation>()
-        arbeidsgiverDetaljer.ansettelseslengde?.let { violations.addAll(it.valider(vedlegg, "arbeidsgivere[$index].ansettelseslengde")) }
-        violations.addAll(arbeidsgiverDetaljer.perioder.valider())
-        violations
+fun List<ArbeidsgiverDetaljer>.valider(): List<Violation>{
+    val violations = mutableListOf<Violation>()
 
-        // TODO: 31/08/2021 Skal det være validering dersom man velger konflikt? Feks at forklaring må være gitt
-    }.flatMap { it }
+    // TODO: 31/08/2021 Skal det være validering dersom man velger konflikt? Feks at forklaring må være gitt
+    forEachIndexed{index, arbeidsgiver ->
+        arbeidsgiver.ansettelseslengde?.let { violations.addAll(it.valider("arbeidsgivere[$index].ansettelseslengde")) }
+        violations.addAll(arbeidsgiver.perioder.valider())
+    }
+
+    return  violations
+}

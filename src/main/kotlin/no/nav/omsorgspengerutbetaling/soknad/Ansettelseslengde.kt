@@ -3,7 +3,6 @@ package no.nav.omsorgspengerutbetaling.soknad
 import no.nav.helse.dusseldorf.ktor.core.ParameterType
 import no.nav.helse.dusseldorf.ktor.core.Violation
 import no.nav.omsorgspengerutbetaling.soknad.Ansettelseslengde.Begrunnelse.INGEN_AV_SITUASJONENE
-import java.net.URL
 
 data class Ansettelseslengde(
     val merEnn4Uker: Boolean,
@@ -19,7 +18,7 @@ data class Ansettelseslengde(
     }
 }
 
-fun Ansettelseslengde.valider(vedlegg: List<URL>, felt: String) = mutableSetOf<Violation>().apply {
+fun Ansettelseslengde.valider(felt: String) = mutableSetOf<Violation>().apply {
     if (merEnn4Uker == false && begrunnelse == null) {
         add(
             Violation(
