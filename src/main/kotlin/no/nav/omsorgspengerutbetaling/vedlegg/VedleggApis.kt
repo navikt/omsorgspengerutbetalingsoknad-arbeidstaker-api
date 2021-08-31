@@ -7,7 +7,6 @@ import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import no.nav.helse.dusseldorf.ktor.core.DefaultProblemDetails
 import no.nav.helse.dusseldorf.ktor.core.respondProblemDetails
 import no.nav.omsorgspengerutbetaling.felles.VEDLEGGID_URL
 import no.nav.omsorgspengerutbetaling.felles.VEDLEGG_URL
@@ -18,37 +17,6 @@ import org.slf4j.LoggerFactory
 
 private val logger: Logger = LoggerFactory.getLogger("nav.vedleggApis")
 private const val MAX_VEDLEGG_SIZE = 8 * 1024 * 1024
-private val supportedContentTypes = listOf("application/pdf", "image/jpeg", "image/png")
-
-private val hasToBeMultupartTypeProblemDetails = DefaultProblemDetails(
-    title = "multipart-form-required",
-    status = 400,
-    detail = "Requesten må være en 'multipart/form-data' request hvor en 'part' er en fil, har 'name=vedlegg' og har Content-Type header satt."
-)
-private val vedleggNotFoundProblemDetails = DefaultProblemDetails(
-    title = "attachment-not-found",
-    status = 404,
-    detail = "Inget vedlegg funnet med etterspurt ID."
-)
-private val fantIkkeSubjectPaaToken =
-    DefaultProblemDetails(title = "fant-ikke-subject", status = 413, detail = "Fant ikke subject på idToken")
-private val vedleggNotAttachedProblemDetails = DefaultProblemDetails(
-    title = "attachment-not-attached",
-    status = 400,
-    detail = "Fant ingen 'part' som er en fil, har 'name=vedlegg' og har Content-Type header satt."
-)
-private val vedleggTooLargeProblemDetails = DefaultProblemDetails(
-    title = "attachment-too-large",
-    status = 413,
-    detail = "vedlegget var over maks tillatt størrelse på 8MB."
-)
-private val vedleggContentTypeNotSupportedProblemDetails = DefaultProblemDetails(
-    title = "attachment-content-type-not-supported",
-    status = 400,
-    detail = "Vedleggets type må være en av $supportedContentTypes"
-)
-internal val feilVedSlettingAvVedlegg =
-    DefaultProblemDetails(title = "feil-ved-sletting", status = 500, detail = "Feil ved sletting av vedlegg")
 
 fun Route.vedleggApis(
     vedleggService: VedleggService,
@@ -90,10 +58,12 @@ fun Route.vedleggApis(
                 }
             }
         }
+
         route(VEDLEGGID_URL) {
             get {
                 val vedleggId = VedleggId(call.parameters["vedleggId"]!!)
                 var eier = idTokenProvider.getIdToken(call).getSubject()
+
                 if (eier == null) call.respond(HttpStatusCode.Forbidden)
                 else {
                     val vedlegg = vedleggService.hentVedlegg(
