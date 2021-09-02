@@ -58,36 +58,6 @@ internal object SøknadUtils {
                 )
             ),
             ArbeidsgiverDetaljer(
-                navn = "Arbeidsgiver 3",
-                organisasjonsnummer = GYLDIG_ORGNR,
-                harHattFraværHosArbeidsgiver = true,
-                arbeidsgiverHarUtbetaltLønn = false,
-                utbetalingsårsak = Utbetalingsårsak.ARBEIDSGIVER_KONKURS,
-                perioder = listOf(
-                    Utbetalingsperiode(
-                        fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35),
-                        antallTimerBorte = Duration.ofHours(5),
-                        antallTimerPlanlagt = Duration.ofHours(8),
-                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
-                    )
-                )
-            ),
-            ArbeidsgiverDetaljer(
-                navn = "Arbeidsgiver 4",
-                organisasjonsnummer = GYLDIG_ORGNR,
-                harHattFraværHosArbeidsgiver = true,
-                arbeidsgiverHarUtbetaltLønn = false,
-                utbetalingsårsak = Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER,
-                perioder = listOf(
-                    Utbetalingsperiode(
-                        fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35),
-                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
-                    )
-                )
-            ),
-            ArbeidsgiverDetaljer(
                 organisasjonsnummer = GYLDIG_ORGNR,
                 harHattFraværHosArbeidsgiver = true,
                 arbeidsgiverHarUtbetaltLønn = false,

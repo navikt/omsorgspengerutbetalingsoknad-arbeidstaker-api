@@ -56,26 +56,6 @@ class K9FormatTest {
                     "arbeidsgiverOrgNr": "917755736"
                   },
                   {
-                    "periode": "2020-01-31/2020-02-05",
-                    "duration": "PT5H",
-                    "årsak": "ORDINÆRT_FRAVÆR",
-                    "søknadÅrsak": "ARBEIDSGIVER_KONKURS",
-                    "aktivitetFravær": [
-                      "ARBEIDSTAKER"
-                    ],
-                    "arbeidsgiverOrgNr": "917755736"
-                  },
-                  {
-                    "periode": "2020-01-31/2020-02-05",
-                    "duration": null,
-                    "årsak": "ORDINÆRT_FRAVÆR",
-                    "søknadÅrsak": "NYOPPSTARTET_HOS_ARBEIDSGIVER",
-                    "aktivitetFravær": [
-                      "ARBEIDSTAKER"
-                    ],
-                    "arbeidsgiverOrgNr": "917755736"
-                  },
-                  {
                     "periode": "2020-02-01/2020-02-06",
                     "duration": null,
                     "årsak": "ORDINÆRT_FRAVÆR",
