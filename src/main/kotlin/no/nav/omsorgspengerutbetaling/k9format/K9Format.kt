@@ -51,10 +51,7 @@ fun List<FosterBarn>.tilK9Barn(): List<Barn> = map {
 fun List<Bosted>.tilK9Bosteder(): Bosteder {
     val perioder = mutableMapOf<Periode, Bosteder.BostedPeriodeInfo>()
 
-    forEach {
-        val periode = Periode(it.fraOgMed, it.tilOgMed)
-        perioder[periode] = Bosteder.BostedPeriodeInfo().medLand(Landkode.of(it.landkode))
-    }
+    forEach { perioder[Periode(it.fraOgMed, it.tilOgMed)] = Bosteder.BostedPeriodeInfo().medLand(Landkode.of(it.landkode)) }
 
     return Bosteder().medPerioder(perioder)
 }
@@ -62,10 +59,7 @@ fun List<Bosted>.tilK9Bosteder(): Bosteder {
 fun List<Opphold>.tilK9Utenlandsopphold(): Utenlandsopphold {
     val perioder = mutableMapOf<Periode, Utenlandsopphold.UtenlandsoppholdPeriodeInfo>()
 
-    forEach {
-        val periode = Periode(it.fraOgMed, it.tilOgMed)
-        perioder[periode] = Utenlandsopphold.UtenlandsoppholdPeriodeInfo().medLand(Landkode.of(it.landkode))
-    }
+    forEach { perioder[Periode(it.fraOgMed, it.tilOgMed)] = Utenlandsopphold.UtenlandsoppholdPeriodeInfo().medLand(Landkode.of(it.landkode)) }
 
     return Utenlandsopphold().medPerioder(perioder)
 }

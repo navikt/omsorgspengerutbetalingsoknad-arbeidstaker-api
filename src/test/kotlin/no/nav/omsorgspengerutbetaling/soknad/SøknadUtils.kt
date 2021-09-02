@@ -48,6 +48,8 @@ internal object SøknadUtils {
                 organisasjonsnummer = GYLDIG_ORGNR,
                 harHattFraværHosArbeidsgiver = true,
                 arbeidsgiverHarUtbetaltLønn = false,
+                utbetalingsårsak = Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER,
+                konfliktForklaring = "Forklarer konflikten...",
                 ansettelseslengde = Ansettelseslengde(
                     merEnn4Uker = true
                 ),
@@ -68,6 +70,7 @@ internal object SøknadUtils {
                     merEnn4Uker = false,
                     begrunnelse = ANNET_ARBEIDSFORHOLD
                 ),
+                utbetalingsårsak = Utbetalingsårsak.ARBEIDSGIVER_KONKURS,
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(20),
@@ -87,6 +90,7 @@ internal object SøknadUtils {
                     merEnn4Uker = false,
                     begrunnelse = MILITÆRTJENESTE
                 ),
+                utbetalingsårsak = Utbetalingsårsak.ARBEIDSGIVER_KONKURS,
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(30),
@@ -107,6 +111,7 @@ internal object SøknadUtils {
                     begrunnelse = INGEN_AV_SITUASJONENE,
                     ingenAvSituasjoneneForklaring = "Forklarer hvorfor ingen av situasjonene passer."
                 ),
+                utbetalingsårsak = Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER,
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusDays(30),
@@ -123,22 +128,7 @@ internal object SøknadUtils {
                     merEnn4Uker = false,
                     begrunnelse = ANDRE_YTELSER
                 ),
-                perioder = listOf(
-                    Utbetalingsperiode(
-                        fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5),
-                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
-                    )
-                )
-            ),
-            ArbeidsgiverDetaljer(
-                navn = "Ikke registrert arbeidsgiver",
-                harHattFraværHosArbeidsgiver = true,
-                arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = false,
-                    begrunnelse = ANDRE_YTELSER
-                ),
+                utbetalingsårsak = Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER,
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusMonths(1),
