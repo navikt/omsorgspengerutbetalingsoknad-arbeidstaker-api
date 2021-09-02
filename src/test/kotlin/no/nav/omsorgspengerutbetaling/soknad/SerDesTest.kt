@@ -150,8 +150,6 @@ internal class SerDesTest {
                 "harBekreftetOpplysninger": true,
                 "harForståttRettigheterOgPlikter": true
             },
-            "erSelvstendig": false,
-            "erFrilanser": false,
             "vedlegg": [],
             "hjemmePgaSmittevernhensyn": true,
             "hjemmePgaStengtBhgSkole": true
@@ -282,8 +280,6 @@ internal class SerDesTest {
                 "harBekreftetOpplysninger": true,
                 "harForståttRettigheterOgPlikter": true
               },
-              "erSelvstendig": false,
-              "erFrilanser": false,
               "vedlegg": [
                 
               ],

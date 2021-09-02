@@ -2,7 +2,10 @@ package no.nav.omsorgspengerutbetaling.soknad
 
 import no.nav.k9.søknad.Søknad
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
-import no.nav.omsorgspengerutbetaling.felles.*
+import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
+import no.nav.omsorgspengerutbetaling.felles.Bosted
+import no.nav.omsorgspengerutbetaling.felles.Opphold
+import no.nav.omsorgspengerutbetaling.felles.Språk
 import no.nav.omsorgspengerutbetaling.soker.Søker
 import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
 import java.time.ZonedDateTime
@@ -16,8 +19,6 @@ data class KomplettSøknad(
     val opphold: List<Opphold>,
     val arbeidsgivere: List<ArbeidsgiverDetaljer>,
     val bekreftelser: Bekreftelser,
-    val erSelvstendig: JaNei,
-    val erFrilanser: JaNei,
     val vedlegg: List<Vedlegg>,
     val hjemmePgaSmittevernhensyn: Boolean,
     val hjemmePgaStengtBhgSkole: Boolean? = null,
