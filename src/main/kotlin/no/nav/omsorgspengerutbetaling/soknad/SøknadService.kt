@@ -8,11 +8,8 @@ import no.nav.omsorgspengerutbetaling.soker.SøkerService
 import no.nav.omsorgspengerutbetaling.vedlegg.DokumentEier
 import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
 import no.nav.omsorgspengerutbetaling.vedlegg.VedleggService
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.time.ZoneOffset
-import java.time.ZonedDateTime
 import no.nav.k9.søknad.Søknad as K9Søknad
 
 internal class SøknadService(
@@ -48,24 +45,7 @@ internal class SøknadService(
 
         logger.info("Legger søknad til prosessering")
 
-        val komplettSøknad = KomplettSøknad(
-            søknadId = søknad.søknadId,
-            språk = søknad.språk,
-            mottatt = ZonedDateTime.now(ZoneOffset.UTC),
-            søker = søker,
-            bosteder = søknad.bosteder,
-            opphold = søknad.opphold,
-            arbeidsgivere = søknad.arbeidsgivere,
-            andreUtbetalinger = søknad.andreUtbetalinger,
-            erSelvstendig = søknad.erSelvstendig,
-            erFrilanser = søknad.erFrilanser,
-            fosterbarn = søknad.fosterbarn,
-            bekreftelser = søknad.bekreftelser,
-            vedlegg = vedlegg,
-            hjemmePgaSmittevernhensyn = søknad.hjemmePgaSmittevernhensyn,
-            hjemmePgaStengtBhgSkole = søknad.hjemmePgaStengtBhgSkole,
-            k9Format = k9Format
-        )
+        val komplettSøknad = søknad.tilKomplettSøknad(søker, k9Format, vedlegg)
 
         omsorgpengesøknadMottakGateway.leggTilProsessering(
             søknad = komplettSøknad,

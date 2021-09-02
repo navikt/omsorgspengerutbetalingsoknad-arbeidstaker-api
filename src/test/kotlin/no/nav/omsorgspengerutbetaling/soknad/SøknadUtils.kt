@@ -18,7 +18,6 @@ import no.nav.omsorgspengerutbetaling.felles.*
 import no.nav.omsorgspengerutbetaling.felles.Språk
 import no.nav.omsorgspengerutbetaling.omsorgspengerKonfiguert
 import no.nav.omsorgspengerutbetaling.soker.Søker
-import no.nav.omsorgspengerutbetaling.soknad.Ansettelseslengde.Begrunnelse.*
 import java.time.Duration
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -50,9 +49,6 @@ internal object SøknadUtils {
                 arbeidsgiverHarUtbetaltLønn = false,
                 utbetalingsårsak = Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER,
                 konfliktForklaring = "Forklarer konflikten...",
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = true
-                ),
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start,
@@ -66,10 +62,6 @@ internal object SøknadUtils {
                 organisasjonsnummer = GYLDIG_ORGNR,
                 harHattFraværHosArbeidsgiver = true,
                 arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = false,
-                    begrunnelse = ANNET_ARBEIDSFORHOLD
-                ),
                 utbetalingsårsak = Utbetalingsårsak.ARBEIDSGIVER_KONKURS,
                 perioder = listOf(
                     Utbetalingsperiode(
@@ -86,10 +78,6 @@ internal object SøknadUtils {
                 organisasjonsnummer = GYLDIG_ORGNR,
                 harHattFraværHosArbeidsgiver = true,
                 arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = false,
-                    begrunnelse = MILITÆRTJENESTE
-                ),
                 utbetalingsårsak = Utbetalingsårsak.ARBEIDSGIVER_KONKURS,
                 perioder = listOf(
                     Utbetalingsperiode(
@@ -106,11 +94,6 @@ internal object SøknadUtils {
                 organisasjonsnummer = GYLDIG_ORGNR,
                 harHattFraværHosArbeidsgiver = true,
                 arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = false,
-                    begrunnelse = INGEN_AV_SITUASJONENE,
-                    ingenAvSituasjoneneForklaring = "Forklarer hvorfor ingen av situasjonene passer."
-                ),
                 utbetalingsårsak = Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER,
                 perioder = listOf(
                     Utbetalingsperiode(
@@ -124,10 +107,6 @@ internal object SøknadUtils {
                 organisasjonsnummer = GYLDIG_ORGNR,
                 harHattFraværHosArbeidsgiver = true,
                 arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = false,
-                    begrunnelse = ANDRE_YTELSER
-                ),
                 utbetalingsårsak = Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER,
                 perioder = listOf(
                     Utbetalingsperiode(
@@ -160,174 +139,11 @@ internal object SøknadUtils {
             harForståttRettigheterOgPlikter = JaNei.Ja,
             harBekreftetOpplysninger = JaNei.Ja
         ),
-        andreUtbetalinger = listOf(DAGPENGER, SYKEPENGER),
         erSelvstendig = JaNei.Nei,
         erFrilanser = JaNei.Nei,
-        fosterbarn = listOf(
-            FosterBarn(
-                identitetsnummer = "02119970078"
-            )
-        ),
         vedlegg = emptyList(),
         hjemmePgaSmittevernhensyn = true,
         hjemmePgaStengtBhgSkole = true
-    )
-
-    fun defaultKomplettSøknad(
-        søknadId: String = UUID.randomUUID().toString(),
-        mottatt: ZonedDateTime = ZonedDateTime.now()
-    ) = KomplettSøknad(
-        søknadId = søknadId,
-        språk = Språk.BOKMÅL,
-        mottatt = mottatt,
-        søker = Søker(
-            aktørId = "123456",
-            fødselsnummer = "02119970078",
-            fødselsdato = LocalDate.parse("1999-11-02"),
-            etternavn = "Nordmann",
-            mellomnavn = null,
-            fornavn = "Ola",
-            myndig = true
-        ),
-        arbeidsgivere = listOf(
-            ArbeidsgiverDetaljer(
-                navn = "Arbeidsgiver 1",
-                organisasjonsnummer = GYLDIG_ORGNR,
-                harHattFraværHosArbeidsgiver = true,
-                arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = true
-                ),
-                perioder = listOf(
-                    Utbetalingsperiode(
-                        fraOgMed = start,
-                        tilOgMed = start.plusDays(10),
-                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
-                    )
-                ),
-                utbetalingsårsak = Utbetalingsårsak.ARBEIDSGIVER_KONKURS
-            ),
-            ArbeidsgiverDetaljer(
-                navn = "Arbeidsgiver 2",
-                organisasjonsnummer = GYLDIG_ORGNR,
-                harHattFraværHosArbeidsgiver = true,
-                arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = false,
-                    begrunnelse = ANNET_ARBEIDSFORHOLD
-                ),
-                perioder = listOf(
-                    Utbetalingsperiode(
-                        fraOgMed = start.plusDays(20),
-                        tilOgMed = start.plusDays(20),
-                        antallTimerBorte = Duration.ofHours(5),
-                        antallTimerPlanlagt = Duration.ofHours(8),
-                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
-                    )
-                )
-            ),
-            ArbeidsgiverDetaljer(
-                navn = "Arbeidsgiver 3",
-                organisasjonsnummer = GYLDIG_ORGNR,
-                harHattFraværHosArbeidsgiver = true,
-                arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = false,
-                    begrunnelse = MILITÆRTJENESTE
-                ),
-                perioder = listOf(
-                    Utbetalingsperiode(
-                        fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35),
-                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
-                    )
-                )
-            ),
-            ArbeidsgiverDetaljer(
-                navn = "Arbeidsgiver 4",
-                organisasjonsnummer = GYLDIG_ORGNR,
-                harHattFraværHosArbeidsgiver = true,
-                arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = false,
-                    begrunnelse = INGEN_AV_SITUASJONENE,
-                    ingenAvSituasjoneneForklaring = "Forklarer hvorfor ingen av situasjonene passer."
-                ),
-                perioder = listOf(
-                    Utbetalingsperiode(
-                        fraOgMed = start.plusDays(30),
-                        tilOgMed = start.plusDays(35),
-                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
-                    )
-                )
-            ),
-            ArbeidsgiverDetaljer(
-                organisasjonsnummer = GYLDIG_ORGNR,
-                harHattFraværHosArbeidsgiver = true,
-                arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = false,
-                    begrunnelse = ANDRE_YTELSER
-                ),
-                perioder = listOf(
-                    Utbetalingsperiode(
-                        fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5),
-                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
-                    )
-                )
-            ),
-            ArbeidsgiverDetaljer(
-                navn = "Ikke registrert arbeidsgiver",
-                harHattFraværHosArbeidsgiver = true,
-                arbeidsgiverHarUtbetaltLønn = false,
-                ansettelseslengde = Ansettelseslengde(
-                    merEnn4Uker = false,
-                    begrunnelse = ANDRE_YTELSER
-                ),
-                perioder = listOf(
-                    Utbetalingsperiode(
-                        fraOgMed = start.plusMonths(1),
-                        tilOgMed = start.plusMonths(1).plusDays(5),
-                        årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
-                    )
-                )
-            )
-        ),
-        bosteder = listOf(
-            Bosted(
-                fraOgMed = start.minusDays(20),
-                tilOgMed = start.minusDays(10),
-                landkode = "GB",
-                landnavn = "Great Britain",
-                erEØSLand = JaNei.Ja
-            )
-        ),
-        opphold = listOf(
-            Opphold(
-                fraOgMed = start.minusDays(20),
-                tilOgMed = start.minusDays(10),
-                landkode = "GB",
-                landnavn = "Great Britain",
-                erEØSLand = JaNei.Ja
-            )
-        ),
-        andreUtbetalinger = listOf(DAGPENGER, SYKEPENGER),
-        erSelvstendig = JaNei.Nei,
-        erFrilanser = JaNei.Nei,
-        fosterbarn = listOf(
-            FosterBarn(
-                identitetsnummer = "02119970078"
-            )
-        ),
-        bekreftelser = Bekreftelser(
-            harForståttRettigheterOgPlikter = JaNei.Ja,
-            harBekreftetOpplysninger = JaNei.Ja
-        ),
-        vedlegg = emptyList(),
-        hjemmePgaSmittevernhensyn = true,
-        hjemmePgaStengtBhgSkole = true,
-        k9Format = defaultK9Format(søknadId, mottatt),
     )
 
     fun defaultK9Format(søknadId: String = UUID.randomUUID().toString(), mottatt: ZonedDateTime = ZonedDateTime.now()) =

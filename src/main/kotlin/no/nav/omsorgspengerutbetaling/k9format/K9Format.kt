@@ -5,7 +5,6 @@ import no.nav.k9.søknad.felles.fravær.AktivitetFravær
 import no.nav.k9.søknad.felles.fravær.FraværPeriode
 import no.nav.k9.søknad.felles.fravær.SøknadÅrsak
 import no.nav.k9.søknad.felles.opptjening.OpptjeningAktivitet
-import no.nav.k9.søknad.felles.personopplysninger.Barn
 import no.nav.k9.søknad.felles.personopplysninger.Bosteder
 import no.nav.k9.søknad.felles.personopplysninger.Utenlandsopphold
 import no.nav.k9.søknad.felles.type.*
@@ -13,7 +12,6 @@ import no.nav.k9.søknad.ytelse.omsorgspenger.v1.OmsorgspengerUtbetaling
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.Utbetalingsårsak
 import no.nav.omsorgspengerutbetaling.felles.Bosted
-import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak
 import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak.*
 import no.nav.omsorgspengerutbetaling.felles.Opphold
@@ -33,7 +31,7 @@ fun Søknad.tilK9Format(mottatt: ZonedDateTime, søker: Søker): K9Søknad {
         mottatt,
         søker.tilK9Søker(),
         OmsorgspengerUtbetaling(
-            fosterbarn?.tilK9Barn(),
+            null,
             OpptjeningAktivitet(), //Trenger ikke OpptjeningAktivitet for denne ytelsen.
             arbeidsgivere.byggK9Fraværsperiode(),
             bosteder.tilK9Bosteder(),
@@ -43,10 +41,6 @@ fun Søknad.tilK9Format(mottatt: ZonedDateTime, søker: Søker): K9Søknad {
 }
 
 fun Søker.tilK9Søker(): K9Søker = K9Søker(NorskIdentitetsnummer.of(fødselsnummer))
-
-fun List<FosterBarn>.tilK9Barn(): List<Barn> = map {
-    Barn(NorskIdentitetsnummer.of(it.identitetsnummer), null)
-}
 
 fun List<Bosted>.tilK9Bosteder(): Bosteder {
     val perioder = mutableMapOf<Periode, Bosteder.BostedPeriodeInfo>()

@@ -2,11 +2,11 @@ package no.nav.omsorgspengerutbetaling.k9format
 
 import no.nav.k9.søknad.JsonUtils
 import no.nav.omsorgspengerutbetaling.soknad.SøknadUtils
-import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONAssert
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
+import kotlin.test.Test
 
 class K9FormatTest {
 
@@ -30,12 +30,7 @@ class K9FormatTest {
               },
               "ytelse": {
                 "type": "OMP_UT",
-                "fosterbarn": [
-                  {
-                    "norskIdentitetsnummer": "02119970078",
-                    "fødselsdato": null
-                  }
-                ],
+                "fosterbarn": null,
                 "aktivitet": {
                   
                 },

@@ -1,9 +1,9 @@
 package no.nav.omsorgspengerutbetaling.soknad
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import no.nav.omsorgspengerutbetaling.k9format.tilK9Format
 import org.junit.Test
 import org.skyscreamer.jsonassert.JSONAssert
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
@@ -31,10 +31,9 @@ internal class SerDesTest {
 
     private companion object {
         val now = ZonedDateTime.of(2018, 1, 2, 3, 4, 5, 6, ZoneId.of("UTC"))
-        val start = LocalDate.parse("2020-01-01")
-
         val søknad = SøknadUtils.defaultSøknad
-        fun komplettSøknad(søknadId: String = UUID.randomUUID().toString()) = SøknadUtils.defaultKomplettSøknad(søknadId, now)
+        val k9Format = søknad.tilK9Format(now, SøknadUtils.søker)
+        fun komplettSøknad(søknadId: String = UUID.randomUUID().toString()) = søknad.tilKomplettSøknad(SøknadUtils.søker, k9Format, listOf()).copy(søknadId = søknadId)
 
         //language=json
         fun søknadJson(søknadId: String = UUID.randomUUID().toString()) = """
@@ -54,11 +53,6 @@ internal class SerDesTest {
                     "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
-                     "ansettelseslengde": {
-                        "merEnn4Uker": true,
-                        "begrunnelse": null,
-                        "ingenAvSituasjoneneForklaring": null
-                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-01",
@@ -74,11 +68,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
-                     "ansettelseslengde": {
-                        "merEnn4Uker": false,
-                        "begrunnelse": "ANNET_ARBEIDSFORHOLD",
-                        "ingenAvSituasjoneneForklaring": null
-                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-21",
@@ -94,11 +83,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
-                     "ansettelseslengde": {
-                        "merEnn4Uker": false,
-                        "begrunnelse": "MILITÆRTJENESTE",
-                        "ingenAvSituasjoneneForklaring": null
-                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-31",
@@ -114,11 +98,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
-                     "ansettelseslengde": {
-                        "merEnn4Uker": false,
-                        "begrunnelse": "INGEN_AV_SITUASJONENE",
-                        "ingenAvSituasjoneneForklaring": "Forklarer hvorfor ingen av situasjonene passer."
-                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-31",
@@ -134,11 +113,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
-                     "ansettelseslengde": {
-                        "merEnn4Uker": false,
-                        "begrunnelse": "ANDRE_YTELSER",
-                        "ingenAvSituasjoneneForklaring": null
-                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-02-01",
@@ -154,11 +128,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": null,
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
-                     "ansettelseslengde": {
-                        "merEnn4Uker": false,
-                        "begrunnelse": "ANDRE_YTELSER",
-                        "ingenAvSituasjoneneForklaring": null
-                      },
                     "perioder": [
                       {
                         "fraOgMed": "2020-02-01",
@@ -183,10 +152,6 @@ internal class SerDesTest {
             },
             "erSelvstendig": false,
             "erFrilanser": false,
-            "andreUtbetalinger": ["dagpenger", "sykepenger"],
-            "fosterbarn": [{
-                "identitetsnummer": "02119970078"
-            }],
             "vedlegg": [],
             "hjemmePgaSmittevernhensyn": true,
             "hjemmePgaStengtBhgSkole": true
@@ -233,11 +198,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                   "harHattFraværHosArbeidsgiver": true,
                   "arbeidsgiverHarUtbetaltLønn": false,
-                  "ansettelseslengde": {
-                    "merEnn4Uker": true,
-                    "begrunnelse": null,
-                    "ingenAvSituasjoneneForklaring": null
-                  },
                   "perioder": [
                     {
                       "fraOgMed": "2020-01-01",
@@ -252,11 +212,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                   "harHattFraværHosArbeidsgiver": true,
                   "arbeidsgiverHarUtbetaltLønn": false,
-                  "ansettelseslengde": {
-                    "merEnn4Uker": false,
-                    "begrunnelse": "ANNET_ARBEIDSFORHOLD",
-                    "ingenAvSituasjoneneForklaring": null
-                  },
                   "perioder": [
                     {
                       "fraOgMed": "2020-01-21",
@@ -271,11 +226,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                   "harHattFraværHosArbeidsgiver": true,
                   "arbeidsgiverHarUtbetaltLønn": false,
-                  "ansettelseslengde": {
-                    "merEnn4Uker": false,
-                    "begrunnelse": "MILITÆRTJENESTE",
-                    "ingenAvSituasjoneneForklaring": null
-                  },
                   "perioder": [
                     {
                       "fraOgMed": "2020-01-31",
@@ -290,11 +240,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                   "harHattFraværHosArbeidsgiver": true,
                   "arbeidsgiverHarUtbetaltLønn": false,
-                  "ansettelseslengde": {
-                    "merEnn4Uker": false,
-                    "begrunnelse": "INGEN_AV_SITUASJONENE",
-                    "ingenAvSituasjoneneForklaring": "Forklarer hvorfor ingen av situasjonene passer."
-                  },
                   "perioder": [
                     {
                       "fraOgMed": "2020-01-31",
@@ -309,11 +254,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                   "harHattFraværHosArbeidsgiver": true,
                   "arbeidsgiverHarUtbetaltLønn": false,
-                  "ansettelseslengde": {
-                    "merEnn4Uker": false,
-                    "begrunnelse": "ANDRE_YTELSER",
-                    "ingenAvSituasjoneneForklaring": null
-                  },
                   "perioder": [
                     {
                       "fraOgMed": "2020-02-01",
@@ -328,11 +268,6 @@ internal class SerDesTest {
                   "organisasjonsnummer": null,
                   "harHattFraværHosArbeidsgiver": true,
                   "arbeidsgiverHarUtbetaltLønn": false,
-                  "ansettelseslengde": {
-                    "merEnn4Uker": false,
-                    "begrunnelse": "ANDRE_YTELSER",
-                    "ingenAvSituasjoneneForklaring": null
-                  },
                   "perioder": [
                     {
                       "fraOgMed": "2020-02-01",
@@ -347,17 +282,8 @@ internal class SerDesTest {
                 "harBekreftetOpplysninger": true,
                 "harForståttRettigheterOgPlikter": true
               },
-              "andreUtbetalinger": [
-                "dagpenger",
-                "sykepenger"
-              ],
               "erSelvstendig": false,
               "erFrilanser": false,
-              "fosterbarn": [
-                {
-                  "identitetsnummer": "02119970078"
-                }
-              ],
               "vedlegg": [
                 
               ],
@@ -372,12 +298,7 @@ internal class SerDesTest {
                 },
                 "ytelse": {
                   "type": "OMP_UT",
-                  "fosterbarn": [
-                    {
-                      "norskIdentitetsnummer": "26128027024",
-                      "fødselsdato": null
-                    }
-                  ],
+                  "fosterbarn": null,
                   "aktivitet": {
                     
                   },
