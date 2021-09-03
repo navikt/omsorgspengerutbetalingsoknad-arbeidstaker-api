@@ -33,7 +33,7 @@ internal class SerDesTest {
         val now = ZonedDateTime.of(2018, 1, 2, 3, 4, 5, 6, ZoneId.of("UTC"))
         val søknad = SøknadUtils.defaultSøknad
         val k9Format = søknad.tilK9Format(now, SøknadUtils.søker)
-        fun komplettSøknad(søknadId: String = UUID.randomUUID().toString()) = søknad.tilKomplettSøknad(SøknadUtils.søker, k9Format, listOf()).copy(søknadId = søknadId)
+        fun komplettSøknad(søknadId: String = UUID.randomUUID().toString()) = søknad.tilKomplettSøknad(SøknadUtils.søker, k9Format, listOf(), now).copy(søknadId = søknadId)
 
         //language=json
         fun søknadJson(søknadId: String = UUID.randomUUID().toString()) = """

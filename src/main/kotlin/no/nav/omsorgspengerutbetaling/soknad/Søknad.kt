@@ -9,7 +9,6 @@ import no.nav.omsorgspengerutbetaling.felles.Språk
 import no.nav.omsorgspengerutbetaling.soker.Søker
 import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
 import java.net.URL
-import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.*
 
@@ -24,10 +23,10 @@ data class Søknad(
     val hjemmePgaSmittevernhensyn: Boolean,
     val hjemmePgaStengtBhgSkole: Boolean? = null
 ) {
-    fun tilKomplettSøknad(søker: Søker, k9Format: Søknad, vedlegg: List<Vedlegg>) = KomplettSøknad(
+    fun tilKomplettSøknad(søker: Søker, k9Format: Søknad, vedlegg: List<Vedlegg>, mottatt: ZonedDateTime) = KomplettSøknad(
         søknadId = søknadId,
         språk = språk,
-        mottatt = ZonedDateTime.now(ZoneOffset.UTC),
+        mottatt = mottatt,
         søker = søker,
         bosteder = bosteder,
         opphold = opphold,

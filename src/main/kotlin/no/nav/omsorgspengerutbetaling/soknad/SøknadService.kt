@@ -1,16 +1,19 @@
 package no.nav.omsorgspengerutbetaling.soknad
 
+import no.nav.omsorgspengerutbetaling.felles.formaterStatuslogging
 import no.nav.omsorgspengerutbetaling.general.CallId
 import no.nav.omsorgspengerutbetaling.general.auth.IdToken
+import no.nav.omsorgspengerutbetaling.k9format.tilK9Format
 import no.nav.omsorgspengerutbetaling.mottak.OmsorgpengesøknadMottakGateway
-import no.nav.omsorgspengerutbetaling.soker.Søker
 import no.nav.omsorgspengerutbetaling.soker.SøkerService
+import no.nav.omsorgspengerutbetaling.soker.validate
 import no.nav.omsorgspengerutbetaling.vedlegg.DokumentEier
 import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
 import no.nav.omsorgspengerutbetaling.vedlegg.VedleggService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import no.nav.k9.søknad.Søknad as K9Søknad
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 internal class SøknadService(
     private val omsorgpengesøknadMottakGateway: OmsorgpengesøknadMottakGateway,
@@ -24,34 +27,32 @@ internal class SøknadService(
 
     internal suspend fun registrer(
         søknad: Søknad,
-        søker: Søker,
-        k9Format: K9Søknad,
         idToken: IdToken,
         callId: CallId
     ) {
-        logger.trace("Registrerer søknad.")
+        logger.info(formaterStatuslogging(søknad.søknadId, "registreres"))
 
-        logger.trace("Henter ${søknad.vedlegg.size} vedlegg.")
+        val søker = søkerService.getSoker(idToken, callId)
+        søker.validate()
+
+        logger.info("Mapper om til K9Format")
+        val mottatt = ZonedDateTime.now(ZoneOffset.UTC)
+        val k9Format = søknad.tilK9Format(mottatt, søker)
+
+        søknad.valider(k9Format)
+
+        logger.info("Henter og validerer ${søknad.vedlegg.size} vedlegg.")
         val vedlegg: List<Vedlegg> = vedleggService.hentVedlegg(
             idToken = idToken,
             vedleggUrls = søknad.vedlegg,
             callId = callId,
             eier = DokumentEier(søker.fødselsnummer)
         )
-
-        logger.trace("Vedlegg hentet. Validerer vedlegg.")
         vedlegg.validerVedlegg(søknad.vedlegg)
-        logger.info("Vedlegg validert")
-
-        logger.info("Legger søknad til prosessering")
-
-        val komplettSøknad = søknad.tilKomplettSøknad(søker, k9Format, vedlegg)
 
         omsorgpengesøknadMottakGateway.leggTilProsessering(
-            søknad = komplettSøknad,
+            søknad = søknad.tilKomplettSøknad(søker, k9Format, vedlegg, mottatt),
             callId = callId
         )
-
-        logger.trace("Søknad lagt til mottak.")
     }
 }
