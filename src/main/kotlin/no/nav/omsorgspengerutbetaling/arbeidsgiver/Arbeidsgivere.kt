@@ -37,12 +37,12 @@ enum class Utbetalingsårsak() {
 fun List<ArbeidsgiverDetaljer>.valider(): List<Violation> {
     val violations = mutableListOf<Violation>()
 
-    forEachIndexed { index, arbeidsgiver -> violations.addAll(arbeidsgiver.valider(index)) }
+    forEach { arbeidsgiver -> violations.addAll(arbeidsgiver.valider()) }
 
     return violations
 }
 
-fun ArbeidsgiverDetaljer.valider(index: Int): List<Violation> {
+fun ArbeidsgiverDetaljer.valider(): List<Violation> {
     val violations = mutableListOf<Violation>()
 
     violations.addAll(perioder.valider())

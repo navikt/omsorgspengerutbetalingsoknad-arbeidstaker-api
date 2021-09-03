@@ -1,24 +1,14 @@
 package no.nav.omsorgspengerutbetaling.felles
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import no.nav.helse.dusseldorf.ktor.core.*
-import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
-import java.net.URL
+import no.nav.helse.dusseldorf.ktor.core.ParameterType
+import no.nav.helse.dusseldorf.ktor.core.Violation
 import java.time.Duration
 import java.time.LocalDate
 
 private object Verktøy{
-    internal const val MAX_VEDLEGG_SIZE = 24 * 1024 * 1024
 
     internal const val JsonPath = "utbetalingsperioder"
-
-    internal val VedleggUrlRegex = Regex("/vedlegg/.*")
-
-    internal val VedleggTooLargeProblemDetails = DefaultProblemDetails(
-        title = "attachments-too-large",
-        status = 413,
-        detail = "Totale størreslsen på alle vedlegg overstiger maks på 24 MB."
-    )
 }
 
 internal fun Utbetalingsperiode.somPeriode() =
@@ -54,7 +44,7 @@ internal fun List<Utbetalingsperiode>.valider() : Set<Violation> {
             )
         )
     }
-    map {
+    forEach {
         if(it.antallTimerPlanlagt != null && it.antallTimerBorte == null){
             violations.add(
                 Violation(
@@ -95,28 +85,4 @@ internal fun List<Utbetalingsperiode>.valider() : Set<Violation> {
     violations.addAll(perioder.valider(Verktøy.JsonPath))
 
     return violations
-}
-
-internal fun List<Vedlegg>.valider(vedleggReferanser: List<URL>) {
-
-    if (vedleggReferanser.size != size) {
-        throw Throwblem(
-            ValidationProblemDetails(
-                violations = setOf(
-                    Violation(
-                        parameterName = Verktøy.JsonPath,
-                        parameterType = ParameterType.ENTITY,
-                        reason = "Mottok referanse til ${vedleggReferanser.size} vedlegg, men fant kun $size vedlegg.",
-                        invalidValue = vedleggReferanser
-                    )
-                )
-            )
-        )
-    }
-
-    val totalSize = sumBy { it.content.size }
-
-    if (totalSize > Verktøy.MAX_VEDLEGG_SIZE) {
-        throw Throwblem(Verktøy.VedleggTooLargeProblemDetails)
-    }
 }
