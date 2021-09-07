@@ -45,7 +45,9 @@ fun Søker.tilK9Søker(): K9Søker = K9Søker(NorskIdentitetsnummer.of(fødselsn
 fun List<Bosted>.tilK9Bosteder(): Bosteder {
     val perioder = mutableMapOf<Periode, Bosteder.BostedPeriodeInfo>()
 
-    forEach { perioder[Periode(it.fraOgMed, it.tilOgMed)] = Bosteder.BostedPeriodeInfo().medLand(Landkode.of(it.landkode)) }
+    forEach {
+        perioder[Periode(it.fraOgMed, it.tilOgMed)] = Bosteder.BostedPeriodeInfo().medLand(Landkode.of(it.landkode))
+    }
 
     return Bosteder().medPerioder(perioder)
 }
@@ -53,7 +55,10 @@ fun List<Bosted>.tilK9Bosteder(): Bosteder {
 fun List<Opphold>.tilK9Utenlandsopphold(): Utenlandsopphold {
     val perioder = mutableMapOf<Periode, Utenlandsopphold.UtenlandsoppholdPeriodeInfo>()
 
-    forEach { perioder[Periode(it.fraOgMed, it.tilOgMed)] = Utenlandsopphold.UtenlandsoppholdPeriodeInfo().medLand(Landkode.of(it.landkode)) }
+    forEach {
+        perioder[Periode(it.fraOgMed, it.tilOgMed)] =
+            Utenlandsopphold.UtenlandsoppholdPeriodeInfo().medLand(Landkode.of(it.landkode))
+    }
 
     return Utenlandsopphold().medPerioder(perioder)
 }
@@ -67,7 +72,7 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
                 FraværPeriode(
                     Periode(utbetalingsperiode.fraOgMed, utbetalingsperiode.tilOgMed),
                     utbetalingsperiode.antallTimerBorte,
-                    utbetalingsperiode.årsak?.tilK9Årsak() ?: K9FraværÅrsak.ORDINÆRT_FRAVÆR,
+                    utbetalingsperiode.årsak.tilK9Årsak(),
                     arbeidsgiver.utbetalingsårsak.tilK9SøknadÅrsak(),
                     listOf(AktivitetFravær.ARBEIDSTAKER),
                     Organisasjonsnummer.of(arbeidsgiver.organisasjonsnummer)
@@ -79,19 +84,15 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
     return fraværsperioder
 }
 
-private fun FraværÅrsak.tilK9Årsak(): K9FraværÅrsak {
-    return when (this) {
-        ORDINÆRT_FRAVÆR -> K9FraværÅrsak.ORDINÆRT_FRAVÆR
-        SMITTEVERNHENSYN -> K9FraværÅrsak.SMITTEVERNHENSYN
-        STENGT_SKOLE_ELLER_BARNEHAGE -> K9FraværÅrsak.STENGT_SKOLE_ELLER_BARNEHAGE
-    }
+private fun FraværÅrsak.tilK9Årsak(): K9FraværÅrsak = when (this) {
+    ORDINÆRT_FRAVÆR -> K9FraværÅrsak.ORDINÆRT_FRAVÆR
+    SMITTEVERNHENSYN -> K9FraværÅrsak.SMITTEVERNHENSYN
+    STENGT_SKOLE_ELLER_BARNEHAGE -> K9FraværÅrsak.STENGT_SKOLE_ELLER_BARNEHAGE
 }
 
-private fun Utbetalingsårsak?.tilK9SøknadÅrsak(): SøknadÅrsak? {
-    return when(this){
-        Utbetalingsårsak.ARBEIDSGIVER_KONKURS -> SøknadÅrsak.ARBEIDSGIVER_KONKURS
-        Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER -> SøknadÅrsak.NYOPPSTARTET_HOS_ARBEIDSGIVER
-        Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER -> SøknadÅrsak.KONFLIKT_MED_ARBEIDSGIVER
-        null -> null
-    }
+
+private fun Utbetalingsårsak.tilK9SøknadÅrsak(): SøknadÅrsak = when (this) {
+    Utbetalingsårsak.ARBEIDSGIVER_KONKURS -> SøknadÅrsak.ARBEIDSGIVER_KONKURS
+    Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER -> SøknadÅrsak.NYOPPSTARTET_HOS_ARBEIDSGIVER
+    Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER -> SøknadÅrsak.KONFLIKT_MED_ARBEIDSGIVER
 }

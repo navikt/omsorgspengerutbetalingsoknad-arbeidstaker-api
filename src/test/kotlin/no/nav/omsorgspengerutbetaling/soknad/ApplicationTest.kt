@@ -202,21 +202,8 @@ class SøknadApplicationTest {
                         ]
                       },
                       {
-                        "navn": null,
+                        "navn": "Navn navnesen",
                         "organisasjonsnummer": "917755736",
-                        "harHattFraværHosArbeidsgiver": true,
-                        "arbeidsgiverHarUtbetaltLønn": false,
-                        "utbetalingsårsak" : "ARBEIDSGIVER_KONKURS",
-                        "perioder": [
-                          {
-                            "fraOgMed": "2020-02-01",
-                            "tilOgMed": "2020-02-06",
-                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
-                          }
-                        ]
-                      },
-                      {
-                        "navn": "Ikke registrert arbeidsgiver",
                         "harHattFraværHosArbeidsgiver": true,
                         "arbeidsgiverHarUtbetaltLønn": false,
                         "utbetalingsårsak" : "ARBEIDSGIVER_KONKURS",
@@ -297,7 +284,9 @@ class SøknadApplicationTest {
             requestEntity = defaultSøknad.copy(
                 arbeidsgivere = listOf(
                     defaultSøknad.arbeidsgivere[0].copy(
-                        perioder = listOf()
+                        perioder = listOf(),
+                        navn = " ",
+                        organisasjonsnummer = " "
                     )
                 ),
                 bekreftelser = Bekreftelser(
@@ -308,28 +297,44 @@ class SøknadApplicationTest {
                     URL(jpegUrl), URL(pdfUrl)
                 )
             ).somJson(),
-            expectedResponse = """
+            expectedResponse = //language=json
+            """
             {
-                "type": "/problem-details/invalid-request-parameters",
-                "title": "invalid-request-parameters",
-                "status": 400,
-                "detail": "Requesten inneholder ugyldige paramtere.",
-                "instance": "about:blank",
-                "invalid_parameters": [{
-                    "type": "entity",
-                    "name": "utbetalingsperioder",
-                    "reason": "Må settes minst en utbetalingsperiode.",
-                    "invalid_value": []
-                }, {
-                    "type": "entity",
-                    "name": "bekreftlser.harBekreftetOpplysninger",
-                    "reason": "Må besvars Ja.",
-                    "invalid_value": false
-                }, {
-                    "type": "entity",
-                    "name": "bekreftelser.harForståttRettigheterOgPlikter",
-                    "reason": "Må besvars Ja.",
-                    "invalid_value": false
+              "type": "/problem-details/invalid-request-parameters",
+              "title": "invalid-request-parameters",
+              "status": 400,
+              "detail": "Requesten inneholder ugyldige paramtere.",
+              "instance": "about:blank",
+              "invalid_parameters": [
+                {
+                  "type": "entity",
+                  "name": "utbetalingsperioder",
+                  "reason": "Må settes minst en utbetalingsperiode.",
+                  "invalid_value": []
+                },
+                {
+                  "type": "entity",
+                  "name": "navn",
+                  "reason": "ArbeidsgiverDetaljer må ha navn satt.",
+                  "invalid_value": " "
+                },
+                {
+                  "type": "entity",
+                  "name": "organisasjonsnummer",
+                  "reason": "organisasjonsnummer må ha navn satt.",
+                  "invalid_value": " "
+                },
+                {
+                  "type": "entity",
+                  "name": "bekreftlser.harBekreftetOpplysninger",
+                  "reason": "Må besvars Ja.",
+                  "invalid_value": false
+                },
+                {
+                  "type": "entity",
+                  "name": "bekreftelser.harForståttRettigheterOgPlikter",
+                  "reason": "Må besvars Ja.",
+                  "invalid_value": false
                 },
                 {
                   "type": "entity",
@@ -337,7 +342,7 @@ class SøknadApplicationTest {
                   "reason": "Minst 1 fraværsperiode må oppgis",
                   "invalid_value": "k9-format feilkode: påkrevd"
                 }
-                ]
+              ]
             }
             """.trimIndent()
         )

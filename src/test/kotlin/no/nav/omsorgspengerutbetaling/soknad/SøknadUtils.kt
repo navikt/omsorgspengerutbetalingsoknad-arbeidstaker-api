@@ -59,6 +59,7 @@ internal object SøknadUtils {
             ),
             ArbeidsgiverDetaljer(
                 organisasjonsnummer = GYLDIG_ORGNR,
+                navn = "Navn navnesen",
                 harHattFraværHosArbeidsgiver = true,
                 arbeidsgiverHarUtbetaltLønn = false,
                 utbetalingsårsak = Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER,

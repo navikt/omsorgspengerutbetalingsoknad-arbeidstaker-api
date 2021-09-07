@@ -19,8 +19,8 @@ class Organisasjon(
 )
 
 data class ArbeidsgiverDetaljer(
-    val navn: String? = null,
-    val organisasjonsnummer: String? = null,
+    val navn: String,
+    val organisasjonsnummer: String,
     val harHattFraværHosArbeidsgiver: Boolean,
     val arbeidsgiverHarUtbetaltLønn: Boolean,
     val perioder: List<Utbetalingsperiode>,
@@ -46,6 +46,28 @@ fun ArbeidsgiverDetaljer.valider(): List<Violation> {
     val violations = mutableListOf<Violation>()
 
     violations.addAll(perioder.valider())
+
+    if(navn.isNullOrBlank()){
+        violations.add(
+            Violation(
+                parameterName = "navn",
+                parameterType = ParameterType.ENTITY,
+                reason = "ArbeidsgiverDetaljer må ha navn satt.",
+                invalidValue = navn
+            )
+        )
+    }
+
+    if(organisasjonsnummer.isNullOrBlank()){
+        violations.add(
+            Violation(
+                parameterName = "organisasjonsnummer",
+                parameterType = ParameterType.ENTITY,
+                reason = "organisasjonsnummer må ha navn satt.",
+                invalidValue = organisasjonsnummer
+            )
+        )
+    }
 
     if (utbetalingsårsak == Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER && konfliktForklaring.isNullOrBlank()) {
         violations.add(
