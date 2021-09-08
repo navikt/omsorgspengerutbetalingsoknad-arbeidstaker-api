@@ -321,7 +321,7 @@ class SøknadApplicationTest {
                 {
                   "type": "entity",
                   "name": "organisasjonsnummer",
-                  "reason": "organisasjonsnummer må ha navn satt.",
+                  "reason": "organisasjonsnummer må være satt.",
                   "invalid_value": " "
                 },
                 {

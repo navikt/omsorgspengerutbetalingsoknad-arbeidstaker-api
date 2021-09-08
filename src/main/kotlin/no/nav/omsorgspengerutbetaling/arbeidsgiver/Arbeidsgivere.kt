@@ -63,7 +63,7 @@ fun ArbeidsgiverDetaljer.valider(): List<Violation> {
             Violation(
                 parameterName = "organisasjonsnummer",
                 parameterType = ParameterType.ENTITY,
-                reason = "organisasjonsnummer må ha navn satt.",
+                reason = "organisasjonsnummer må være satt.",
                 invalidValue = organisasjonsnummer
             )
         )
