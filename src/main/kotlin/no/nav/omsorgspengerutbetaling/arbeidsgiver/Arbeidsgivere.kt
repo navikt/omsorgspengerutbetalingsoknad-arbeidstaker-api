@@ -25,8 +25,19 @@ data class ArbeidsgiverDetaljer(
     val arbeidsgiverHarUtbetaltLønn: Boolean,
     val perioder: List<Utbetalingsperiode>,
     val utbetalingsårsak: Utbetalingsårsak,
-    val konfliktForklaring: String? = null
+    val konfliktForklaring: String? = null,
+    val årsakNyoppstartet: ÅrsakNyoppstartet? = null
 )
+
+enum class ÅrsakNyoppstartet{
+    JOBBET_HOS_ANNEN_ARBEIDSGIVER,
+    VAR_FRILANSER,
+    VAR_SELVSTENDIGE,
+    SØKTE_ANDRE_UTBETALINGER,
+    ARBEID_I_UTLANDET,
+    UTØVDE_MILITÆR,
+    ANNET
+}
 
 enum class Utbetalingsårsak() {
     ARBEIDSGIVER_KONKURS,
@@ -47,6 +58,7 @@ fun ArbeidsgiverDetaljer.valider(): List<Violation> {
 
     violations.addAll(perioder.valider())
 
+    // TODO: 10/09/2021 Validering mot utbetalingsårsak. Konfliktforklaring og årsakNyoppstartet
     if(navn.isNullOrBlank()){
         violations.add(
             Violation(
