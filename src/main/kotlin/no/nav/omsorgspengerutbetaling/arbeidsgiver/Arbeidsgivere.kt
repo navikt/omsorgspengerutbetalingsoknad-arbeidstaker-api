@@ -58,7 +58,34 @@ fun ArbeidsgiverDetaljer.valider(): List<Violation> {
 
     violations.addAll(perioder.valider())
 
-    // TODO: 10/09/2021 Validering mot utbetalingsårsak. Konfliktforklaring og årsakNyoppstartet
+    when(utbetalingsårsak){
+        Utbetalingsårsak.ARBEIDSGIVER_KONKURS -> null
+        Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER -> {
+            if(konfliktForklaring.isNullOrBlank()){
+                violations.add(
+                    Violation(
+                        parameterName = "konfliktForklaring",
+                        parameterType = ParameterType.ENTITY,
+                        reason = "ArbeidsgiverDetaljer.konfliktForklaring må være satt dersom Utbetalingsårsak=KONFLIKT_MED_ARBEIDSGIVER",
+                        invalidValue = konfliktForklaring
+                    )
+                )
+            }
+        }
+        Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER -> {
+            if(årsakNyoppstartet == null){
+                violations.add(
+                    Violation(
+                        parameterName = "årsakNyoppstartet",
+                        parameterType = ParameterType.ENTITY,
+                        reason = "ArbeidsgiverDetaljer.årsakNyoppstartet må være satt dersom Utbetalingsårsak=NYOPPSTARTET_HOS_ARBEIDSGIVER",
+                        invalidValue = årsakNyoppstartet
+                    )
+                )
+            }
+        }
+    }
+
     if(navn.isNullOrBlank()){
         violations.add(
             Violation(
@@ -77,17 +104,6 @@ fun ArbeidsgiverDetaljer.valider(): List<Violation> {
                 parameterType = ParameterType.ENTITY,
                 reason = "organisasjonsnummer må være satt.",
                 invalidValue = organisasjonsnummer
-            )
-        )
-    }
-
-    if (utbetalingsårsak == Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER && konfliktForklaring.isNullOrBlank()) {
-        violations.add(
-            Violation(
-                parameterName = "konfliktForklaring",
-                parameterType = ParameterType.ENTITY,
-                reason = "Dersom utbetalingsårsak er KONFLIKT_MED_ARBEIDSGIVER må konfliktForklaring inneholde noe.",
-                invalidValue = konfliktForklaring
             )
         )
     }

@@ -3,6 +3,7 @@ package no.nav.omsorgspengerutbetaling.soknad
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.Utbetalingsårsak
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.ÅrsakNyoppstartet
 import no.nav.omsorgspengerutbetaling.felles.*
 import no.nav.omsorgspengerutbetaling.omsorgspengerKonfiguert
 import no.nav.omsorgspengerutbetaling.soker.Søker
@@ -63,6 +64,7 @@ internal object SøknadUtils {
                 harHattFraværHosArbeidsgiver = true,
                 arbeidsgiverHarUtbetaltLønn = false,
                 utbetalingsårsak = Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER,
+                årsakNyoppstartet = ÅrsakNyoppstartet.ARBEID_I_UTLANDET,
                 perioder = listOf(
                     Utbetalingsperiode(
                         fraOgMed = start.plusMonths(1),

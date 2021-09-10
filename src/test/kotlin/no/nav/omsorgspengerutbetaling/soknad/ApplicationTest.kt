@@ -10,6 +10,7 @@ import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.omsorgspengerutbetaling.TestConfiguration
 import no.nav.omsorgspengerutbetaling.TestUtils.Companion.getAuthCookie
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.Utbetalingsårsak
 import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
 import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak
 import no.nav.omsorgspengerutbetaling.felles.JaNei
@@ -286,7 +287,9 @@ class SøknadApplicationTest {
                     defaultSøknad.arbeidsgivere[0].copy(
                         perioder = listOf(),
                         navn = " ",
-                        organisasjonsnummer = " "
+                        organisasjonsnummer = " ",
+                        utbetalingsårsak = Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER,
+                        konfliktForklaring = " "
                     )
                 ),
                 bekreftelser = Bekreftelser(
@@ -311,6 +314,12 @@ class SøknadApplicationTest {
                   "name": "utbetalingsperioder",
                   "reason": "Må settes minst en utbetalingsperiode.",
                   "invalid_value": []
+                },
+                {
+                  "type": "entity",
+                  "name": "konfliktForklaring",
+                  "reason": "ArbeidsgiverDetaljer.konfliktForklaring må være satt dersom Utbetalingsårsak=KONFLIKT_MED_ARBEIDSGIVER",
+                  "invalid_value": " "
                 },
                 {
                   "type": "entity",
