@@ -35,7 +35,7 @@ enum class ÅrsakNyoppstartet{
     VAR_SELVSTENDIGE,
     SØKTE_ANDRE_UTBETALINGER,
     ARBEID_I_UTLANDET,
-    UTØVDE_MILITÆR,
+    UTØVDE_VERNEPLIKT,
     ANNET
 }
 
