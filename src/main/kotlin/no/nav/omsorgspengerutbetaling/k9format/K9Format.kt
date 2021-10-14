@@ -3,15 +3,15 @@ package no.nav.omsorgspengerutbetaling.k9format
 import no.nav.k9.søknad.felles.Versjon
 import no.nav.k9.søknad.felles.fravær.AktivitetFravær
 import no.nav.k9.søknad.felles.fravær.FraværPeriode
+import no.nav.k9.søknad.felles.fravær.SøknadÅrsak
 import no.nav.k9.søknad.felles.opptjening.OpptjeningAktivitet
-import no.nav.k9.søknad.felles.personopplysninger.Barn
 import no.nav.k9.søknad.felles.personopplysninger.Bosteder
 import no.nav.k9.søknad.felles.personopplysninger.Utenlandsopphold
 import no.nav.k9.søknad.felles.type.*
 import no.nav.k9.søknad.ytelse.omsorgspenger.v1.OmsorgspengerUtbetaling
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.Utbetalingsårsak
 import no.nav.omsorgspengerutbetaling.felles.Bosted
-import no.nav.omsorgspengerutbetaling.felles.FosterBarn
 import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak
 import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak.*
 import no.nav.omsorgspengerutbetaling.felles.Opphold
@@ -31,7 +31,7 @@ fun Søknad.tilK9Format(mottatt: ZonedDateTime, søker: Søker): K9Søknad {
         mottatt,
         søker.tilK9Søker(),
         OmsorgspengerUtbetaling(
-            fosterbarn?.tilK9Barn(),
+            null,
             OpptjeningAktivitet(), //Trenger ikke OpptjeningAktivitet for denne ytelsen.
             arbeidsgivere.byggK9Fraværsperiode(),
             bosteder.tilK9Bosteder(),
@@ -42,16 +42,11 @@ fun Søknad.tilK9Format(mottatt: ZonedDateTime, søker: Søker): K9Søknad {
 
 fun Søker.tilK9Søker(): K9Søker = K9Søker(NorskIdentitetsnummer.of(fødselsnummer))
 
-fun List<FosterBarn>.tilK9Barn(): List<Barn> = map {
-    Barn(NorskIdentitetsnummer.of(it.identitetsnummer), null)
-}
-
 fun List<Bosted>.tilK9Bosteder(): Bosteder {
     val perioder = mutableMapOf<Periode, Bosteder.BostedPeriodeInfo>()
 
     forEach {
-        val periode = Periode(it.fraOgMed, it.tilOgMed)
-        perioder[periode] = Bosteder.BostedPeriodeInfo().medLand(Landkode.of(it.landkode))
+        perioder[Periode(it.fraOgMed, it.tilOgMed)] = Bosteder.BostedPeriodeInfo().medLand(Landkode.of(it.landkode))
     }
 
     return Bosteder().medPerioder(perioder)
@@ -61,8 +56,8 @@ fun List<Opphold>.tilK9Utenlandsopphold(): Utenlandsopphold {
     val perioder = mutableMapOf<Periode, Utenlandsopphold.UtenlandsoppholdPeriodeInfo>()
 
     forEach {
-        val periode = Periode(it.fraOgMed, it.tilOgMed)
-        perioder[periode] = Utenlandsopphold.UtenlandsoppholdPeriodeInfo().medLand(Landkode.of(it.landkode))
+        perioder[Periode(it.fraOgMed, it.tilOgMed)] =
+            Utenlandsopphold.UtenlandsoppholdPeriodeInfo().medLand(Landkode.of(it.landkode))
     }
 
     return Utenlandsopphold().medPerioder(perioder)
@@ -77,7 +72,8 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
                 FraværPeriode(
                     Periode(utbetalingsperiode.fraOgMed, utbetalingsperiode.tilOgMed),
                     utbetalingsperiode.antallTimerBorte,
-                    utbetalingsperiode.årsak?.tilK9Årsak() ?: K9FraværÅrsak.ORDINÆRT_FRAVÆR,
+                    utbetalingsperiode.årsak.tilK9Årsak(),
+                    arbeidsgiver.utbetalingsårsak.tilK9SøknadÅrsak(),
                     listOf(AktivitetFravær.ARBEIDSTAKER),
                     Organisasjonsnummer.of(arbeidsgiver.organisasjonsnummer)
                 )
@@ -88,10 +84,15 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
     return fraværsperioder
 }
 
-private fun FraværÅrsak.tilK9Årsak(): K9FraværÅrsak {
-    return when (this) {
-        ORDINÆRT_FRAVÆR -> K9FraværÅrsak.ORDINÆRT_FRAVÆR
-        SMITTEVERNHENSYN -> K9FraværÅrsak.SMITTEVERNHENSYN
-        STENGT_SKOLE_ELLER_BARNEHAGE -> K9FraværÅrsak.STENGT_SKOLE_ELLER_BARNEHAGE
-    }
+private fun FraværÅrsak.tilK9Årsak(): K9FraværÅrsak = when (this) {
+    ORDINÆRT_FRAVÆR -> K9FraværÅrsak.ORDINÆRT_FRAVÆR
+    SMITTEVERNHENSYN -> K9FraværÅrsak.SMITTEVERNHENSYN
+    STENGT_SKOLE_ELLER_BARNEHAGE -> K9FraværÅrsak.STENGT_SKOLE_ELLER_BARNEHAGE
+}
+
+
+private fun Utbetalingsårsak.tilK9SøknadÅrsak(): SøknadÅrsak = when (this) {
+    Utbetalingsårsak.ARBEIDSGIVER_KONKURS -> SøknadÅrsak.ARBEIDSGIVER_KONKURS
+    Utbetalingsårsak.NYOPPSTARTET_HOS_ARBEIDSGIVER -> SøknadÅrsak.NYOPPSTARTET_HOS_ARBEIDSGIVER
+    Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER -> SøknadÅrsak.KONFLIKT_MED_ARBEIDSGIVER
 }

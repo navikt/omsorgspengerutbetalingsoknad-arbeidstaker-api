@@ -10,7 +10,11 @@ import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.omsorgspengerutbetaling.TestConfiguration
 import no.nav.omsorgspengerutbetaling.TestUtils.Companion.getAuthCookie
-import no.nav.omsorgspengerutbetaling.felles.*
+import no.nav.omsorgspengerutbetaling.arbeidsgiver.Utbetalingsårsak
+import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
+import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak
+import no.nav.omsorgspengerutbetaling.felles.JaNei
+import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
 import no.nav.omsorgspengerutbetaling.handleRequestUploadImage
 import no.nav.omsorgspengerutbetaling.jpegUrl
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
@@ -161,9 +165,7 @@ class SøknadApplicationTest {
                         "organisasjonsnummer": "917755736",
                         "harHattFraværHosArbeidsgiver": true,
                         "arbeidsgiverHarUtbetaltLønn": false,
-                        "ansettelseslengde": {
-                          "merEnn4Uker": true
-                        },
+                        "utbetalingsårsak" : "ARBEIDSGIVER_KONKURS",
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-01",
@@ -177,10 +179,7 @@ class SøknadApplicationTest {
                         "organisasjonsnummer": "917755736",
                         "harHattFraværHosArbeidsgiver": true,
                         "arbeidsgiverHarUtbetaltLønn": false,
-                        "ansettelseslengde": {
-                          "merEnn4Uker": false,
-                          "begrunnelse": "ANNET_ARBEIDSFORHOLD"
-                        },
+                        "utbetalingsårsak" : "ARBEIDSGIVER_KONKURS",
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-21",
@@ -194,10 +193,7 @@ class SøknadApplicationTest {
                         "organisasjonsnummer": "917755736",
                         "harHattFraværHosArbeidsgiver": true,
                         "arbeidsgiverHarUtbetaltLønn": false,
-                        "ansettelseslengde": {
-                          "merEnn4Uker": false,
-                          "begrunnelse": "MILITÆRTJENESTE"
-                        },
+                        "utbetalingsårsak" : "ARBEIDSGIVER_KONKURS",
                         "perioder": [
                           {
                             "fraOgMed": "2020-01-31",
@@ -207,30 +203,11 @@ class SøknadApplicationTest {
                         ]
                       },
                       {
-                        "navn": null,
+                        "navn": "Navn navnesen",
                         "organisasjonsnummer": "917755736",
                         "harHattFraværHosArbeidsgiver": true,
                         "arbeidsgiverHarUtbetaltLønn": false,
-                        "ansettelseslengde": {
-                          "merEnn4Uker": false,
-                          "begrunnelse": "ANDRE_YTELSER"
-                        },
-                        "perioder": [
-                          {
-                            "fraOgMed": "2020-02-01",
-                            "tilOgMed": "2020-02-06",
-                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
-                          }
-                        ]
-                      },
-                      {
-                        "navn": "Ikke registrert arbeidsgiver",
-                        "harHattFraværHosArbeidsgiver": true,
-                        "arbeidsgiverHarUtbetaltLønn": false,
-                        "ansettelseslengde": {
-                          "merEnn4Uker": false,
-                          "begrunnelse": "ANDRE_YTELSER"
-                        },
+                        "utbetalingsårsak" : "ARBEIDSGIVER_KONKURS",
                         "perioder": [
                           {
                             "fraOgMed": "2020-02-01",
@@ -244,10 +221,6 @@ class SøknadApplicationTest {
                     "harBekreftetOpplysninger": true,
                     "harForståttRettigheterOgPlikter": true
                   },
-                  "andreUtbetalinger": [
-                    "dagpenger",
-                    "sykepenger"
-                  ],
                   "vedlegg": [
                     "$jpegUrl",
                     "$pdfUrl"
@@ -312,7 +285,11 @@ class SøknadApplicationTest {
             requestEntity = defaultSøknad.copy(
                 arbeidsgivere = listOf(
                     defaultSøknad.arbeidsgivere[0].copy(
-                        perioder = listOf()
+                        perioder = listOf(),
+                        navn = " ",
+                        organisasjonsnummer = " ",
+                        utbetalingsårsak = Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER,
+                        konfliktForklaring = " "
                     )
                 ),
                 bekreftelser = Bekreftelser(
@@ -323,51 +300,8 @@ class SøknadApplicationTest {
                     URL(jpegUrl), URL(pdfUrl)
                 )
             ).somJson(),
-            expectedResponse = """
-            {
-                "type": "/problem-details/invalid-request-parameters",
-                "title": "invalid-request-parameters",
-                "status": 400,
-                "detail": "Requesten inneholder ugyldige paramtere.",
-                "instance": "about:blank",
-                "invalid_parameters": [{
-                    "type": "entity",
-                    "name": "utbetalingsperioder",
-                    "reason": "Må settes minst en utbetalingsperiode.",
-                    "invalid_value": []
-                }, {
-                    "type": "entity",
-                    "name": "bekreftlser.harBekreftetOpplysninger",
-                    "reason": "Må besvars Ja.",
-                    "invalid_value": false
-                }, {
-                    "type": "entity",
-                    "name": "bekreftelser.harForståttRettigheterOgPlikter",
-                    "reason": "Må besvars Ja.",
-                    "invalid_value": false
-                },
-                {
-                  "type": "entity",
-                  "name": "fraværsperioder",
-                  "reason": "Minst 1 fraværsperiode må oppgis",
-                  "invalid_value": "k9-format feilkode: påkrevd"
-                }
-                ]
-            }
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `Sende søknad ugyldig identitetsnummer på fosterbarn, gir feilmelding`() {
-        val cookie = getAuthCookie(gyldigFodselsnummerA)
-        val jpegUrl = engine.jpegUrl(cookie)
-        val pdfUrl = engine.pdUrl(cookie)
-
-        requestAndAssert(
-            httpMethod = HttpMethod.Post,
-            path = "/soknad",
-            expectedResponse = """
+            expectedResponse = //language=json
+            """
             {
               "type": "/problem-details/invalid-request-parameters",
               "title": "invalid-request-parameters",
@@ -377,226 +311,49 @@ class SøknadApplicationTest {
               "invalid_parameters": [
                 {
                   "type": "entity",
-                  "name": "fosterbarn[1].identitetsnummer",
-                  "reason": "Ikke gyldig identitetsnummer.",
-                  "invalid_value": "111"
+                  "name": "utbetalingsperioder",
+                  "reason": "Må settes minst en utbetalingsperiode.",
+                  "invalid_value": []
+                },
+                {
+                  "type": "entity",
+                  "name": "konfliktForklaring",
+                  "reason": "ArbeidsgiverDetaljer.konfliktForklaring må være satt dersom Utbetalingsårsak=KONFLIKT_MED_ARBEIDSGIVER",
+                  "invalid_value": " "
+                },
+                {
+                  "type": "entity",
+                  "name": "navn",
+                  "reason": "ArbeidsgiverDetaljer må ha navn satt.",
+                  "invalid_value": " "
+                },
+                {
+                  "type": "entity",
+                  "name": "organisasjonsnummer",
+                  "reason": "organisasjonsnummer må være satt.",
+                  "invalid_value": " "
+                },
+                {
+                  "type": "entity",
+                  "name": "bekreftlser.harBekreftetOpplysninger",
+                  "reason": "Må besvars Ja.",
+                  "invalid_value": false
+                },
+                {
+                  "type": "entity",
+                  "name": "bekreftelser.harForståttRettigheterOgPlikter",
+                  "reason": "Må besvars Ja.",
+                  "invalid_value": false
+                },
+                {
+                  "type": "entity",
+                  "name": "fraværsperioder",
+                  "reason": "Minst 1 fraværsperiode må oppgis",
+                  "invalid_value": "k9-format feilkode: påkrevd"
                 }
               ]
             }
-            """.trimIndent(),
-            expectedCode = HttpStatusCode.BadRequest,
-            cookie = cookie,
-            requestEntity = defaultSøknad.copy(
-                fosterbarn = listOf(
-                    FosterBarn(
-                        identitetsnummer = "02119970078"
-                    ),
-                    FosterBarn(
-                        identitetsnummer = "111"
-                    )
-                ),
-                vedlegg = listOf(
-                    URL(jpegUrl), URL(pdfUrl)
-                )
-            ).somJson()
-        )
-    }
-
-    @Test
-    fun `Sende søknad med ugyldig andreUtbetalinger`() {
-        val cookie = getAuthCookie(gyldigFodselsnummerA)
-        val jpegUrl = engine.jpegUrl(cookie)
-        val pdfUrl = engine.pdUrl(cookie)
-
-        requestAndAssert(
-            httpMethod = HttpMethod.Post,
-            path = "/soknad",
-            expectedResponse = """
-                {
-                  "type": "/problem-details/invalid-request-parameters",
-                  "title": "invalid-request-parameters",
-                  "status": 400,
-                  "detail": "Requesten inneholder ugyldige paramtere.",
-                  "instance": "about:blank",
-                  "invalid_parameters": [
-                    {
-                      "type": "entity",
-                      "name": "andreUtbetalinger[1]",
-                      "reason": "Ugyldig verdig for andre utbetaling. Kun 'dagpenger' og 'sykepenger' er tillatt.",
-                      "invalid_value": "koronapenger"
-                    }
-                  ]
-                }
-            """.trimIndent(),
-            expectedCode = HttpStatusCode.BadRequest,
-            cookie = cookie,
-            requestEntity = """
-                {
-                  "språk": "nb",
-                  "bosteder": [
-                    {
-                      "fraOgMed": "2019-12-12",
-                      "tilOgMed": "2019-12-22",
-                      "landkode": "GB",
-                      "landnavn": "Great Britain",
-                      "erEØSLand": true
-                    }
-                  ],
-                  "opphold": [
-                    {
-                      "fraOgMed": "2019-12-12",
-                      "tilOgMed": "2019-12-22",
-                      "landkode": "GB",
-                      "landnavn": "Great Britain",
-                      "erEØSLand": true
-                    }
-                  ],
-                  "arbeidsgivere": [
-                    {
-                      "navn": "Arbeidsgiver 1",
-                      "organisasjonsnummer": "917755736",
-                      "harHattFraværHosArbeidsgiver": true,
-                      "arbeidsgiverHarUtbetaltLønn": false,
-                      "ansettelseslengde": {
-                        "merEnn4Uker": true,
-                        "begrunnelse": null
-                      },
-                      "perioder": [
-                        {
-                          "fraOgMed": "2020-01-01",
-                          "tilOgMed": "2020-01-11",
-                          "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
-                        }
-                      ]
-                    }
-                  ],
-                  "bekreftelser": {
-                    "harBekreftetOpplysninger": true,
-                    "harForståttRettigheterOgPlikter": true
-                  },
-                  "andreUtbetalinger": [
-                    "dagpenger",
-                    "koronapenger"
-                  ],
-                  "vedlegg": [
-                    "$jpegUrl",
-                    "$pdfUrl"
-                  ]
-                }
-                """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `Sende ugyldig søknad, der begrunnelse på ansettelseslengde ikke er satt når det har vart mer enn 4 uker`() {
-        val cookie = getAuthCookie(gyldigFodselsnummerA)
-
-        requestAndAssert(
-            httpMethod = HttpMethod.Post,
-            path = "/soknad",
-            expectedResponse = """
-                {
-                  "type": "/problem-details/invalid-request-parameters",
-                  "title": "invalid-request-parameters",
-                  "status": 400,
-                  "detail": "Requesten inneholder ugyldige paramtere.",
-                  "instance": "about:blank",
-                  "invalid_parameters": [
-                    {
-                      "type": "entity",
-                      "name": "arbeidsgivere[0].ansettelseslengde.begrunnelse",
-                      "reason": "Begrunnelse kan ikke være null, dersom merEnn4Uker er satt til false.",
-                      "invalid_value": null
-                    }
-                  ]
-                }
-            """.trimIndent(),
-            expectedCode = HttpStatusCode.BadRequest,
-            cookie = cookie,
-            requestEntity = """
-                 {
-                    "språk": "nb",
-                    "bosteder": [{
-                        "fraOgMed": "2019-12-12",
-                        "tilOgMed": "2019-12-22",
-                        "landkode": "GB",
-                        "landnavn": "Great Britain",
-                        "erEØSLand": true
-                    }],
-                    "opphold": [{
-                        "fraOgMed": "2019-12-12",
-                        "tilOgMed": "2019-12-22",
-                        "landkode": "GB",
-                        "landnavn": "Great Britain",
-                        "erEØSLand": true
-                    }],
-                    "arbeidsgivere": [
-                      {
-                        "navn": "Arbeidsgiver 1",
-                        "organisasjonsnummer": "917755736",
-                        "harHattFraværHosArbeidsgiver": true,
-                        "arbeidsgiverHarUtbetaltLønn": false,
-                        "ansettelseslengde": {
-                          "merEnn4Uker": false
-                        },
-                        "perioder": [
-                          {
-                            "fraOgMed": "2020-01-01",
-                            "tilOgMed": "2020-01-11",
-                            "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE"
-                          }
-                        ]
-                      }
-                    ],
-                    "bekreftelser": {
-                        "harBekreftetOpplysninger": true,
-                        "harForståttRettigheterOgPlikter": true
-                    },
-                    "andreUtbetalinger": ["dagpenger", "sykepenger"],
-                    "vedlegg": []
-                }
-                """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `Sende ugyldig søknad, der ansettelseslengde er begrunnelse er INGEN_AV_SITUASJONENE, men mangler forklaring`() {
-        val cookie = getAuthCookie(gyldigFodselsnummerA)
-
-        requestAndAssert(
-            httpMethod = HttpMethod.Post,
-            path = "/soknad",
-            expectedResponse = """
-                {
-                  "type": "/problem-details/invalid-request-parameters",
-                  "title": "invalid-request-parameters",
-                  "status": 400,
-                  "detail": "Requesten inneholder ugyldige paramtere.",
-                  "instance": "about:blank",
-                  "invalid_parameters": [
-                    {
-                      "type": "entity",
-                      "name": "arbeidsgivere[0].ansettelseslengde.ingenAvSituasjoneneForklaring",
-                      "reason": "Forklaring for ingen av situasjonene kan ikke være null/tom, dersom begrunnelsen er INGEN_AV_SITUASJONENE",
-                      "invalid_value": null
-                    }
-                  ]
-                }
-            """.trimIndent(),
-            expectedCode = HttpStatusCode.BadRequest,
-            cookie = cookie,
-            requestEntity = defaultSøknad.copy(
-                arbeidsgivere = listOf(
-                    defaultSøknad.arbeidsgivere[0].copy(
-                        ansettelseslengde = Ansettelseslengde(
-                            merEnn4Uker = false,
-                            begrunnelse = Ansettelseslengde.Begrunnelse.INGEN_AV_SITUASJONENE,
-                            ingenAvSituasjoneneForklaring = null
-                        )
-                    )
-                ),
-                vedlegg = listOf()
-            ).somJson()
+            """.trimIndent()
         )
     }
 

@@ -1,8 +1,15 @@
 package no.nav.omsorgspengerutbetaling.soknad
 
+import no.nav.k9.søknad.Søknad
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgiverDetaljer
-import no.nav.omsorgspengerutbetaling.felles.*
+import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
+import no.nav.omsorgspengerutbetaling.felles.Bosted
+import no.nav.omsorgspengerutbetaling.felles.Opphold
+import no.nav.omsorgspengerutbetaling.felles.Språk
+import no.nav.omsorgspengerutbetaling.soker.Søker
+import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
 import java.net.URL
+import java.time.ZonedDateTime
 import java.util.*
 
 data class Søknad(
@@ -12,11 +19,22 @@ data class Søknad(
     val opphold: List<Opphold>,
     val arbeidsgivere: List<ArbeidsgiverDetaljer>,
     val bekreftelser: Bekreftelser,
-    val andreUtbetalinger: List<String>,
-    val erSelvstendig: JaNei = JaNei.Nei,
-    val erFrilanser: JaNei = JaNei.Nei,
-    val fosterbarn: List<FosterBarn>? = listOf(),
     val vedlegg: List<URL>,
-    val hjemmePgaSmittevernhensyn: Boolean? = null, //TODO 15.03.2021 - Fjernes når frontend er prodsatt
-    val hjemmePgaStengtBhgSkole: Boolean? = null //TODO 15.03.2021 - Fjernes når frontend er prodsatt
-)
+    val hjemmePgaSmittevernhensyn: Boolean,
+    val hjemmePgaStengtBhgSkole: Boolean? = null
+) {
+    fun tilKomplettSøknad(søker: Søker, k9Format: Søknad, vedlegg: List<Vedlegg>, mottatt: ZonedDateTime) = KomplettSøknad(
+        søknadId = søknadId,
+        språk = språk,
+        mottatt = mottatt,
+        søker = søker,
+        bosteder = bosteder,
+        opphold = opphold,
+        arbeidsgivere = arbeidsgivere,
+        bekreftelser = bekreftelser,
+        vedlegg = vedlegg,
+        hjemmePgaSmittevernhensyn = hjemmePgaSmittevernhensyn,
+        hjemmePgaStengtBhgSkole = hjemmePgaStengtBhgSkole,
+        k9Format = k9Format
+    )
+}

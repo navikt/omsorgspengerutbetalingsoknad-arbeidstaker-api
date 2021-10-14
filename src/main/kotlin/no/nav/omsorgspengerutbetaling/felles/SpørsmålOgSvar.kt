@@ -5,19 +5,10 @@ import com.fasterxml.jackson.annotation.JsonValue
 import no.nav.helse.dusseldorf.ktor.core.ParameterType
 import no.nav.helse.dusseldorf.ktor.core.Violation
 
-private const val MAX_FRITEKST_TEGN = 1000
-
-data class SpørsmålOgSvar(
-    val spørsmål: Spørsmål,
-    val svar: JaNei
-)
-
 data class Bekreftelser(
     val harBekreftetOpplysninger: JaNei,
     val harForståttRettigheterOgPlikter: JaNei
 )
-
-typealias Spørsmål = String
 
 /**
  * Unngå `Boolean` default-verdi null -> false
@@ -64,5 +55,3 @@ internal fun Bekreftelser.valider() : Set<Violation> {
 
     return violations
 }
-
-internal fun String.erBlankEllerForLangFritekst(): Boolean = isBlank() || length > MAX_FRITEKST_TEGN
