@@ -2,41 +2,43 @@ package no.nav.omsorgspengerutbetaling.soknad
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.omsorgspengerutbetaling.k9format.tilK9Format
-import org.junit.Test
 import org.skyscreamer.jsonassert.JSONAssert
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class SerDesTest {
 
     @Test
     internal fun `Test reserialisering av request`() {
-        val søknadId = UUID.randomUUID().toString()
-        val søknad = søknad.copy(søknadId = søknadId)
+        val søknad = søknad
 
-        JSONAssert.assertEquals(søknadJson(søknadId), søknad.somJson(), true)
-        assertEquals(søknad, SøknadUtils.objectMapper.readValue(søknadJson(søknadId)))
+        JSONAssert.assertEquals(søknadJson, søknad.somJson(), true)
+        assertEquals(søknad, SøknadUtils.objectMapper.readValue(søknadJson))
     }
 
     @Test
     fun `Test serialisering av request til mottak`() {
-        val søknadId = UUID.randomUUID().toString()
-        val komplettSøknad = komplettSøknad(søknadId)
+        val komplettSøknad = komplettSøknad()
 
-        JSONAssert.assertEquals(komplettSøknadJson(søknadId), komplettSøknad.somJson(), true)
+        println(komplettSøknadJson)
+        println(komplettSøknad.somJson())
+
+        JSONAssert.assertEquals(komplettSøknadJson, komplettSøknad.somJson(), true)
         //assertEquals(komplettSøknad, ArbeidstakerutbetalingSøknadUtils.objectMapper.readValue(komplettSøknadJson(søknadId))) //TODO 09.03.2021 - Problemer med å deserialsiere k9format objektet.
     }
 
     private companion object {
         val now = ZonedDateTime.of(2018, 1, 2, 3, 4, 5, 6, ZoneId.of("UTC"))
-        val søknad = SøknadUtils.defaultSøknad
+        val søknadId = UUID.randomUUID().toString()
+        val søknad = SøknadUtils.defaultSøknad.copy(søknadId = søknadId)
         val k9Format = søknad.tilK9Format(now, SøknadUtils.søker)
-        fun komplettSøknad(søknadId: String = UUID.randomUUID().toString()) = søknad.tilKomplettSøknad(SøknadUtils.søker, k9Format, listOf(), now).copy(søknadId = søknadId)
+        fun komplettSøknad() = søknad.tilKomplettSøknad(SøknadUtils.søker, k9Format, listOf(), now).copy(søknadId = søknadId)
 
         //language=json
-        fun søknadJson(søknadId: String = UUID.randomUUID().toString()) = """
+        val søknadJson = """
         {
             "søknadId" : "$søknadId",
             "språk": "nb",
@@ -53,6 +55,9 @@ internal class SerDesTest {
                     "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
+                    "konfliktForklaring": "Forklarer konflikten...",
+                    "utbetalingsårsak": "KONFLIKT_MED_ARBEIDSGIVER",
+                    "årsakNyoppstartet": null,
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-01",
@@ -68,6 +73,9 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
+                    "utbetalingsårsak": "ARBEIDSGIVER_KONKURS",
+                    "årsakNyoppstartet": null,
+                    "konfliktForklaring": null,
                     "perioder": [
                       {
                         "fraOgMed": "2020-01-21",
@@ -79,55 +87,13 @@ internal class SerDesTest {
                     ]
                 },
                 {
-                  "navn": "Arbeidsgiver 3",
+                  "navn": "Navn navnesen",
                   "organisasjonsnummer": "917755736",
                     "harHattFraværHosArbeidsgiver": true,
                     "arbeidsgiverHarUtbetaltLønn": false,
-                    "perioder": [
-                      {
-                        "fraOgMed": "2020-01-31",
-                        "tilOgMed": "2020-02-05",
-                        "antallTimerBorte": "PT5H",
-                        "antallTimerPlanlagt": "PT8H",
-                        "årsak": "ORDINÆRT_FRAVÆR"
-                      }
-                    ]
-                },
-                {
-                  "navn": "Arbeidsgiver 4",
-                  "organisasjonsnummer": "917755736",
-                    "harHattFraværHosArbeidsgiver": true,
-                    "arbeidsgiverHarUtbetaltLønn": false,
-                    "perioder": [
-                      {
-                        "fraOgMed": "2020-01-31",
-                        "tilOgMed": "2020-02-05",
-                        "antallTimerBorte": null,
-                        "antallTimerPlanlagt": null,
-                        "årsak": "ORDINÆRT_FRAVÆR"
-                      }
-                    ]
-                },
-                {
-                  "navn": null,
-                  "organisasjonsnummer": "917755736",
-                    "harHattFraværHosArbeidsgiver": true,
-                    "arbeidsgiverHarUtbetaltLønn": false,
-                    "perioder": [
-                      {
-                        "fraOgMed": "2020-02-01",
-                        "tilOgMed": "2020-02-06",
-                        "antallTimerBorte": null,
-                        "antallTimerPlanlagt": null,
-                        "årsak": "ORDINÆRT_FRAVÆR"
-                      }
-                    ]
-                },
-                {
-                  "navn": "Ikke registrert arbeidsgiver",
-                  "organisasjonsnummer": null,
-                    "harHattFraværHosArbeidsgiver": true,
-                    "arbeidsgiverHarUtbetaltLønn": false,
+                    "utbetalingsårsak": "NYOPPSTARTET_HOS_ARBEIDSGIVER",
+                    "årsakNyoppstartet": "ARBEID_I_UTLANDET",
+                    "konfliktForklaring": null,
                     "perioder": [
                       {
                         "fraOgMed": "2020-02-01",
@@ -157,19 +123,19 @@ internal class SerDesTest {
         """.trimIndent()
 
         //language=json
-        fun komplettSøknadJson(søknadId: String = UUID.randomUUID().toString()) =
+        val komplettSøknadJson =
             """
             {
               "søknadId": "$søknadId",
               "språk": "nb",
               "mottatt": "2018-01-02T03:04:05.000000006Z",
               "søker": {
-                "aktørId": "123456",
-                "fødselsdato": "1999-11-02",
+                "aktørId": "12345",
+                "fødselsdato": "2000-01-01",
                 "fødselsnummer": "02119970078",
-                "fornavn": "Ola",
-                "mellomnavn": null,
-                "etternavn": "Nordmann",
+                "fornavn": "Ole",
+                "mellomnavn": "Dole",
+                "etternavn": "Doffen",
                 "myndig": true
               },
               "bosteder": [
@@ -196,6 +162,9 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                   "harHattFraværHosArbeidsgiver": true,
                   "arbeidsgiverHarUtbetaltLønn": false,
+                  "konfliktForklaring": "Forklarer konflikten...",
+                  "utbetalingsårsak": "KONFLIKT_MED_ARBEIDSGIVER",
+                  "årsakNyoppstartet": null,
                   "perioder": [
                     {
                       "fraOgMed": "2020-01-01",
@@ -210,6 +179,9 @@ internal class SerDesTest {
                   "organisasjonsnummer": "917755736",
                   "harHattFraværHosArbeidsgiver": true,
                   "arbeidsgiverHarUtbetaltLønn": false,
+                  "konfliktForklaring": null,
+                  "utbetalingsårsak": "ARBEIDSGIVER_KONKURS",
+                  "årsakNyoppstartet": null,
                   "perioder": [
                     {
                       "fraOgMed": "2020-01-21",
@@ -220,52 +192,13 @@ internal class SerDesTest {
                   ]
                 },
                 {
-                  "navn": "Arbeidsgiver 3",
+                  "navn": "Navn navnesen",
                   "organisasjonsnummer": "917755736",
                   "harHattFraværHosArbeidsgiver": true,
                   "arbeidsgiverHarUtbetaltLønn": false,
-                  "perioder": [
-                    {
-                      "fraOgMed": "2020-01-31",
-                      "tilOgMed": "2020-02-05",
-                      "antallTimerBorte": null,
-                      "antallTimerPlanlagt": null,
-                    "årsak": "ORDINÆRT_FRAVÆR"}
-                  ]
-                },
-                {
-                  "navn": "Arbeidsgiver 4",
-                  "organisasjonsnummer": "917755736",
-                  "harHattFraværHosArbeidsgiver": true,
-                  "arbeidsgiverHarUtbetaltLønn": false,
-                  "perioder": [
-                    {
-                      "fraOgMed": "2020-01-31",
-                      "tilOgMed": "2020-02-05",
-                      "antallTimerBorte": null,
-                      "antallTimerPlanlagt": null,
-                    "årsak": "ORDINÆRT_FRAVÆR"}
-                  ]
-                },
-                {
-                  "navn": null,
-                  "organisasjonsnummer": "917755736",
-                  "harHattFraværHosArbeidsgiver": true,
-                  "arbeidsgiverHarUtbetaltLønn": false,
-                  "perioder": [
-                    {
-                      "fraOgMed": "2020-02-01",
-                      "tilOgMed": "2020-02-06",
-                      "antallTimerBorte": null,
-                      "antallTimerPlanlagt": null,
-                    "årsak": "ORDINÆRT_FRAVÆR"}
-                  ]
-                },
-                {
-                  "navn": "Ikke registrert arbeidsgiver",
-                  "organisasjonsnummer": null,
-                  "harHattFraværHosArbeidsgiver": true,
-                  "arbeidsgiverHarUtbetaltLønn": false,
+                  "konfliktForklaring": null,
+                  "utbetalingsårsak": "NYOPPSTARTET_HOS_ARBEIDSGIVER",
+                  "årsakNyoppstartet": "ARBEID_I_UTLANDET",
                   "perioder": [
                     {
                       "fraOgMed": "2020-02-01",
@@ -292,6 +225,7 @@ internal class SerDesTest {
                 "søker": {
                   "norskIdentitetsnummer": "02119970078"
                 },
+                "journalposter" : [],
                 "ytelse": {
                   "type": "OMP_UT",
                   "fosterbarn": null,
@@ -300,19 +234,53 @@ internal class SerDesTest {
                   },
                   "fraværsperioder": [
                     {
-                      "periode": "2020-01-01/2020-01-10",
-                      "duration": "PT7H30M",
-                      "årsak": "STENGT_SKOLE_ELLER_BARNEHAGE",
-                      "aktivitetFravær": ["ARBEIDSTAKER"]
+                      "periode": "2020-01-01/2020-01-11",
+                      "duration": null,
+                      "årsak": "ORDINÆRT_FRAVÆR",
+                      "søknadÅrsak": "KONFLIKT_MED_ARBEIDSGIVER",
+                      "aktivitetFravær": [
+                        "ARBEIDSTAKER"
+                      ],
+                      "arbeidsgiverOrgNr": "917755736"
+                    },
+                    {
+                      "periode": "2020-01-21/2020-01-21",
+                      "duration": "PT5H",
+                      "årsak": "ORDINÆRT_FRAVÆR",
+                      "søknadÅrsak": "ARBEIDSGIVER_KONKURS",
+                      "aktivitetFravær": [
+                        "ARBEIDSTAKER"
+                      ],
+                      "arbeidsgiverOrgNr": "917755736"
+                    },
+                    {
+                      "periode": "2020-02-01/2020-02-06",
+                      "duration": null,
+                      "årsak": "ORDINÆRT_FRAVÆR",
+                      "søknadÅrsak": "NYOPPSTARTET_HOS_ARBEIDSGIVER",
+                      "aktivitetFravær": [
+                        "ARBEIDSTAKER"
+                      ],
+                      "arbeidsgiverOrgNr": "917755736"
                     }
                   ],
-                  "bosteder": null,
+                  "bosteder": {
+                    "perioder": {
+                      "2019-12-12/2019-12-22": {
+                        "land": "GB"
+                      }
+                    },
+                    "perioderSomSkalSlettes": { }
+                  },
                   "utenlandsopphold": {
                     "perioder": {
-                      "2020-01-01/2020-01-10": {
-                        "land": "ESP",
-                        "årsak": "barnetInnlagtIHelseinstitusjonDekketEtterAvtaleMedEtAnnetLandOmTrygd"
+                      "2019-12-12/2019-12-22": {
+                        "land": "GB",
+                        "årsak": null
                       }
+                    },
+                    "perioderSomSkalSlettes": {
+                      
                     }
                   }
                 },

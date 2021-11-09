@@ -59,7 +59,6 @@ fun ArbeidsgiverDetaljer.valider(): List<Violation> {
     violations.addAll(perioder.valider())
 
     when(utbetalingsårsak){
-        Utbetalingsårsak.ARBEIDSGIVER_KONKURS -> null
         Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER -> {
             if(konfliktForklaring.isNullOrBlank()){
                 violations.add(
