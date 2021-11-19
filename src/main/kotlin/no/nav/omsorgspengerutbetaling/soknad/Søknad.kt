@@ -29,7 +29,8 @@ data class Søknad(
         søker: Søker,
         k9Format: Søknad,
         mottatt: ZonedDateTime,
-        k9MellomlagringIngress: URI
+        k9MellomlagringIngress: URI,
+        titler: List<String>
     ) = KomplettSøknad(
         søknadId = søknadId,
         språk = språk,
@@ -40,6 +41,7 @@ data class Søknad(
         arbeidsgivere = arbeidsgivere,
         bekreftelser = bekreftelser,
         vedleggUrls = vedlegg.tilK9MellomLagringUrl(k9MellomlagringIngress),
+        titler = titler,
         hjemmePgaSmittevernhensyn = hjemmePgaSmittevernhensyn,
         hjemmePgaStengtBhgSkole = hjemmePgaStengtBhgSkole,
         k9Format = k9Format

@@ -20,6 +20,7 @@ data class KomplettSøknad(
     val arbeidsgivere: List<ArbeidsgiverDetaljer>,
     val bekreftelser: Bekreftelser,
     val vedleggUrls: List<URL>,
+    val titler: List<String>,
     val hjemmePgaSmittevernhensyn: Boolean,
     val hjemmePgaStengtBhgSkole: Boolean? = null,
     val k9Format: Søknad

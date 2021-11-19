@@ -6,7 +6,6 @@ import no.nav.omsorgspengerutbetaling.general.auth.IdToken
 import no.nav.omsorgspengerutbetaling.k9format.tilK9Format
 import no.nav.omsorgspengerutbetaling.kafka.KafkaProducer
 import no.nav.omsorgspengerutbetaling.kafka.Metadata
-import no.nav.omsorgspengerutbetaling.soker.Søker
 import no.nav.omsorgspengerutbetaling.soker.SøkerService
 import no.nav.omsorgspengerutbetaling.soker.validate
 import no.nav.omsorgspengerutbetaling.vedlegg.DokumentEier
@@ -45,9 +44,23 @@ internal class SøknadService(
 
         søknad.valider(k9Format)
 
-        if(søknad.harVedlegg()) validerOgPersisterVedlegg(søknad, callId, idToken, søker)
+        var titler = listOf<String>()
+        if(søknad.harVedlegg()) {
+            logger.info("Validerer ${søknad.vedlegg.size} vedlegg.")
+            val vedleggHentet = vedleggService.hentVedlegg(
+                idToken = idToken,
+                vedleggUrls = søknad.vedlegg,
+                callId = callId,
+                eier = DokumentEier(søker.fødselsnummer)
+            )
+            titler = vedleggHentet.map { it.title }
+            vedleggHentet.validerVedlegg(søknad.vedlegg)
 
-        val komplettSøknad = søknad.tilKomplettSøknad(søker, k9Format, mottatt, k9MellomLagringIngress)
+            logger.info("Persisterer vedlegg")
+            vedleggService.persisterVedlegg(søknad.vedlegg, callId, DokumentEier(søker.fødselsnummer))
+        }
+
+        val komplettSøknad = søknad.tilKomplettSøknad(søker, k9Format, mottatt, k9MellomLagringIngress, titler)
 
         try {
             kafkaProducer.produserKafkaMelding(komplettSøknad, metadata)
@@ -59,20 +72,6 @@ internal class SøknadService(
             }
             throw MeldingRegistreringFeiletException("Feilet ved å legge melding på Kafka")
         }
-    }
-
-    private suspend fun validerOgPersisterVedlegg(søknad: Søknad, callId: CallId, idToken: IdToken, søker: Søker){
-        logger.info("Validerer ${søknad.vedlegg.size} vedlegg.")
-        val vedleggHentet = vedleggService.hentVedlegg(
-            idToken = idToken,
-            vedleggUrls = søknad.vedlegg,
-            callId = callId,
-            eier = DokumentEier(søker.fødselsnummer)
-        )
-        vedleggHentet.validerVedlegg(søknad.vedlegg)
-
-        logger.info("Persisterer vedlegg")
-        vedleggService.persisterVedlegg(søknad.vedlegg, callId, DokumentEier(søker.fødselsnummer))
     }
 }
 

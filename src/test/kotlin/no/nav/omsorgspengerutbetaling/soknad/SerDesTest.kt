@@ -40,7 +40,7 @@ internal class SerDesTest {
         val søknadId = UUID.randomUUID().toString()
         val søknad = TestUtils.hentGyldigSøknad().copy(søknadId = søknadId)
         val k9Format = søknad.tilK9Format(mottatt, søker)
-        fun komplettSøknad() = søknad.tilKomplettSøknad(søker, k9Format, mottatt, URL("https://localhost/k9-mellomlagring-mock/v1/dokument").toURI()).copy(søknadId = søknadId)
+        fun komplettSøknad() = søknad.tilKomplettSøknad(søker, k9Format, mottatt, URL("https://localhost/k9-mellomlagring-mock/v1/dokument").toURI(), listOf()).copy(søknadId = søknadId)
 
         //language=json
         val søknadJson = """
@@ -145,6 +145,7 @@ internal class SerDesTest {
                 "etternavn": "Doffen",
                 "myndig": true
               },
+              "titler" : [],
               "bosteder": [
                 {
                   "fraOgMed": "2019-12-12",
