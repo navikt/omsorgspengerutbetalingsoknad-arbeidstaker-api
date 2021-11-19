@@ -12,6 +12,7 @@ import no.nav.omsorgspengerutbetaling.general.CallId
 import no.nav.omsorgspengerutbetaling.general.auth.IdToken
 import no.nav.omsorgspengerutbetaling.general.auth.IdTokenProvider
 import no.nav.omsorgspengerutbetaling.general.getCallId
+import no.nav.omsorgspengerutbetaling.general.getMetadata
 import no.nav.omsorgspengerutbetaling.k9format.tilK9Format
 import no.nav.omsorgspengerutbetaling.soker.Søker
 import no.nav.omsorgspengerutbetaling.soker.SøkerService
@@ -38,7 +39,8 @@ internal fun Route.arbeidstakerutbetalingsøknadApis(
         søknadService.registrer(
             søknad = søknad,
             callId = callId,
-            idToken = idToken
+            idToken = idToken,
+            metadata = call.getMetadata()
         )
 
         call.respond(HttpStatusCode.Accepted)

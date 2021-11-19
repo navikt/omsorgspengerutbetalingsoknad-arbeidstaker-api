@@ -31,9 +31,9 @@ import no.nav.omsorgspengerutbetaling.arbeidsgiver.arbeidsgiverApis
 import no.nav.omsorgspengerutbetaling.general.auth.IdTokenProvider
 import no.nav.omsorgspengerutbetaling.general.auth.IdTokenStatusPages
 import no.nav.omsorgspengerutbetaling.general.systemauth.AccessTokenClientResolver
+import no.nav.omsorgspengerutbetaling.kafka.KafkaProducer
 import no.nav.omsorgspengerutbetaling.mellomlagring.MellomlagringService
 import no.nav.omsorgspengerutbetaling.mellomlagring.mellomlagringApis
-import no.nav.omsorgspengerutbetaling.mottak.OmsorgpengesøknadMottakGateway
 import no.nav.omsorgspengerutbetaling.redis.RedisConfig
 import no.nav.omsorgspengerutbetaling.redis.RedisStore
 import no.nav.omsorgspengerutbetaling.soker.SøkerGateway
@@ -44,10 +44,13 @@ import no.nav.omsorgspengerutbetaling.soknad.arbeidstakerutbetalingsøknadApis
 import no.nav.omsorgspengerutbetaling.vedlegg.K9MellomlagringGateway
 import no.nav.omsorgspengerutbetaling.vedlegg.VedleggService
 import no.nav.omsorgspengerutbetaling.vedlegg.vedleggApis
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.time.Duration
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+private val logger: Logger = LoggerFactory.getLogger("nav.omsorgpengerutbetalingsoknadArbeidstakerApi")
 
 fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
     val appId = environment.config.id()
@@ -107,27 +110,21 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
             k9MellomlagringScope = configuration.getK9MellomlagringScopes()
         )
 
-        val vedleggService = VedleggService(
-            k9MellomlagringGateway = k9MellomlagringGateway
-        )
+        val vedleggService = VedleggService(k9MellomlagringGateway = k9MellomlagringGateway)
 
-        val omsorgpengesoknadMottakGateway = OmsorgpengesøknadMottakGateway(
-            baseUrl = configuration.getOmsorgpengesoknadMottakBaseUrl(),
-            accessTokenClient = accessTokenClientResolver.accessTokenClient(),
-            sendeSoknadTilProsesseringScopes = configuration.getSendSoknadTilProsesseringScopes()
-        )
+        val sokerGateway = SøkerGateway(baseUrl = configuration.getK9OppslagUrl())
 
-        val sokerGateway = SøkerGateway(
-            baseUrl = configuration.getK9OppslagUrl()
-        )
+        val arbeidsgivereGateway = ArbeidsgivereGateway(baseUrl = configuration.getK9OppslagUrl())
 
-        val arbeidsgivereGateway = ArbeidsgivereGateway(
-            baseUrl = configuration.getK9OppslagUrl()
-        )
+        val søkerService = SøkerService(søkerGateway = sokerGateway)
 
-        val søkerService = SøkerService(
-            søkerGateway = sokerGateway
-        )
+        val kafkaProducer = KafkaProducer(kafkaConfig = configuration.getKafkaConfig())
+
+        environment.monitor.subscribe(ApplicationStopping) {
+            logger.info("Stopper Kafka Producer.")
+            kafkaProducer.stop()
+            logger.info("Kafka Producer Stoppet.")
+        }
 
         authenticate(*issuers.allIssuers()) {
 
@@ -165,26 +162,23 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
                 idTokenProvider = idTokenProvider,
                 søkerService = søkerService,
                 søknadService = SøknadService(
-                    omsorgpengesøknadMottakGateway = omsorgpengesoknadMottakGateway,
                     søkerService = søkerService,
-                    vedleggService = vedleggService
+                    vedleggService = vedleggService,
+                    kafkaProducer = kafkaProducer,
+                    k9MellomLagringIngress = configuration.getK9MellomlagringIngress()
                 )
             )
         }
 
         val healthService = HealthService(
             healthChecks = setOf(
-                omsorgpengesoknadMottakGateway,
+                kafkaProducer,
                 HttpRequestHealthCheck(
                     mapOf(
                         Url.buildURL(
                             baseUrl = configuration.getK9MellomlagringUrl(),
                             pathParts = listOf("health")
-                        ) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK),
-                        Url.buildURL(
-                            baseUrl = configuration.getOmsorgpengesoknadMottakBaseUrl(),
-                            pathParts = listOf("health")
-                        ) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK,)
+                        ) to HttpRequestHealthConfig(expectedStatus = HttpStatusCode.OK)
                     )
                 )
             )

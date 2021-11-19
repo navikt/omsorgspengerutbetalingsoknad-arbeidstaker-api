@@ -90,7 +90,7 @@ fun Route.vedleggApis(
                 logger.info("$vedleggId")
                 var eier = idTokenProvider.getIdToken(call).getSubject()
                 if (eier == null) call.respond(HttpStatusCode.Forbidden) else {
-                    val resultat = vedleggService.slettVedleg(
+                    val resultat = vedleggService.slettVedlegg(
                         vedleggId = vedleggId,
                         idToken = idTokenProvider.getIdToken(call),
                         callId = call.getCallId(),
