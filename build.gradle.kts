@@ -7,6 +7,8 @@ val mainClass = "no.nav.omsorgspengerutbetaling.AppKt"
 val lettuceVersion = "5.2.2.RELEASE"
 val k9FormatVersion = "5.4.12"
 val fuelVersion = "2.3.1"
+val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
+val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
 
 plugins {
     kotlin("jvm") version "1.5.31"
@@ -37,6 +39,9 @@ dependencies {
     // Redis
     implementation ("io.lettuce:lettuce-core:$lettuceVersion")
 
+    // kafka
+    implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
+
     //K9-format
     implementation("no.nav.k9:soknad:$k9FormatVersion")
     implementation("org.glassfish:jakarta.el:3.0.3")
@@ -50,6 +55,8 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation ("org.skyscreamer:jsonassert:1.5.0")
     testImplementation("org.awaitility:awaitility-kotlin:4.1.1")
+    testImplementation("no.nav:kafka-embedded-env:$kafkaEmbeddedEnvVersion")
+    testImplementation("io.mockk:mockk:1.12.0")
 }
 
 repositories {

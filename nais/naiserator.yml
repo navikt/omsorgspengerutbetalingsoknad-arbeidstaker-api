@@ -13,6 +13,8 @@ spec:
     application:
       enabled: true
       tenant: {{ tenant }}
+  kafka:
+    pool: {{kafka-pool}}
   accessPolicy:
     outbound:
       rules:

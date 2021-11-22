@@ -1,7 +1,8 @@
 package no.nav.omsorgspengerutbetaling.k9format
 
 import no.nav.k9.søknad.JsonUtils
-import no.nav.omsorgspengerutbetaling.soknad.SøknadUtils
+import no.nav.omsorgspengerutbetaling.TestUtils
+import no.nav.omsorgspengerutbetaling.TestUtils.Companion.søker
 import org.skyscreamer.jsonassert.JSONAssert
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -15,8 +16,8 @@ class K9FormatTest {
         val mottatt = ZonedDateTime.of(2020, 1, 2, 3, 4, 5, 6, ZoneId.of("UTC"))
         val søknadId = UUID.randomUUID().toString()
 
-        val søknad = SøknadUtils.defaultSøknad.copy(søknadId = søknadId)
-        val k9Format = søknad.tilK9Format(mottatt, SøknadUtils.søker)
+        val søknad = TestUtils.hentGyldigSøknad().copy(søknadId = søknadId)
+        val k9Format = søknad.tilK9Format(mottatt, søker)
 
         val forventetK9FormatJson =
             //language=json

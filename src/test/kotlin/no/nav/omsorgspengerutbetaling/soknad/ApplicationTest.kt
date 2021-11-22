@@ -8,19 +8,14 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
-import no.nav.omsorgspengerutbetaling.TestConfiguration
+import no.nav.omsorgspengerutbetaling.*
 import no.nav.omsorgspengerutbetaling.TestUtils.Companion.getAuthCookie
+import no.nav.omsorgspengerutbetaling.TestUtils.Companion.hentGyldigSøknad
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.Utbetalingsårsak
-import no.nav.omsorgspengerutbetaling.felles.Bekreftelser
-import no.nav.omsorgspengerutbetaling.felles.FraværÅrsak
-import no.nav.omsorgspengerutbetaling.felles.JaNei
-import no.nav.omsorgspengerutbetaling.felles.Utbetalingsperiode
-import no.nav.omsorgspengerutbetaling.handleRequestUploadImage
-import no.nav.omsorgspengerutbetaling.jpegUrl
+import no.nav.omsorgspengerutbetaling.felles.*
 import no.nav.omsorgspengerutbetaling.mellomlagring.started
-import no.nav.omsorgspengerutbetaling.pdUrl
-import no.nav.omsorgspengerutbetaling.soknad.SøknadUtils.defaultSøknad
 import no.nav.omsorgspengerutbetaling.wiremock.*
+import org.json.JSONObject
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.skyscreamer.jsonassert.JSONAssert
@@ -29,8 +24,10 @@ import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.Duration
 import java.time.LocalDate
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 private const val fnr = "290990123456"
 private const val ikkeMyndigFnr = "12125012345"
@@ -52,11 +49,12 @@ class SøknadApplicationTest {
             .omsorgspengesoknadApiConfig()
             .build()
             .stubK9DokumentHealth()
-            .stubOmsorgspengerutbetalingsoknadMottakHealth()
             .stubOppslagHealth()
-            .stubLeggSoknadTilProsessering("/v1/soknad")
             .stubK9OppslagSoker()
             .stubK9Mellomlagring()
+
+        private val kafkaEnvironment = KafkaWrapper.bootstrap()
+        private val kafkaKonsumer = kafkaEnvironment.testConsumer()
 
         val redisServer: RedisServer = RedisServer
             .newRedisServer()
@@ -68,6 +66,7 @@ class SøknadApplicationTest {
             val testConfig = ConfigFactory.parseMap(
                 TestConfiguration.asMap(
                     wireMockServer = wireMockServer,
+                    kafkaEnvironment = kafkaEnvironment,
                     redisServer = redisServer
                 )
             )
@@ -110,17 +109,21 @@ class SøknadApplicationTest {
                 vedlegg = jpegUrl
             ).substringAfterLast("/")
 
+            val søknad = hentGyldigSøknad().copy(
+                vedlegg =
+                listOf(URL("${wireMockServer.getK9MellomlagringUrl()}/$vedleggId"))
+            )
+
             requestAndAssert(
                 httpMethod = HttpMethod.Post,
                 path = "/soknad",
                 expectedResponse = null,
                 expectedCode = HttpStatusCode.Accepted,
                 cookie = cookie,
-                requestEntity = defaultSøknad.copy(
-                    vedlegg =
-                    listOf(URL("${wireMockServer.getK9MellomlagringUrl()}/$vedleggId"))
-                ).somJson()
+                requestEntity = søknad.somJson()
             )
+
+            hentOgAssertSøknad(JSONObject(søknad.somJson()))
         }
     }
 
@@ -130,17 +133,11 @@ class SøknadApplicationTest {
         val jpegUrl = engine.jpegUrl(cookie)
         val pdfUrl = engine.pdUrl(cookie)
 
-        requestAndAssert(
-            httpMethod = HttpMethod.Post,
-            path = "/soknad",
-            expectedResponse = null,
-            expectedCode = HttpStatusCode.Accepted,
-            cookie = cookie,
-            requestEntity =
-            //language=json
+        val søknadSomJson = //language=json
             """
                 {
                   "språk": "nb",
+                  "søknadId" : "${UUID.randomUUID().toString()}",
                   "bosteder": [
                     {
                       "fraOgMed": "2019-12-12",
@@ -227,7 +224,16 @@ class SøknadApplicationTest {
                   ]
                 }
             """.trimIndent()
+        requestAndAssert(
+            httpMethod = HttpMethod.Post,
+            path = "/soknad",
+            expectedResponse = null,
+            expectedCode = HttpStatusCode.Accepted,
+            cookie = cookie,
+            requestEntity = søknadSomJson
         )
+        hentOgAssertSøknad(JSONObject(søknadSomJson))
+
     }
 
     @Test
@@ -237,7 +243,7 @@ class SøknadApplicationTest {
             path = "/soknad",
             expectedCode = HttpStatusCode.Unauthorized,
             expectedResponse = null,
-            requestEntity = defaultSøknad.somJson(),
+            requestEntity = hentGyldigSøknad().somJson(),
             leggTilCookie = false
         )
     }
@@ -262,7 +268,7 @@ class SøknadApplicationTest {
             """.trimIndent(),
             expectedCode = HttpStatusCode.Forbidden,
             cookie = cookie,
-            requestEntity = defaultSøknad.copy(
+            requestEntity = hentGyldigSøknad().copy(
                 vedlegg = listOf(
                     URL(jpegUrl), URL(pdfUrl)
                 )
@@ -282,9 +288,9 @@ class SøknadApplicationTest {
             httpMethod = HttpMethod.Post,
             path = "/soknad",
             expectedCode = HttpStatusCode.BadRequest,
-            requestEntity = defaultSøknad.copy(
+            requestEntity = hentGyldigSøknad().copy(
                 arbeidsgivere = listOf(
-                    defaultSøknad.arbeidsgivere[0].copy(
+                    hentGyldigSøknad().arbeidsgivere[0].copy(
                         perioder = listOf(),
                         navn = " ",
                         organisasjonsnummer = " ",
@@ -383,9 +389,9 @@ class SøknadApplicationTest {
             """.trimIndent(),
             expectedCode = HttpStatusCode.BadRequest,
             cookie = cookie,
-            requestEntity = defaultSøknad.copy(
+            requestEntity = hentGyldigSøknad().copy(
                 arbeidsgivere = listOf(
-                    defaultSøknad.arbeidsgivere[0].copy(
+                    hentGyldigSøknad().arbeidsgivere[0].copy(
                         perioder = listOf(
                             Utbetalingsperiode(
                                 fraOgMed = LocalDate.parse("2020-01-01"),
@@ -427,9 +433,9 @@ class SøknadApplicationTest {
             """.trimIndent(),
             expectedCode = HttpStatusCode.BadRequest,
             cookie = cookie,
-            requestEntity = defaultSøknad.copy(
+            requestEntity = hentGyldigSøknad().copy(
                 arbeidsgivere = listOf(
-                    defaultSøknad.arbeidsgivere[0].copy(
+                    hentGyldigSøknad().arbeidsgivere[0].copy(
                         perioder = listOf(
                             Utbetalingsperiode(
                                 fraOgMed = LocalDate.parse("2020-01-01"),
@@ -476,5 +482,25 @@ class SøknadApplicationTest {
             }
         }
         return respons
+    }
+
+    private fun hentOgAssertSøknad(søknad: JSONObject){
+        val hentet = kafkaKonsumer.hentSøknad(søknad.getString("søknadId"))
+        assertGyldigSøknad(søknad, hentet.data)
+    }
+
+    private fun assertGyldigSøknad(
+        søknadSendtInn: JSONObject,
+        søknadFraTopic: JSONObject
+    ) {
+        assertTrue(søknadFraTopic.has("søker"))
+        assertTrue(søknadFraTopic.has("mottatt"))
+        assertTrue(søknadFraTopic.has("k9Format"))
+
+        assertEquals(søknadSendtInn.getString("søknadId"), søknadFraTopic.getString("søknadId"))
+
+        if(søknadSendtInn.has("vedleggUrls") && !søknadSendtInn.getJSONArray("vedleggUrls").isEmpty){
+            assertEquals(søknadSendtInn.getJSONArray("vedleggUrls").length(),søknadFraTopic.getJSONArray("vedleggUrls").length())
+        }
     }
 }

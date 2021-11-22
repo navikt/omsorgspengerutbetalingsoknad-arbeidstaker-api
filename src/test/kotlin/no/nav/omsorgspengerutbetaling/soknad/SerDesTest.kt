@@ -1,8 +1,13 @@
 package no.nav.omsorgspengerutbetaling.soknad
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import no.nav.omsorgspengerutbetaling.TestUtils
+import no.nav.omsorgspengerutbetaling.TestUtils.Companion.søker
+import no.nav.omsorgspengerutbetaling.felles.objectMapper
+import no.nav.omsorgspengerutbetaling.felles.somJson
 import no.nav.omsorgspengerutbetaling.k9format.tilK9Format
 import org.skyscreamer.jsonassert.JSONAssert
+import java.net.URL
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
@@ -16,7 +21,7 @@ internal class SerDesTest {
         val søknad = søknad
 
         JSONAssert.assertEquals(søknadJson, søknad.somJson(), true)
-        assertEquals(søknad, SøknadUtils.objectMapper.readValue(søknadJson))
+        assertEquals(søknad, objectMapper.readValue(søknadJson))
     }
 
     @Test
@@ -31,11 +36,11 @@ internal class SerDesTest {
     }
 
     private companion object {
-        val now = ZonedDateTime.of(2018, 1, 2, 3, 4, 5, 6, ZoneId.of("UTC"))
+        val mottatt = ZonedDateTime.of(2018, 1, 2, 3, 4, 5, 6, ZoneId.of("UTC"))
         val søknadId = UUID.randomUUID().toString()
-        val søknad = SøknadUtils.defaultSøknad.copy(søknadId = søknadId)
-        val k9Format = søknad.tilK9Format(now, SøknadUtils.søker)
-        fun komplettSøknad() = søknad.tilKomplettSøknad(SøknadUtils.søker, k9Format, listOf(), now).copy(søknadId = søknadId)
+        val søknad = TestUtils.hentGyldigSøknad().copy(søknadId = søknadId)
+        val k9Format = søknad.tilK9Format(mottatt, søker)
+        fun komplettSøknad() = søknad.tilKomplettSøknad(søker, k9Format, mottatt, URL("https://localhost/k9-mellomlagring-mock/v1/dokument").toURI(), listOf()).copy(søknadId = søknadId)
 
         //language=json
         val søknadJson = """
@@ -116,7 +121,9 @@ internal class SerDesTest {
                 "harBekreftetOpplysninger": true,
                 "harForståttRettigheterOgPlikter": true
             },
-            "vedlegg": [],
+            "vedlegg": [
+              "http://localhost:8080/vedlegg/1"
+            ],
             "hjemmePgaSmittevernhensyn": true,
             "hjemmePgaStengtBhgSkole": true
         }
@@ -138,6 +145,7 @@ internal class SerDesTest {
                 "etternavn": "Doffen",
                 "myndig": true
               },
+              "titler" : [],
               "bosteder": [
                 {
                   "fraOgMed": "2019-12-12",
@@ -213,8 +221,8 @@ internal class SerDesTest {
                 "harBekreftetOpplysninger": true,
                 "harForståttRettigheterOgPlikter": true
               },
-              "vedlegg": [
-                
+              "vedleggUrls": [
+                "https://localhost/k9-mellomlagring-mock/v1/dokument/1"
               ],
               "hjemmePgaSmittevernhensyn": true,
               "hjemmePgaStengtBhgSkole": true,

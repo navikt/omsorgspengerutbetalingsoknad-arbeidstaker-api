@@ -7,7 +7,7 @@ import no.nav.omsorgspengerutbetaling.felles.Bosted
 import no.nav.omsorgspengerutbetaling.felles.Opphold
 import no.nav.omsorgspengerutbetaling.felles.Språk
 import no.nav.omsorgspengerutbetaling.soker.Søker
-import no.nav.omsorgspengerutbetaling.vedlegg.Vedlegg
+import java.net.URL
 import java.time.ZonedDateTime
 
 data class KomplettSøknad(
@@ -19,7 +19,8 @@ data class KomplettSøknad(
     val opphold: List<Opphold>,
     val arbeidsgivere: List<ArbeidsgiverDetaljer>,
     val bekreftelser: Bekreftelser,
-    val vedlegg: List<Vedlegg>,
+    val vedleggUrls: List<URL>,
+    val titler: List<String>,
     val hjemmePgaSmittevernhensyn: Boolean,
     val hjemmePgaStengtBhgSkole: Boolean? = null,
     val k9Format: Søknad
