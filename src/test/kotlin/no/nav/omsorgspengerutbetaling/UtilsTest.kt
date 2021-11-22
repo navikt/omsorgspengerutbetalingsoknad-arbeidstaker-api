@@ -10,7 +10,7 @@ class UtilsTest {
 
     @Test
     fun `Omgjøre vedleggurl til k9-mellomlagringingress med id`(){
-        val vedleggUrlsFraInnsending = listOf(URL("https://pleiepenger-livets-sluttfase-api.dev.nav.no/vedlegg/testID.testID"))
+        val vedleggUrlsFraInnsending = listOf(URL("https://omsorgspengerutbetalingsoknad-arbeidstaker-api.dev.nav.no/vedlegg/testID.testID"))
         val forventetUrls = listOf(URL("https://k9-mellomlagring.dev.intern.nav.no/v1/dokument/testID.testID"))
 
         val vedleggFix = vedleggUrlsFraInnsending.tilK9MellomLagringUrl(URI("https://k9-mellomlagring.dev.intern.nav.no/v1/dokument"))
