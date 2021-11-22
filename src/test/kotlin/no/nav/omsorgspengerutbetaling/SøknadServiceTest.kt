@@ -71,7 +71,7 @@ internal class SøknadServiceTest{
                         version = 1,
                         correlationId = "123"
                     ),
-                    idToken = IdToken(Azure.V2_0.generateJwt(clientId = "ikke-authorized-client", audience = "omsorgsdager-melding-api")),
+                    idToken = IdToken(Azure.V2_0.generateJwt(clientId = "ikke-authorized-client", audience = "omsorgspengerutbetalingsoknad-arbeidstaker-api")),
                     callId = CallId("abc")
                 )
             }
