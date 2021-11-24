@@ -1,7 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val dusseldorfKtorVersion = "3.1.6.4-e07c5ec"
+val dusseldorfKtorVersion = "3.1.6.5-50b2e34"
 val ktorVersion = ext.get("ktorVersion").toString()
 val mainClass = "no.nav.omsorgspengerutbetaling.AppKt"
 val lettuceVersion = "5.2.2.RELEASE"
@@ -11,13 +11,13 @@ val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
 
 plugins {
-    kotlin("jvm") version "1.5.31"
+    kotlin("jvm") version "1.6.0"
     id("com.github.johnrengelman.shadow") version "7.1.0"
 }
 
 buildscript {
     // Henter ut diverse dependency versjoner, i.e. ktorVersion.
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/e07c5ecf831928eb250c946e753aff2a3b798295/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/50b2e34c6cc6123209d6d8c6e7421104c4d42cf1/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
@@ -56,7 +56,7 @@ dependencies {
     testImplementation ("org.skyscreamer:jsonassert:1.5.0")
     testImplementation("org.awaitility:awaitility-kotlin:4.1.1")
     testImplementation("no.nav:kafka-embedded-env:$kafkaEmbeddedEnvVersion")
-    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("io.mockk:mockk:1.12.1")
 }
 
 repositories {
