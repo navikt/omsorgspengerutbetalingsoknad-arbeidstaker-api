@@ -9,6 +9,7 @@ import no.nav.helse.dusseldorf.ktor.metrics.Operation
 import no.nav.omsorgspengerutbetaling.general.CallId
 import no.nav.omsorgspengerutbetaling.general.auth.IdToken
 import no.nav.omsorgspengerutbetaling.general.oppslag.K9OppslagGateway
+import no.nav.omsorgspengerutbetaling.general.oppslag.throwable
 import no.nav.omsorgspengerutbetaling.k9SelvbetjeningOppslagKonfigurert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -48,18 +49,14 @@ class SøkerGateway (
             logger = logger
         ) {
             val (request, _, result) = Operation.monitored(
-                app = "omsorgspengesoknad-api",
+                app = "omsorgspengesoknad-utbetaling-arbeidstaker-api",
                 operation = HENTE_SOKER_OPERATION,
                 resultResolver = { 200 == it.second.statusCode }
             ) { httpRequest.awaitStringResponseResult() }
 
             result.fold(
                 { success -> objectMapper.readValue<SokerOppslagRespons>(success)},
-                { error ->
-                    logger.error("Error response = '${error.response.body().asString("text/plain")}' fra '${request.url}'")
-                    logger.error(error.toString())
-                    throw IllegalStateException("Feil ved henting av søkers personinformasjon")
-                }
+                { error -> throw error.throwable(request, logger, "Feil ved henting av søkers personinformasjon")}
             )
         }
         return oppslagRespons
