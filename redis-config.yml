@@ -5,6 +5,9 @@ metadata:
     team: dusseldorf
   name: omsorgspengerutbetalingsoknad-arbeidstaker-api-redis
   namespace: dusseldorf
+  annotations:
+    nais.io/read-only-file-system: "false"
+    nais.io/run-as-user: "999"
 spec:
   image: redis:5-alpine # or a custom Redis-image
   accessPolicy:
@@ -20,8 +23,8 @@ spec:
       cpu: 250m
       memory: 256Mi
     requests:
-      cpu: 250m
-      memory: 256Mi
+      cpu: 20m
+      memory: 50Mi
   service:
     port: 6379
     protocol: redis
