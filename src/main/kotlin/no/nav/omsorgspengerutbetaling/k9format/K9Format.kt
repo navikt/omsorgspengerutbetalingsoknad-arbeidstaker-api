@@ -34,6 +34,7 @@ fun Søknad.tilK9Format(mottatt: ZonedDateTime, søker: Søker): K9Søknad {
             null,
             OpptjeningAktivitet(), //Trenger ikke OpptjeningAktivitet for denne ytelsen.
             arbeidsgivere.byggK9Fraværsperiode(),
+            null,
             bosteder.tilK9Bosteder(),
             opphold.tilK9Utenlandsopphold()
         )
@@ -75,7 +76,8 @@ fun List<ArbeidsgiverDetaljer>.byggK9Fraværsperiode(): List<FraværPeriode> {
                     utbetalingsperiode.årsak.tilK9Årsak(),
                     arbeidsgiver.utbetalingsårsak.tilK9SøknadÅrsak(),
                     listOf(AktivitetFravær.ARBEIDSTAKER),
-                    Organisasjonsnummer.of(arbeidsgiver.organisasjonsnummer)
+                    Organisasjonsnummer.of(arbeidsgiver.organisasjonsnummer),
+                    null
                 )
             )
         }

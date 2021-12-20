@@ -350,7 +350,15 @@ class SøknadApplicationTest {
             requestEntity = hentGyldigSøknad().copy(
                 arbeidsgivere = listOf(
                     hentGyldigSøknad().arbeidsgivere[0].copy(
-                        perioder = listOf(),
+                        perioder = listOf(
+                            Utbetalingsperiode(
+                                fraOgMed = LocalDate.parse("2021-01-01"),
+                                tilOgMed =LocalDate.parse("2021-01-10"),
+                                antallTimerBorte = Duration.ofHours(5),
+                                antallTimerPlanlagt = Duration.ofHours(6),
+                                årsak = FraværÅrsak.ORDINÆRT_FRAVÆR
+                            )
+                        ),
                         navn = " ",
                         organisasjonsnummer = " ",
                         utbetalingsårsak = Utbetalingsårsak.KONFLIKT_MED_ARBEIDSGIVER,
@@ -374,12 +382,6 @@ class SøknadApplicationTest {
               "detail": "Requesten inneholder ugyldige paramtere.",
               "instance": "about:blank",
               "invalid_parameters": [
-                {
-                  "type": "entity",
-                  "name": "utbetalingsperioder",
-                  "reason": "Må settes minst en utbetalingsperiode.",
-                  "invalid_value": []
-                },
                 {
                   "type": "entity",
                   "name": "konfliktForklaring",
@@ -409,12 +411,6 @@ class SøknadApplicationTest {
                   "name": "bekreftelser.harForståttRettigheterOgPlikter",
                   "reason": "Må besvars Ja.",
                   "invalid_value": false
-                },
-                {
-                  "type": "entity",
-                  "name": "fraværsperioder",
-                  "reason": "Minst 1 fraværsperiode må oppgis",
-                  "invalid_value": "k9-format feilkode: påkrevd"
                 }
               ]
             }

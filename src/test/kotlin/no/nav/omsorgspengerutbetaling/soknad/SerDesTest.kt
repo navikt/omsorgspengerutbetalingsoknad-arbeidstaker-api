@@ -28,9 +28,6 @@ internal class SerDesTest {
     fun `Test serialisering av request til mottak`() {
         val komplettSøknad = komplettSøknad()
 
-        println(komplettSøknadJson)
-        println(komplettSøknad.somJson())
-
         JSONAssert.assertEquals(komplettSøknadJson, komplettSøknad.somJson(), true)
         //assertEquals(komplettSøknad, ArbeidstakerutbetalingSøknadUtils.objectMapper.readValue(komplettSøknadJson(søknadId))) //TODO 09.03.2021 - Problemer med å deserialsiere k9format objektet.
     }
@@ -179,7 +176,8 @@ internal class SerDesTest {
                       "tilOgMed": "2020-01-11",
                       "antallTimerBorte": null,
                       "antallTimerPlanlagt": null,
-                    "årsak": "ORDINÆRT_FRAVÆR"}
+                      "årsak": "ORDINÆRT_FRAVÆR"
+                    }
                   ]
                 },
                 {
@@ -196,7 +194,8 @@ internal class SerDesTest {
                       "tilOgMed": "2020-01-21",
                       "antallTimerBorte": "PT5H",
                       "antallTimerPlanlagt": "PT8H",
-                    "årsak": "ORDINÆRT_FRAVÆR"}
+                      "årsak": "ORDINÆRT_FRAVÆR"
+                     }
                   ]
                 },
                 {
@@ -213,7 +212,8 @@ internal class SerDesTest {
                       "tilOgMed": "2020-02-06",
                       "antallTimerBorte": null,
                       "antallTimerPlanlagt": null,
-                    "årsak": "ORDINÆRT_FRAVÆR"}
+                      "årsak": "ORDINÆRT_FRAVÆR"
+                    }
                   ]
                 }
               ],
@@ -249,7 +249,8 @@ internal class SerDesTest {
                       "aktivitetFravær": [
                         "ARBEIDSTAKER"
                       ],
-                      "arbeidsgiverOrgNr": "917755736"
+                      "arbeidsgiverOrgNr": "917755736",
+                      "arbeidsforholdId": null
                     },
                     {
                       "periode": "2020-01-21/2020-01-21",
@@ -259,7 +260,8 @@ internal class SerDesTest {
                       "aktivitetFravær": [
                         "ARBEIDSTAKER"
                       ],
-                      "arbeidsgiverOrgNr": "917755736"
+                      "arbeidsgiverOrgNr": "917755736",
+                      "arbeidsforholdId": null
                     },
                     {
                       "periode": "2020-02-01/2020-02-06",
@@ -269,9 +271,11 @@ internal class SerDesTest {
                       "aktivitetFravær": [
                         "ARBEIDSTAKER"
                       ],
-                      "arbeidsgiverOrgNr": "917755736"
+                      "arbeidsgiverOrgNr": "917755736",
+                      "arbeidsforholdId": null
                     }
                   ],
+                  "fraværsperioderKorrigeringIm": null,
                   "bosteder": {
                     "perioder": {
                       "2019-12-12/2019-12-22": {
@@ -292,7 +296,10 @@ internal class SerDesTest {
                     }
                   }
                 },
-                "språk": "nb"
+                "språk": "nb",
+                "begrunnelseForInnsending": {
+                  "tekst": null
+                }
               }
             }
             """.trimIndent()
