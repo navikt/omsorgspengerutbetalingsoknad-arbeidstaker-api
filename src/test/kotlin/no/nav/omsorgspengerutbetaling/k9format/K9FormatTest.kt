@@ -44,7 +44,8 @@ class K9FormatTest {
                     "aktivitetFravær": [
                       "ARBEIDSTAKER"
                     ],
-                    "arbeidsgiverOrgNr": "917755736"
+                    "arbeidsgiverOrgNr": "917755736",
+                    "arbeidsforholdId": null
                   },
                   {
                     "periode": "2020-01-21/2020-01-21",
@@ -54,7 +55,8 @@ class K9FormatTest {
                     "aktivitetFravær": [
                       "ARBEIDSTAKER"
                     ],
-                    "arbeidsgiverOrgNr": "917755736"
+                    "arbeidsgiverOrgNr": "917755736",
+                    "arbeidsforholdId": null
                   },
                   {
                     "periode": "2020-02-01/2020-02-06",
@@ -64,7 +66,8 @@ class K9FormatTest {
                     "aktivitetFravær": [
                       "ARBEIDSTAKER"
                     ],
-                    "arbeidsgiverOrgNr": "917755736"
+                    "arbeidsgiverOrgNr": "917755736",
+                    "arbeidsforholdId": null
                   }
                 ],
                 "bosteder": {
@@ -77,6 +80,7 @@ class K9FormatTest {
                     
                   }
                 },
+                "fraværsperioderKorrigeringIm" : null,
                 "utenlandsopphold": {
                   "perioder": {
                     "2019-12-12/2019-12-22": {
@@ -92,10 +96,12 @@ class K9FormatTest {
               "språk": "nb",
               "journalposter": [
                 
-              ]
+              ],
+              "begrunnelseForInnsending" : {
+                "tekst" : null
+              }
             }
         """.trimIndent()
-
         JSONAssert.assertEquals(forventetK9FormatJson, JsonUtils.toString(k9Format), true)
     }
 
