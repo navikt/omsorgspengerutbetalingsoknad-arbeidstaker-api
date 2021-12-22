@@ -5,7 +5,7 @@ val dusseldorfKtorVersion = "3.1.6.7-7d29e37"
 val ktorVersion = ext.get("ktorVersion").toString()
 val mainClass = "no.nav.omsorgspengerutbetaling.AppKt"
 val lettuceVersion = "5.2.2.RELEASE"
-val k9FormatVersion = "5.7.1"
+val k9FormatVersion = "5.7.2"
 val fuelVersion = "2.3.1"
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
@@ -47,7 +47,7 @@ dependencies {
     implementation("org.glassfish:jakarta.el:3.0.4")
 
     // Test
-    testImplementation("com.github.fppt:jedis-mock:0.17.0")
+    testImplementation("com.github.fppt:jedis-mock:1.0.0")
     testImplementation("no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
