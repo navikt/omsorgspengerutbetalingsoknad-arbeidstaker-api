@@ -7,10 +7,10 @@ import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import no.nav.helse.dusseldorf.ktor.auth.IdTokenProvider
 import no.nav.helse.dusseldorf.ktor.core.respondProblemDetails
 import no.nav.omsorgspengerutbetaling.felles.VEDLEGGID_URL
 import no.nav.omsorgspengerutbetaling.felles.VEDLEGG_URL
-import no.nav.omsorgspengerutbetaling.general.auth.IdTokenProvider
 import no.nav.omsorgspengerutbetaling.general.getCallId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -29,15 +29,8 @@ fun Route.vedleggApis(
             if (!call.request.isFormMultipart()) {
                 call.respondProblemDetails(hasToBeMultupartTypeProblemDetails)
             } else {
-                val multipart = call.receiveMultipart()
-                var vedlegg: Vedlegg? = null
-
-                var eier = idTokenProvider.getIdToken(call).getSubject()
-                if (eier == null) {
-                    call.respondProblemDetails(fantIkkeSubjectPaaToken)
-                } else {
-                    vedlegg = multipart.getVedlegg(DokumentEier(eier))
-                }
+                var eier = idTokenProvider.getIdToken(call).getNorskIdentifikasjonsnummer()
+                var vedlegg: Vedlegg? = call.receiveMultipart().getVedlegg(DokumentEier(eier))
 
                 if (vedlegg == null) {
                     call.respondProblemDetails(vedleggNotAttachedProblemDetails)
@@ -62,7 +55,7 @@ fun Route.vedleggApis(
         route(VEDLEGGID_URL) {
             get {
                 val vedleggId = VedleggId(call.parameters["vedleggId"]!!)
-                var eier = idTokenProvider.getIdToken(call).getSubject()
+                var eier = idTokenProvider.getIdToken(call).getNorskIdentifikasjonsnummer()
 
                 if (eier == null) call.respond(HttpStatusCode.Forbidden)
                 else {
@@ -88,7 +81,7 @@ fun Route.vedleggApis(
                 val vedleggId = VedleggId(call.parameters["vedleggId"]!!)
                 logger.info("Sletter vedlegg")
                 logger.info("$vedleggId")
-                var eier = idTokenProvider.getIdToken(call).getSubject()
+                var eier = idTokenProvider.getIdToken(call).getNorskIdentifikasjonsnummer()
                 if (eier == null) call.respond(HttpStatusCode.Forbidden) else {
                     val resultat = vedleggService.slettVedlegg(
                         vedleggId = vedleggId,

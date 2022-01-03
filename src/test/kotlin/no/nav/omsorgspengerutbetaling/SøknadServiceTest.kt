@@ -6,10 +6,10 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.runBlocking
+import no.nav.helse.dusseldorf.ktor.auth.IdToken
 import no.nav.helse.dusseldorf.testsupport.jws.Azure
 import no.nav.omsorgspengerutbetaling.TestUtils.Companion.hentGyldigSøknad
 import no.nav.omsorgspengerutbetaling.general.CallId
-import no.nav.omsorgspengerutbetaling.general.auth.IdToken
 import no.nav.omsorgspengerutbetaling.kafka.KafkaProducer
 import no.nav.omsorgspengerutbetaling.kafka.Metadata
 import no.nav.omsorgspengerutbetaling.soker.Søker
