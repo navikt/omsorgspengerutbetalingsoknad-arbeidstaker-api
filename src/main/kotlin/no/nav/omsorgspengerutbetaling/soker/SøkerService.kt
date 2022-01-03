@@ -1,8 +1,8 @@
 package no.nav.omsorgspengerutbetaling.soker
 
 import com.auth0.jwt.JWT
+import no.nav.helse.dusseldorf.ktor.auth.IdToken
 import no.nav.omsorgspengerutbetaling.general.CallId
-import no.nav.omsorgspengerutbetaling.general.auth.IdToken
 
 class SøkerService (
     private val søkerGateway: SøkerGateway

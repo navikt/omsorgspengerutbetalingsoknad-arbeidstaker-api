@@ -11,6 +11,7 @@ import io.ktor.jackson.*
 import io.ktor.metrics.micrometer.*
 import io.ktor.routing.*
 import io.prometheus.client.hotspot.DefaultExports
+import no.nav.helse.dusseldorf.ktor.auth.IdTokenProvider
 import no.nav.helse.dusseldorf.ktor.auth.allIssuers
 import no.nav.helse.dusseldorf.ktor.auth.clients
 import no.nav.helse.dusseldorf.ktor.auth.multipleJwtIssuers
@@ -28,7 +29,6 @@ import no.nav.helse.dusseldorf.ktor.metrics.init
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgivereGateway
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.ArbeidsgivereService
 import no.nav.omsorgspengerutbetaling.arbeidsgiver.arbeidsgiverApis
-import no.nav.omsorgspengerutbetaling.general.auth.IdTokenProvider
 import no.nav.omsorgspengerutbetaling.general.auth.IdTokenStatusPages
 import no.nav.omsorgspengerutbetaling.general.systemauth.AccessTokenClientResolver
 import no.nav.omsorgspengerutbetaling.kafka.KafkaProducer

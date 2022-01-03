@@ -1,7 +1,7 @@
 package no.nav.omsorgspengerutbetaling.arbeidsgiver
 
+import no.nav.helse.dusseldorf.ktor.auth.IdToken
 import no.nav.omsorgspengerutbetaling.general.CallId
-import no.nav.omsorgspengerutbetaling.general.auth.IdToken
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
