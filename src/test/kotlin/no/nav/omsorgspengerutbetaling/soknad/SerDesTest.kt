@@ -7,7 +7,6 @@ import no.nav.omsorgspengerutbetaling.felles.objectMapper
 import no.nav.omsorgspengerutbetaling.felles.somJson
 import no.nav.omsorgspengerutbetaling.k9format.tilK9Format
 import org.skyscreamer.jsonassert.JSONAssert
-import java.net.URL
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
@@ -37,7 +36,7 @@ internal class SerDesTest {
         val søknadId = UUID.randomUUID().toString()
         val søknad = TestUtils.hentGyldigSøknad().copy(søknadId = søknadId)
         val k9Format = søknad.tilK9Format(mottatt, søker)
-        fun komplettSøknad() = søknad.tilKomplettSøknad(søker, k9Format, mottatt, URL("https://localhost/k9-mellomlagring-mock/v1/dokument").toURI(), listOf()).copy(søknadId = søknadId)
+        fun komplettSøknad() = søknad.tilKomplettSøknad(søker, k9Format, mottatt, listOf()).copy(søknadId = søknadId)
 
         //language=json
         val søknadJson = """
@@ -119,7 +118,7 @@ internal class SerDesTest {
                 "harForståttRettigheterOgPlikter": true
             },
             "vedlegg": [
-              "http://localhost:8080/vedlegg/1"
+              "http://localhost:8080/vedlegg/1234"
             ],
             "hjemmePgaSmittevernhensyn": true,
             "hjemmePgaStengtBhgSkole": true
@@ -221,8 +220,8 @@ internal class SerDesTest {
                 "harBekreftetOpplysninger": true,
                 "harForståttRettigheterOgPlikter": true
               },
-              "vedleggUrls": [
-                "https://localhost/k9-mellomlagring-mock/v1/dokument/1"
+              "vedleggId": [
+                "1234"
               ],
               "hjemmePgaSmittevernhensyn": true,
               "hjemmePgaStengtBhgSkole": true,

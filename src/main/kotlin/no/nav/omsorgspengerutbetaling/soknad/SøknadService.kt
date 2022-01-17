@@ -12,14 +12,12 @@ import no.nav.omsorgspengerutbetaling.vedlegg.DokumentEier
 import no.nav.omsorgspengerutbetaling.vedlegg.VedleggService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.net.URI
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 internal class SøknadService(
     private val søkerService: SøkerService,
     private val vedleggService: VedleggService,
-    private val k9MellomLagringIngress: URI,
     private val kafkaProducer: KafkaProducer
 ) {
 
@@ -60,7 +58,7 @@ internal class SøknadService(
             vedleggService.persisterVedlegg(søknad.vedlegg, callId, DokumentEier(søker.fødselsnummer))
         }
 
-        val komplettSøknad = søknad.tilKomplettSøknad(søker, k9Format, mottatt, k9MellomLagringIngress, titler)
+        val komplettSøknad = søknad.tilKomplettSøknad(søker, k9Format, mottatt, titler)
 
         try {
             kafkaProducer.produserKafkaMelding(komplettSøknad, metadata)
