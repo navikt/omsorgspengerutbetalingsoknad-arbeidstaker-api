@@ -29,7 +29,6 @@ data class Søknad(
         søker: Søker,
         k9Format: Søknad,
         mottatt: ZonedDateTime,
-        k9MellomlagringIngress: URI,
         titler: List<String>
     ) = KomplettSøknad(
         søknadId = søknadId,
@@ -40,7 +39,7 @@ data class Søknad(
         opphold = opphold,
         arbeidsgivere = arbeidsgivere,
         bekreftelser = bekreftelser,
-        vedleggUrls = vedlegg.tilK9MellomLagringUrl(k9MellomlagringIngress),
+        vedleggId = vedlegg.map { it.vedleggId() },
         titler = titler,
         hjemmePgaSmittevernhensyn = hjemmePgaSmittevernhensyn,
         hjemmePgaStengtBhgSkole = hjemmePgaStengtBhgSkole,
@@ -49,6 +48,8 @@ data class Søknad(
 
     fun harVedlegg() = vedlegg.isNotEmpty()
 }
+
+fun URL.vedleggId() = this.toString().substringAfterLast("/")
 
 fun List<URL>.tilK9MellomLagringUrl(baseUrl: URI): List<URL> = map {
     val idFraUrl = it.path.substringAfterLast("/")

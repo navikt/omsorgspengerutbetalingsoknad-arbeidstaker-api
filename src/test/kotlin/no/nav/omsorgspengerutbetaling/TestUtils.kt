@@ -121,7 +121,7 @@ class TestUtils {
                 harBekreftetOpplysninger = JaNei.Ja
             ),
             vedlegg = listOf(
-                URL("http://localhost:8080/vedlegg/1")
+                URL("http://localhost:8080/vedlegg/1234")
             ),
             hjemmePgaSmittevernhensyn = true,
             hjemmePgaStengtBhgSkole = true

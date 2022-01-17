@@ -164,8 +164,7 @@ fun Application.omsorgpengerutbetalingsoknadArbeidstakerApi() {
                 søknadService = SøknadService(
                     søkerService = søkerService,
                     vedleggService = vedleggService,
-                    kafkaProducer = kafkaProducer,
-                    k9MellomLagringIngress = configuration.getK9MellomlagringIngress()
+                    kafkaProducer = kafkaProducer
                 )
             )
         }
