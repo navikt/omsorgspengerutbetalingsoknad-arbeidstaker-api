@@ -57,23 +57,20 @@ fun Route.vedleggApis(
                 val vedleggId = VedleggId(call.parameters["vedleggId"]!!)
                 var eier = idTokenProvider.getIdToken(call).getNorskIdentifikasjonsnummer()
 
-                if (eier == null) call.respond(HttpStatusCode.Forbidden)
-                else {
-                    val vedlegg = vedleggService.hentVedlegg(
-                        vedleggId = vedleggId,
-                        idToken = idTokenProvider.getIdToken(call),
-                        callId = call.getCallId(),
-                        eier = DokumentEier(eier)
-                    )
+                val vedlegg = vedleggService.hentVedlegg(
+                    vedleggId = vedleggId,
+                    idToken = idTokenProvider.getIdToken(call),
+                    callId = call.getCallId(),
+                    eier = DokumentEier(eier)
+                )
 
-                    if(vedlegg == null) call.respondProblemDetails(vedleggNotFoundProblemDetails)
-                    else {
-                        call.respondBytes(
-                            bytes = vedlegg.content,
-                            contentType = ContentType.parse(vedlegg.contentType),
-                            status = HttpStatusCode.OK
-                        )
-                    }
+                if(vedlegg == null) call.respondProblemDetails(vedleggNotFoundProblemDetails)
+                else {
+                    call.respondBytes(
+                        bytes = vedlegg.content,
+                        contentType = ContentType.parse(vedlegg.contentType),
+                        status = HttpStatusCode.OK
+                    )
                 }
             }
 
@@ -82,18 +79,16 @@ fun Route.vedleggApis(
                 logger.info("Sletter vedlegg")
                 logger.info("$vedleggId")
                 var eier = idTokenProvider.getIdToken(call).getNorskIdentifikasjonsnummer()
-                if (eier == null) call.respond(HttpStatusCode.Forbidden) else {
-                    val resultat = vedleggService.slettVedlegg(
-                        vedleggId = vedleggId,
-                        idToken = idTokenProvider.getIdToken(call),
-                        callId = call.getCallId(),
-                        eier = DokumentEier(eier)
-                    )
+                val resultat = vedleggService.slettVedlegg(
+                    vedleggId = vedleggId,
+                    idToken = idTokenProvider.getIdToken(call),
+                    callId = call.getCallId(),
+                    eier = DokumentEier(eier)
+                )
 
-                    when (resultat) {
-                        true -> call.respond(HttpStatusCode.NoContent)
-                        false -> call.respondProblemDetails(feilVedSlettingAvVedlegg)
-                    }
+                when (resultat) {
+                    true -> call.respond(HttpStatusCode.NoContent)
+                    false -> call.respondProblemDetails(feilVedSlettingAvVedlegg)
                 }
             }
         }
