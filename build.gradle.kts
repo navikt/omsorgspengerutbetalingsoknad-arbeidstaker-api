@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val dusseldorfKtorVersion = "3.1.6.7-f942a29"
 val ktorVersion = ext.get("ktorVersion").toString()
 val mainClass = "no.nav.omsorgspengerutbetaling.AppKt"
-val lettuceVersion = "5.2.2.RELEASE"
+val lettuceVersion = "6.1.8.RELEASE"
 val k9FormatVersion = "5.7.2"
 val fuelVersion = "2.3.1"
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
