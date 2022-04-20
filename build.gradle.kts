@@ -47,7 +47,7 @@ dependencies {
     implementation("org.glassfish:jakarta.el:3.0.4")
 
     // Test
-    testImplementation("com.github.fppt:jedis-mock:1.0.1")
+    testImplementation("com.github.fppt:jedis-mock:1.0.2")
     testImplementation("no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
