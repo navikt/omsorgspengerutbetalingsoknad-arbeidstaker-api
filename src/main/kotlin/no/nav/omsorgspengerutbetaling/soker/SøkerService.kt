@@ -1,6 +1,5 @@
 package no.nav.omsorgspengerutbetaling.soker
 
-import com.auth0.jwt.JWT
 import no.nav.helse.dusseldorf.ktor.auth.IdToken
 import no.nav.omsorgspengerutbetaling.general.CallId
 
@@ -11,16 +10,7 @@ class SøkerService (
         idToken: IdToken,
         callId: CallId
     ): Søker {
-        val ident: String = JWT.decode(idToken.value).subject ?: throw IllegalStateException("Token mangler 'sub' claim.")
-        return søkerGateway.hentSoker(idToken, callId).tilSøker(ident)
+        return søkerGateway.hentSoker(idToken, callId)
     }
 
-    private fun  SøkerGateway.SokerOppslagRespons.tilSøker(fodselsnummer: String) = Søker(
-        aktørId = aktør_id,
-        fødselsnummer = fodselsnummer,
-        fødselsdato = fødselsdato,
-        fornavn = fornavn,
-        mellomnavn = mellomnavn,
-        etternavn = etternavn
-    )
 }
