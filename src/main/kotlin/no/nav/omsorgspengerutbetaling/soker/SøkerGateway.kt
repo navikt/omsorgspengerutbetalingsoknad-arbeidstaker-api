@@ -32,7 +32,7 @@ class SøkerGateway (
     suspend fun hentSoker(
         idToken: IdToken,
         callId : CallId
-    ) : SokerOppslagRespons {
+    ) : Søker {
         val sokerUrl = Url.buildURL(
             baseUrl = baseUrl,
             pathParts = listOf("meg"),
@@ -59,13 +59,23 @@ class SøkerGateway (
                 { error -> throw error.throwable(request, logger, "Feil ved henting av søkers personinformasjon")}
             )
         }
-        return oppslagRespons
+        return oppslagRespons.tilSøker(idToken.getNorskIdentifikasjonsnummer())
     }
+
     data class SokerOppslagRespons(
         val aktør_id: String,
         val fornavn: String,
         val mellomnavn: String?,
         val etternavn: String,
         val fødselsdato: LocalDate
-    )
+    ) {
+        fun tilSøker(fødselsnummer: String) = Søker(
+            aktørId = aktør_id,
+            fødselsnummer = fødselsnummer,
+            fødselsdato = fødselsdato,
+            fornavn = fornavn,
+            mellomnavn = mellomnavn,
+            etternavn = etternavn
+        )
+    }
 }
